@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Header from "@/components/home/Header";
-import Button from "@/components/ui/Button";
+import HeroAssessmentButton from "@/components/home/HeroAssessmentButton";
 
 export default function Hero() {
   return (
@@ -36,12 +36,7 @@ export default function Hero() {
             </p>
           </div>
 
-          <Button
-            variant="cta"
-            className="mt-8 w-full max-w-sm sm:mt-10 sm:w-auto sm:max-w-none"
-          >
-            GET MY SKIN ASSESSMENT
-          </Button>
+          <HeroAssessmentButton />
         </div>
       </div>
     </section>
