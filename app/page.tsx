@@ -1,6 +1,7 @@
 import Hero from "@/components/home/Hero";
 import ProblemSection from "@/components/home/ProblemSection";
 import SkinAssessment from "@/components/home/SkinAssessment";
+import TrustPrivacySection from "@/components/home/TrustPrivacySection";
 import WhatWeDoSection from "@/components/home/WhatWeDoSection";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <SkinAssessment />
       <ProblemSection />
       <WhatWeDoSection />
+      <TrustPrivacySection />
     </>
   );
 }
