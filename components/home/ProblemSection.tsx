@@ -43,7 +43,7 @@ const problemCards = [
 
 export default function ProblemSection() {
   return (
-    <section className="relative overflow-hidden bg-[#fcfbfd] px-4 py-16 sm:px-6 sm:py-20 lg:px-12 lg:py-24">
+    <section className="relative overflow-hidden bg-[#fcfbfd] px-4 pt-16 pb-20 sm:px-6 sm:pt-20 sm:pb-24 lg:px-12 lg:pt-24 lg:pb-32">
       <div
         aria-hidden
         className="pointer-events-none absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-brand-light/35 blur-3xl"
@@ -52,7 +52,7 @@ export default function ProblemSection() {
       <div className="relative mx-auto max-w-7xl">
         <ProblemSectionHeader />
 
-        <div className="relative mt-10 sm:mt-12 lg:mt-10 lg:min-h-[820px]">
+        <div className="relative mt-10 sm:mt-12 lg:mt-10 lg:min-h-[880px]">
           <div className="relative z-[1] -mt-4 flex justify-center sm:-mt-6 lg:absolute lg:inset-x-0 lg:top-[44%] lg:-translate-y-1/2">
             <div className="relative aspect-[840/749] w-full max-w-[34rem] sm:max-w-[38rem] lg:max-w-[46rem] xl:max-w-[52rem] 2xl:max-w-[58rem]">
               <Image
