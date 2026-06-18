@@ -20,6 +20,10 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "GlamRepairs",
   description: "GlamRepairs",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml", sizes: "96x96" }],
+    apple: [{ url: "/apple-icon.svg", type: "image/svg+xml", sizes: "256x256" }],
+  },
 };
 
 export default function RootLayout({

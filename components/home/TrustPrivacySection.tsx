@@ -74,7 +74,7 @@ export default function TrustPrivacySection() {
         </div>
       </div>
 
-      <div className="relative -mx-4 mt-10 bg-gradient-to-b from-white via-white to-brand-light/25 pb-16 pt-24 sm:-mx-6 sm:mt-12 sm:pb-20 sm:pt-28 lg:-mx-12 lg:pb-24 lg:pt-32">
+      <div className="relative -mx-4 mt-10 bg-white pb-16 pt-24 sm:-mx-6 sm:mt-12 sm:pb-20 sm:pt-28 lg:-mx-12 lg:pb-24 lg:pt-32">
         <AnimatedSlideIn
           direction="up"
           className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-12"
@@ -84,7 +84,7 @@ export default function TrustPrivacySection() {
           </h3>
           <button
             type="button"
-            className="guidance-fill-btn mt-8 rounded-full border border-[#e8e8e8] bg-white px-12 py-4 text-base font-normal tracking-[0.15em] text-brand-gray sm:mt-10 sm:px-16 sm:py-5 sm:text-lg"
+            className="guidance-fill-btn mt-8 rounded-full border border-[#e8e8e8] bg-white px-12 py-4 text-base font-normal tracking-[0.15em] text-brand-light sm:mt-10 sm:px-16 sm:py-5 sm:text-lg"
           >
             GET MY SKIN GUIDANCE
           </button>

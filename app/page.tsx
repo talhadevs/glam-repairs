@@ -1,3 +1,4 @@
+import CeoSection from "@/components/home/CeoSection";
 import Hero from "@/components/home/Hero";
 import ProblemSection from "@/components/home/ProblemSection";
 import SkinAssessment from "@/components/home/SkinAssessment";
@@ -12,6 +13,7 @@ export default function Home() {
       <ProblemSection />
       <WhatWeDoSection />
       <TrustPrivacySection />
+      <CeoSection />
     </>
   );
 }
