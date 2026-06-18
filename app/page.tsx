@@ -1,6 +1,7 @@
 import Hero from "@/components/home/Hero";
 import ProblemSection from "@/components/home/ProblemSection";
 import SkinAssessment from "@/components/home/SkinAssessment";
+import WhatWeDoSection from "@/components/home/WhatWeDoSection";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       <SkinAssessment />
       <ProblemSection />
+      <WhatWeDoSection />
     </>
   );
 }
