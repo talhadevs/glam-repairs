@@ -122,7 +122,7 @@ export default function WhatYouGetSection() {
           </AnimatedSlideIn>
 
           <AnimatedSlideIn direction="up" delay={250} className="lg:col-span-3 lg:col-start-6 lg:row-start-2">
-            <article className="relative flex h-full min-h-[14rem] flex-col items-center justify-center overflow-hidden rounded-[20px] bg-[#662D91] px-5 py-6 text-center sm:min-h-[16rem] sm:py-7 lg:min-h-[17rem]">
+            <article className="relative flex h-full min-h-[14rem] flex-col items-center justify-center overflow-hidden rounded-[20px] bg-brand-primary px-5 py-6 text-center sm:min-h-[16rem] sm:py-7 lg:min-h-[17rem]">
               <Image
                 src="/svgs/bgg.svg"
                 alt=""

@@ -119,7 +119,7 @@ export default function BeforeAfterSlider({
   return (
     <div
       ref={containerRef}
-      className={`relative h-full w-full overflow-hidden rounded-[20px] bg-[#D6CDEA] ${className}`}
+      className={`relative h-full w-full overflow-hidden rounded-[20px] bg-brand-lavender ${className}`}
     >
       <div className="absolute inset-0 origin-center scale-[0.88]">
         <Image
@@ -193,7 +193,7 @@ export default function BeforeAfterSlider({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(position)}
-        className={`pointer-events-none absolute z-[5] flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-white p-0 shadow-[0_2px_12px_rgba(0,0,0,0.14)] outline-none select-none focus-visible:pointer-events-auto focus-visible:cursor-ew-resize focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#D6CDEA] ${motionClass}`}
+        className={`pointer-events-none absolute z-[5] flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-white p-0 shadow-[0_2px_12px_rgba(0,0,0,0.14)] outline-none select-none focus-visible:pointer-events-auto focus-visible:cursor-ew-resize focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-lavender ${motionClass}`}
         style={{ left: `${position}%`, top: "50%" }}
         onKeyDown={handleKeyDown}
         tabIndex={0}
@@ -204,7 +204,7 @@ export default function BeforeAfterSlider({
           viewBox="0 0 18 10"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="text-[#2B2B2B]"
+          className="text-brand-ink"
           aria-hidden="true"
         >
           <path

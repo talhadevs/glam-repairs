@@ -56,7 +56,7 @@ export default function SkinAssessmentCta({
   return (
     <button
       type={type}
-      className={`guidance-fill-btn rounded-full border border-[#e8e8e8] bg-white font-normal tracking-[0.15em] text-brand-light ${guidanceSizeStyles[size]} ${className}`.trim()}
+      className={`guidance-fill-btn rounded-full border border-brand-border-light bg-white font-normal tracking-[0.15em] text-brand-light ${guidanceSizeStyles[size]} ${className}`.trim()}
       {...props}
     >
       {label}

@@ -118,7 +118,7 @@ function AppStoreBadge() {
 
 function FooterCtaSection() {
   return (
-    <section className="bg-[#FFF9E5]">
+    <section className="bg-brand-cream-light">
       <div className="grid lg:grid-cols-[minmax(0,65%)_minmax(0,35%)]">
         <div className="flex w-full flex-col justify-center py-6 pl-6 pr-6 sm:py-8 sm:pl-10 sm:pr-8 lg:py-10 lg:pl-16 lg:pr-10 xl:pl-20 xl:pr-12">
           <h2 className="max-w-none font-serif text-[5rem] leading-none tracking-[-0.03em] text-brand-primary sm:text-[6rem] lg:text-[6.5rem]">
@@ -152,7 +152,7 @@ export default function Footer() {
     <footer className="w-full">
       <FooterCtaSection />
 
-      <div className="bg-[#5D348B] text-white">
+      <div className="bg-brand-primary-dark text-white">
         <div className="w-full px-4 pt-20 pb-8 sm:px-5 sm:pt-24 sm:pb-9 lg:px-6 lg:pt-28 lg:pb-10">
           <div className="grid gap-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-5 lg:gap-5 xl:gap-6">
             <div className="-mt-5 sm:col-span-2 sm:-mt-7 lg:col-span-1 lg:-mt-10">

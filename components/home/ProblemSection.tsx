@@ -43,7 +43,7 @@ const problemCards = [
 
 export default function ProblemSection() {
   return (
-    <section className="relative overflow-hidden bg-[#fcfbfd] px-4 pt-16 pb-20 sm:px-6 sm:pt-20 sm:pb-24 lg:px-12 lg:pt-24 lg:pb-32">
+    <section className="relative overflow-hidden bg-brand-surface-alt px-4 pt-16 pb-20 sm:px-6 sm:pt-20 sm:pb-24 lg:px-12 lg:pt-24 lg:pb-32">
       <div
         aria-hidden
         className="pointer-events-none absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-brand-light/35 blur-3xl"

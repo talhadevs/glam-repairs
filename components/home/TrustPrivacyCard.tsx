@@ -12,7 +12,7 @@ export default function TrustPrivacyCard({
   icon,
 }: TrustPrivacyCardProps) {
   return (
-    <article className="relative flex w-full min-h-[20rem] flex-col items-center overflow-visible rounded-2xl bg-[#FFF7E5] px-5 py-6 pb-20 text-center shadow-sm sm:min-h-[22rem] sm:w-[20rem] sm:px-6 sm:py-7 sm:pb-24 lg:min-h-[24rem] lg:w-[20.5rem]">
+    <article className="relative flex w-full min-h-[20rem] flex-col items-center overflow-visible rounded-2xl bg-brand-cream-card px-5 py-6 pb-20 text-center shadow-sm sm:min-h-[22rem] sm:w-[20rem] sm:px-6 sm:py-7 sm:pb-24 lg:min-h-[24rem] lg:w-[20.5rem]">
       <h3 className="font-serif text-[1.75rem] font-bold leading-tight tracking-tight text-brand-primary sm:text-[2rem] lg:text-[2.25rem]">
         {title}
       </h3>

@@ -72,9 +72,9 @@ export default function ExpertInsightChart() {
     >
       <defs>
         <linearGradient id="expertBarWhite" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.82" />
-          <stop offset="52%" stopColor="#ffffff" stopOpacity="0.34" />
-          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--background)" stopOpacity="0.82" />
+          <stop offset="52%" stopColor="var(--background)" stopOpacity="0.34" />
+          <stop offset="100%" stopColor="var(--background)" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="expertBarSkin" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="var(--brand-cream)" stopOpacity="1" />
@@ -107,7 +107,7 @@ export default function ExpertInsightChart() {
       <path
         d={linePath}
         fill="none"
-        stroke="#ffffff"
+        stroke="var(--background)"
         strokeLinecap="butt"
         strokeLinejoin="miter"
         strokeMiterlimit="10"

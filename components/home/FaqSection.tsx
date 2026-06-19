@@ -44,7 +44,7 @@ type FaqAccordionItemProps = {
 
 function FaqAccordionItem({ item, isOpen, onToggle }: FaqAccordionItemProps) {
   return (
-    <div className="rounded-[20px] bg-[#f5f5f5] px-6 py-5 sm:px-7 sm:py-6">
+    <div className="rounded-[20px] bg-brand-surface px-6 py-5 sm:px-7 sm:py-6">
       <button
         type="button"
         onClick={onToggle}
