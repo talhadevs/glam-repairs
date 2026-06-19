@@ -5,6 +5,7 @@ import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 import ExpertInsightChart from "@/components/home/ExpertInsightChart";
 import AnimatedSlideIn from "@/components/home/AnimatedSlideIn";
 import ConcernPill from "@/components/home/ConcernPill";
+import SkinAssessmentCta from "@/components/home/SkinAssessmentCta";
 
 const pillBaseClassName =
   "border-white/80 py-2 pl-3 pr-4 !shadow-none backdrop-blur-none sm:py-2.5 sm:pl-3.5 sm:pr-5";
@@ -136,12 +137,10 @@ export default function WhatYouGetSection() {
                 <p className="mt-3 text-sm font-light leading-relaxed text-white/90 sm:text-base">
                   Real advice. Real skin. Real results.
                 </p>
-                <button
-                  type="button"
-                  className="analysis-fill-btn mt-5 cursor-pointer whitespace-nowrap rounded-full bg-white px-6 py-3 text-xs font-normal tracking-[0.15em] sm:mt-6 sm:px-8 sm:py-3.5 sm:text-sm"
-                >
-                  GET MY SKIN ASSESSMENT
-                </button>
+                <SkinAssessmentCta
+                  variant="analysis"
+                  className="mt-5 sm:mt-6"
+                />
               </div>
             </article>
           </AnimatedSlideIn>

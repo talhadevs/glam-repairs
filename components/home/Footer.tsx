@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/home/Logo";
-
+import SkinAssessmentCta from "@/components/home/SkinAssessmentCta";
 const pageLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "#" },
@@ -129,12 +129,7 @@ function FooterCtaSection() {
             Let our skincare specialists create a treatment plan tailored to
             your needs.
           </p>
-          <button
-            type="button"
-            className="guidance-fill-btn mt-5 w-fit rounded-full border border-[#e8e8e8] bg-white px-10 py-3.5 text-sm font-normal tracking-[0.15em] text-brand-light sm:mt-6 sm:px-12 sm:py-4 sm:text-base"
-          >
-            GET MY SKIN ASSESSMENT
-          </button>
+          <SkinAssessmentCta className="mt-5 w-fit sm:mt-6" />
         </div>
 
         <div className="relative flex min-h-[12rem] items-end justify-center overflow-hidden sm:min-h-[14rem] lg:min-h-[16rem] lg:justify-end">

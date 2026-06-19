@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import AnimatedSlideIn from "@/components/home/AnimatedSlideIn";
-
+import SkinAssessmentCta from "@/components/home/SkinAssessmentCta";
 export default function CeoSection() {
   return (
     <section className="overflow-hidden bg-white">
@@ -44,12 +44,10 @@ export default function CeoSection() {
               drive innovation behind Glam Repair.
             </p>
 
-            <button
-              type="button"
-              className="guidance-fill-btn mt-8 rounded-full border border-[#e8e8e8] bg-white px-10 py-3.5 text-[1.05rem] font-normal tracking-[0.15em] text-brand-light sm:mt-10 sm:px-12 sm:py-4 sm:text-[1.2rem]"
-            >
-              GET MY SKIN ASSESSMENT
-            </button>
+            <SkinAssessmentCta
+              size="md"
+              className="mt-8 w-fit sm:mt-10"
+            />
           </AnimatedSlideIn>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import AnimatedSlideIn from "@/components/home/AnimatedSlideIn";
+import SkinAssessmentCta from "@/components/home/SkinAssessmentCta";
 import TrustPrivacyCard from "@/components/home/TrustPrivacyCard";
 
 const cardTopOffsets = ["lg:-mt-20", "lg:-mt-12", "lg:-mt-4"] as const;
@@ -82,12 +83,11 @@ export default function TrustPrivacySection() {
           <h3 className="font-serif text-3xl leading-snug text-brand-primary sm:text-4xl lg:text-[2.75rem] lg:leading-[1.3]">
             The consultation you&apos;ve been putting off - done in 24 hours.
           </h3>
-          <button
-            type="button"
-            className="guidance-fill-btn mt-8 rounded-full border border-[#e8e8e8] bg-white px-12 py-4 text-base font-normal tracking-[0.15em] text-brand-light sm:mt-10 sm:px-16 sm:py-5 sm:text-lg"
-          >
-            GET MY SKIN GUIDANCE
-          </button>
+          <SkinAssessmentCta
+            label="GET MY SKIN GUIDANCE"
+            size="lg"
+            className="mt-8 sm:mt-10"
+          />
         </AnimatedSlideIn>
       </div>
     </section>

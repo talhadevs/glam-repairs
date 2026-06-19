@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Header from "@/components/home/Header";
-import HeroAssessmentButton from "@/components/home/HeroAssessmentButton";
+import SkinAssessmentCta from "@/components/home/SkinAssessmentCta";
 
 export default function Hero() {
   return (
@@ -36,7 +36,7 @@ export default function Hero() {
             </p>
           </div>
 
-          <HeroAssessmentButton />
+          <SkinAssessmentCta variant="hero" />
         </div>
       </div>
     </section>
