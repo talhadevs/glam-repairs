@@ -108,3 +108,35 @@ body {
   border-color: var(--brand-accent);
   background-color: transparent;
 }
+
+.analysis-fill-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  z-index: 1;
+  color: var(--brand-light) !important;
+  transition: color 0.5s ease;
+}
+
+.analysis-fill-btn::before {
+  content: "";
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--brand-light);
+  transition: width 0.5s ease;
+  display: block;
+  z-index: -1;
+}
+
+.analysis-fill-btn:hover::before {
+  width: 100%;
+}
+
+.analysis-fill-btn:hover {
+  color: white !important;
+  background-color: transparent !important;
+}
