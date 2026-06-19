@@ -144,7 +144,7 @@ export default function Header({ variant = "overlay" }: HeaderProps) {
             className={`w-[min(52vw,13rem)] rounded-2xl border px-5 py-5 shadow-lg sm:w-52 ${
               isSolid
                 ? "border-white/15 bg-brand-primary/95 backdrop-blur-md"
-                : "border-white/20 bg-brand-primary/90 backdrop-blur-md"
+                : "border-white/25 bg-transparent backdrop-blur-sm"
             }`}
           >
             <NavLinks
