@@ -60,7 +60,7 @@ export default function SkinAssessment() {
               variant="primary"
               icon={
                 <Image
-                  src="/svgs/analyze.svg"
+                  src="/icons/icon.svg"
                   alt=""
                   width={22}
                   height={22}

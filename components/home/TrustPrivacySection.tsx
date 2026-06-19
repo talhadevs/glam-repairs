@@ -12,7 +12,7 @@ const privacyCards = [
     title: "Private & Secure Storage",
     description:
       "Your photos are stored in a private internal system with restricted access. Only the person preparing your report can see them.",
-    icon: "/svgs/BG.svg",
+    icon: "/icons/guard_icon.svg",
   },
   {
     title: "Never Shared Publicly",

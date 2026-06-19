@@ -124,7 +124,7 @@ export default function WhatYouGetSection() {
           <AnimatedSlideIn direction="up" delay={250} className="lg:col-span-3 lg:col-start-6 lg:row-start-2">
             <article className="relative flex h-full min-h-[12rem] flex-col items-center justify-center overflow-hidden rounded-[20px] bg-brand-primary px-4 py-5 text-center sm:min-h-[16rem] sm:px-5 sm:py-7 lg:min-h-[17rem]">
               <Image
-                src="/svgs/bgg.svg"
+                src="/icons/shadow.svg"
                 alt=""
                 fill
                 sizes="(max-width: 1024px) 50vw, 400px"

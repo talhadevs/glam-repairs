@@ -46,7 +46,7 @@ export const pricingPlans: PricingPlan[] = [
     name: "Clarity",
     price: "Rs. 1,500",
     priceNote: "(one-time)",
-    cta: "Get my skin assessment →",
+    cta: "Get my assessment →",
     description: "Your skin, studied — not scanned.",
     features: [
       {
@@ -84,7 +84,7 @@ export const pricingPlans: PricingPlan[] = [
     price: "Rs. 3,000",
     priceNote: "(one-time)",
     badge: "Most complete",
-    cta: "Start my full skin journey →",
+    cta: "Start my full journey →",
     description: "A full skin strategy. Not just a routine.",
     features: [
       {

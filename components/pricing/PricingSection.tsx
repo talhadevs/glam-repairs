@@ -1,17 +1,36 @@
 import PricingCard from "@/components/pricing/PricingCard";
 import { pricingPlans } from "@/components/pricing/pricingPlans";
 
-export default function PricingSection() {
+type PricingSectionProps = {
+  title?: string;
+  subtitle?: string;
+  showTrustLine?: boolean;
+};
+
+const defaultTitle = "Pricing";
+const defaultSubtitle =
+  "Skincare consultations built around your skin — not a one-size-fits-all routine.";
+
+const trustLine =
+  "Every paid assessment is manually reviewed by a certified aesthetics professional with a degree in Cosmetology & Dermatology Science.";
+
+export default function PricingSection({
+  title = defaultTitle,
+  subtitle = defaultSubtitle,
+  showTrustLine = false,
+}: PricingSectionProps) {
   return (
-    <section className="bg-white px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-12 lg:px-10 lg:pb-24 lg:pt-14 xl:px-12">
+    <section
+      id="pricing"
+      className="bg-white px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-12 lg:px-10 lg:pb-24 lg:pt-14 xl:px-12"
+    >
       <div className="mx-auto max-w-[86rem]">
         <header className="mx-auto max-w-xl text-center">
-          <h1 className="font-serif text-[2.75rem] tracking-normal text-brand-primary sm:text-5xl lg:text-[4.25rem]">
-            Pricing
-          </h1>
+          <h2 className="font-serif text-[2.75rem] tracking-normal text-brand-primary sm:text-5xl lg:text-[4.25rem]">
+            {title}
+          </h2>
           <p className="mt-4 text-xl font-light leading-snug text-black sm:mt-5 sm:text-2xl lg:text-[1.5rem] lg:leading-[1.35]">
-            Skincare consultations built around your skin — not a
-            one-size-fits-all routine.
+            {subtitle}
           </p>
         </header>
 
@@ -20,6 +39,12 @@ export default function PricingSection() {
             <PricingCard key={plan.name} {...plan} />
           ))}
         </div>
+
+        {showTrustLine ? (
+          <p className="mx-auto mt-10 max-w-3xl text-center text-sm leading-relaxed text-brand-gray sm:mt-12 sm:text-[0.9375rem]">
+            {trustLine}
+          </p>
+        ) : null}
       </div>
     </section>
   );
