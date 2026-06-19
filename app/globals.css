@@ -75,6 +75,63 @@ body {
   }
 }
 
+/* Burger tornado animation — adapted from Uiverse.io by vk-uiux */
+.burger-toggle {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: calc(4px * 3 + 8px * 2);
+  margin: auto;
+  cursor: pointer;
+}
+
+.burger-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: calc(4px / 2);
+  background: currentColor;
+  opacity: 1;
+  transition: none 0.35s cubic-bezier(0.5, -0.35, 0.35, 1.5) 0s;
+}
+
+.burger-bar--top {
+  bottom: calc(50% + 8px + 4px / 2);
+  transition-property: bottom, transform;
+  transition-delay: calc((0s + 0.35s) * 0.6);
+}
+
+.burger-bar--middle {
+  top: calc(50% - 4px / 2);
+  transition-property: opacity, transform;
+  transition-delay: calc((0s + 0.35s) * 0.3);
+}
+
+.burger-bar--bottom {
+  top: calc(50% + 8px + 4px / 2);
+  transition-property: top, transform;
+  transition-delay: 0s;
+}
+
+.burger-toggle.is-open .burger-bar--top {
+  bottom: calc(50% - 4px / 2);
+  transform: rotate(-135deg);
+  transition-delay: 0s;
+}
+
+.burger-toggle.is-open .burger-bar--middle {
+  opacity: 0;
+  transform: rotate(-135deg);
+  transition-delay: calc((0s + 0.35s) * 0.3);
+}
+
+.burger-toggle.is-open .burger-bar--bottom {
+  top: calc(50% - 4px / 2);
+  transform: rotate(-225deg);
+  transition-delay: calc((0s + 0.35s) * 0.6);
+}
+
 .cta-fill-btn {
   position: relative;
   overflow: hidden;
@@ -164,4 +221,58 @@ body {
 .analysis-fill-btn:hover {
   color: white !important;
   background-color: transparent !important;
+}
+
+.subscribe-fill-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  z-index: 1;
+  transition: background-color 0.5s ease;
+}
+
+.subscribe-fill-btn::before {
+  content: "";
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--brand-primary);
+  transition: width 0.5s ease;
+  display: block;
+  z-index: -1;
+}
+
+.subscribe-fill-btn:hover::before {
+  width: 100%;
+}
+
+.subscribe-fill-btn:hover {
+  background-color: transparent !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  box-shadow: 0 0 0 1000px #ffffff inset;
+  -webkit-text-fill-color: #000000;
+  caret-color: #000000;
+  transition: background-color 9999s ease-out 0s;
+}
+
+input:autofill,
+textarea:autofill,
+select:autofill {
+  box-shadow: 0 0 0 1000px #ffffff inset;
+  -webkit-text-fill-color: #000000;
+  caret-color: #000000;
 }

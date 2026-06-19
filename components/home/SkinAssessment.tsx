@@ -54,7 +54,7 @@ export default function SkinAssessment() {
 
           <AnimatedSlideIn
             direction="right"
-            className="self-center sm:ml-auto sm:self-auto"
+            className="self-center translate-x-16 sm:ml-auto sm:translate-x-0 sm:self-auto"
           >
             <Button
               variant="primary"

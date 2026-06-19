@@ -46,13 +46,13 @@ export default function TrustPrivacySection() {
               className="max-w-full sm:-ml-3 lg:-ml-5"
             >
               <header>
-                <h2 className="font-serif text-[2rem] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
+                <h2 className="font-serif text-[1.4rem] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
                   TRUST &amp; PRIVACY
                 </h2>
-                <p className="mt-1 text-lg font-light tracking-tight text-brand-gray sm:mt-2 sm:text-2xl lg:text-[1.75rem]">
+                <p className="mt-1 hidden text-sm font-light tracking-tight text-brand-gray sm:mt-2 sm:block sm:text-2xl lg:text-[1.75rem]">
                   Your privacy is non-negotiable.
                 </p>
-                <p className="mt-3 text-sm font-light leading-snug tracking-tighter text-brand-gray sm:mt-4 sm:text-lg lg:text-xl">
+                <p className="mt-3 hidden text-[11px] font-light leading-snug tracking-tighter text-brand-gray sm:mt-4 sm:block sm:text-lg lg:text-xl">
                   You&apos;re sharing photos of your skin. We take that
                   seriously.
                 </p>

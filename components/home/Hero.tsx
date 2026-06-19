@@ -23,7 +23,7 @@ export default function Hero() {
           </p>
 
           <div className="mt-2 sm:mt-2">
-            <h1 className="mx-auto max-w-xs font-serif text-[2.65rem] leading-[0.95] sm:max-w-4xl sm:text-7xl lg:text-[6.5rem] lg:leading-none">
+            <h1 className="mx-auto max-w-sm font-serif text-[3rem] leading-[0.95] sm:max-w-4xl sm:text-7xl lg:text-[6.5rem] lg:leading-none">
               Everyone Deserves
               <br />
               Healthy Skin

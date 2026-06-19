@@ -18,10 +18,10 @@ export default function CeoSection() {
             width={518}
             height={672}
             sizes="(max-width: 1024px) 100vw, 50vw"
-            className="h-auto w-full max-w-md object-contain object-bottom sm:max-w-lg lg:h-full lg:max-w-none lg:w-full lg:object-cover lg:object-bottom"
+            className="h-auto w-full max-w-md translate-y-4 object-contain object-bottom sm:max-w-lg sm:translate-y-0 lg:h-full lg:max-w-none lg:w-full lg:object-cover lg:object-bottom"
             priority={false}
           />
-          <p className="relative z-10 w-full px-4 pb-6 text-center text-sm font-light italic leading-snug tracking-tight text-brand-gray sm:px-6 sm:pb-8 sm:text-base lg:px-8 lg:pb-10 lg:text-left lg:text-lg">
+          <p className="relative z-10 hidden w-full px-4 pb-6 text-center text-sm font-light italic leading-snug tracking-tight text-brand-gray sm:block sm:px-6 sm:pb-8 sm:text-base lg:px-8 lg:pb-10 lg:text-left lg:text-lg">
             &ldquo;Healthy skin starts with the right information &mdash; not the
             most expensive products.&rdquo;
           </p>

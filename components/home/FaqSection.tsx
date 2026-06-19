@@ -10,29 +10,34 @@ type FaqItem = {
 
 const faqItems: FaqItem[] = [
   {
-    question: "What is included in my Glam Repair skin guidance report?",
+    question: "Is this an AI tool?",
     answer:
-      "Your report includes a personalized skin analysis, routine recommendations tailored to your concerns, lifestyle tips, and clear guidance on next steps. Everything is reviewed by a certified skincare expert and delivered within 24 hours.",
+      "No. Every assessment is reviewed manually by a certified aesthetics professional. There are no algorithms, automated reports, or AI-generated routines. Everything you receive has been written specifically for your skin.",
   },
   {
-    question: "Who can use Glam Repair's skin assessment service?",
+    question: "Who reviews my photos?",
     answer:
-      "Anyone with skin concerns can use Glam Repair — whether you are dealing with acne, dryness, sensitivity, or simply want expert guidance on your routine. No referral or prior dermatology visit is required.",
+      "A certified aesthetics expert with a BSc in Cosmetology & Dermatology Science and experience across multiple clinics in Pakistan.",
   },
   {
-    question: "How does the skin assessment process work?",
+    question: "How long does it take to get my assessment?",
     answer:
-      "Share your skin concerns, upload clear photos in natural lighting, and our expert reviews them privately. You receive a detailed, personalized report with actionable recommendations delivered to you within 24 hours.",
+      "The Clarity plan is delivered within 48 hours. The Transform plan is delivered within 24 hours, with priority review.",
   },
   {
-    question: "Are my photos kept private and secure?",
+    question: "Do you recommend specific brands?",
     answer:
-      "Yes. Your photos are stored in a private internal system with restricted access. Only the expert preparing your report can view them, and you can request complete deletion at any time after delivery.",
+      "No. We guide you on ingredient types and product categories so you can choose whatever is available and affordable to you, without any brand bias.",
   },
   {
-    question: "How quickly will I receive my personalized report?",
+    question: "What if I'm not satisfied?",
     answer:
-      "Most reports are delivered within 24 hours of submitting your photos and concerns. You will receive your full skin guidance report directly, without waiting weeks for an in-person appointment.",
+      "We'll revise your assessment. Your skin is our responsibility until you're confident in your routine.",
+  },
+  {
+    question: "Are my photos private?",
+    answer:
+      "Completely. Your photos are reviewed only by a certified aesthetics professional, stored under an anonymous case ID, and never shared or sold. You can request deletion of your data at any time.",
   },
 ];
 
@@ -104,7 +109,7 @@ export default function FaqSection() {
       <div className="grid w-full gap-8 px-4 sm:gap-12 sm:px-10 lg:grid-cols-[minmax(0,36%)_minmax(0,64%)] lg:items-start lg:gap-12 lg:px-16 xl:px-20">
         <AnimatedSlideIn direction="left">
           <h2 className="font-serif text-[2rem] leading-[1.1] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
-            Frequently Asked Question
+            Frequently asked questions
           </h2>
         </AnimatedSlideIn>
 
