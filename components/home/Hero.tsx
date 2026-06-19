@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section className="relative min-h-[100dvh]">
       <Image
-        src="/svgs/hero_bg.svg"
+        src="/images,svgs/hero_bg.jpg"
         alt=""
         fill
         priority
