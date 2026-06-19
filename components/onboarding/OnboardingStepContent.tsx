@@ -1,6 +1,11 @@
 import AboutYouStep from "@/components/onboarding/steps/AboutYouStep";
-import AgeStep from "@/components/onboarding/steps/AgeStep";
-import GenderStep from "@/components/onboarding/steps/GenderStep";
+import ConcernDurationStep from "@/components/onboarding/steps/ConcernDurationStep";
+import CurrentRoutineStep from "@/components/onboarding/steps/CurrentRoutineStep";
+import LifestyleStep from "@/components/onboarding/steps/LifestyleStep";
+import PrimaryConcernStep from "@/components/onboarding/steps/PrimaryConcernStep";
+import SkinZoneSelectionStep from "@/components/onboarding/steps/SkinZoneSelectionStep";
+import UploadInstructionStep from "@/components/onboarding/steps/UploadInstructionStep";
+import UploadPhotosStep from "@/components/onboarding/steps/UploadPhotosStep";
 
 type StepContentProps = {
   stepNumber: number;
@@ -25,11 +30,21 @@ function StepPlaceholder({ stepNumber }: { stepNumber: number }) {
 export default function OnboardingStepContent({ stepNumber }: StepContentProps) {
   switch (stepNumber) {
     case 1:
-      return <AboutYouStep />;
+      return <SkinZoneSelectionStep />;
     case 2:
-      return <GenderStep />;
+      return <PrimaryConcernStep />;
     case 3:
-      return <AgeStep />;
+      return <ConcernDurationStep />;
+    case 4:
+      return <AboutYouStep />;
+    case 5:
+      return <CurrentRoutineStep />;
+    case 6:
+      return <LifestyleStep />;
+    case 7:
+      return <UploadInstructionStep />;
+    case 8:
+      return <UploadPhotosStep />;
     default:
       return <StepPlaceholder stepNumber={stepNumber} />;
   }

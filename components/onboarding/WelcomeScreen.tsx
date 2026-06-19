@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import WelcomeHeroImage from "@/components/onboarding/WelcomeHeroImage";

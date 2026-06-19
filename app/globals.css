@@ -276,3 +276,50 @@ select:autofill {
   -webkit-text-fill-color: #000000;
   caret-color: #000000;
 }
+
+@keyframes onboarding-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes onboarding-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.onboarding-step-enter {
+  animation: onboarding-step-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.onboarding-card {
+  animation: onboarding-card-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.onboarding-progress-fill {
+  transition: width 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-step-enter,
+  .onboarding-card {
+    animation: none;
+  }
+
+  .onboarding-progress-fill {
+    transition: none;
+  }
+}

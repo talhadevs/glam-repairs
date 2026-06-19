@@ -8,9 +8,21 @@ import OnboardingShell from "@/components/onboarding/OnboardingShell";
 
 import OnboardingStepContent from "@/components/onboarding/OnboardingStepContent";
 
+import ConsentStep from "@/components/onboarding/steps/ConsentStep";
+
+import PlanSelectionStep from "@/components/onboarding/steps/PlanSelectionStep";
+
+import { UploadPhotosFooter } from "@/components/onboarding/steps/UploadPhotosStep";
+
+import {
+  getFormStepProgress,
+  ONBOARDING_FORM_STEPS,
+  ONBOARDING_TOTAL_STEPS,
+} from "@/components/onboarding/onboardingConfig";
 
 
-const TOTAL_STEPS = 10;
+
+const TOTAL_STEPS = ONBOARDING_TOTAL_STEPS;
 
 
 
@@ -34,9 +46,9 @@ export async function generateMetadata({ params }: StepPageProps): Promise<Metad
 
     return {
 
-      title: "About You | GlamRepairs",
+      title: "Skin Zone Selection | GlamRepairs",
 
-      description: "Tell us about yourself to begin your skin guidance assessment.",
+      description: "Select the areas of your skin you are most concerned about.",
 
     };
 
@@ -48,9 +60,9 @@ export async function generateMetadata({ params }: StepPageProps): Promise<Metad
 
     return {
 
-      title: "Gender | GlamRepairs",
+      title: "Primary Concern | GlamRepairs",
 
-      description: "Tell us how you identify to personalize your skin guidance.",
+      description: "Select your main skin concern to personalize your guidance.",
 
     };
 
@@ -62,9 +74,107 @@ export async function generateMetadata({ params }: StepPageProps): Promise<Metad
 
     return {
 
-      title: "Age | GlamRepairs",
+      title: "Concern Duration | GlamRepairs",
 
-      description: "Share your age range to help personalize your skin guidance.",
+      description: "Tell us how long you have been dealing with your skin concern.",
+
+    };
+
+  }
+
+
+
+  if (stepNumber === 4) {
+
+    return {
+
+      title: "About You | GlamRepairs",
+
+      description: "Share a few basics to personalize your skin guidance report.",
+
+    };
+
+  }
+
+
+
+  if (stepNumber === 5) {
+
+    return {
+
+      title: "Your Current Routine | GlamRepairs",
+
+      description: "Tell us about your current skincare routine and products.",
+
+    };
+
+  }
+
+
+
+  if (stepNumber === 6) {
+
+    return {
+
+      title: "Lifestyle | GlamRepairs",
+
+      description: "Share sleep, water, stress, and diet habits that affect your skin.",
+
+    };
+
+  }
+
+
+
+  if (stepNumber === 7) {
+
+    return {
+
+      title: "Photo Guide | GlamRepairs",
+
+      description: "Learn how to take clear photos for an accurate skin assessment.",
+
+    };
+
+  }
+
+
+
+  if (stepNumber === 8) {
+
+    return {
+
+      title: "Photo Upload | GlamRepairs",
+
+      description: "Upload front face and concern area photos in clear, natural light.",
+
+    };
+
+  }
+
+
+
+  if (stepNumber === 9) {
+
+    return {
+
+      title: "Plan Selection | GlamRepairs",
+
+      description: "Choose your Clarity or Transform plan to continue your skin assessment.",
+
+    };
+
+  }
+
+
+
+  if (stepNumber === 10) {
+
+    return {
+
+      title: "Consent and Trust | GlamRepairs",
+
+      description: "Review and agree to our privacy and photo usage terms.",
 
     };
 
@@ -92,11 +202,15 @@ export default async function OnboardingStepPage({ params }: StepPageProps) {
 
 
 
-  if (!Number.isInteger(stepNumber) || stepNumber < 1 || stepNumber > TOTAL_STEPS) {
+  if (!Number.isInteger(stepNumber) || stepNumber < 1 || stepNumber > ONBOARDING_FORM_STEPS) {
 
     notFound();
 
   }
+
+
+
+  const progressStep = getFormStepProgress(stepNumber);
 
 
 
@@ -106,7 +220,7 @@ export default async function OnboardingStepPage({ params }: StepPageProps) {
 
   const nextHref =
 
-    stepNumber < TOTAL_STEPS
+    stepNumber < ONBOARDING_FORM_STEPS
 
       ? `/onboarding/step/${stepNumber + 1}`
 
@@ -114,25 +228,47 @@ export default async function OnboardingStepPage({ params }: StepPageProps) {
 
 
 
+  if (stepNumber === 9) {
+    return (
+      <PlanSelectionStep backHref={backHref} nextHref={nextHref} />
+    );
+  }
+
+  if (stepNumber === 10) {
+    return (
+      <ConsentStep backHref={backHref} nextHref="/onboarding/complete" />
+    );
+  }
+
+
+
   return (
 
     <OnboardingShell
 
-      currentStep={stepNumber}
+      currentStep={progressStep}
 
       totalSteps={TOTAL_STEPS}
 
       footer={
 
-        <OnboardingIntroNav
+        stepNumber === 8 ? (
 
-          backHref={backHref}
+          <UploadPhotosFooter backHref={backHref} nextHref={nextHref} />
 
-          nextHref={nextHref}
+        ) : (
 
-          nextLabel={stepNumber === TOTAL_STEPS ? "Finish" : "Next"}
+          <OnboardingIntroNav
 
-        />
+            backHref={backHref}
+
+            nextHref={nextHref}
+
+            nextLabel={stepNumber === TOTAL_STEPS ? "Finish" : "Next"}
+
+          />
+
+        )
 
       }
 
@@ -145,4 +281,3 @@ export default async function OnboardingStepPage({ params }: StepPageProps) {
   );
 
 }
-
