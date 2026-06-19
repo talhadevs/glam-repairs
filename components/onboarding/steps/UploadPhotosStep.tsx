@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CameraUploadIcon from "@/components/onboarding/CameraUploadIcon";
 
 const PHOTO_SLOTS = [
@@ -67,6 +67,21 @@ export default function UploadPhotosStep() {
   const [photos, setPhotos] = useState<(string | null)[]>(
     Array(PHOTO_SLOTS.length).fill(null),
   );
+  const photosRef = useRef<(string | null)[]>([]);
+
+  useEffect(() => {
+    photosRef.current = photos;
+  }, [photos]);
+
+  useEffect(() => {
+    return () => {
+      for (const photoUrl of photosRef.current) {
+        if (photoUrl) {
+          URL.revokeObjectURL(photoUrl);
+        }
+      }
+    };
+  }, []);
 
   const openFilePicker = (index: number) => {
     setActiveSlot(index);

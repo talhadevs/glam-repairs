@@ -20,176 +20,64 @@ import {
   ONBOARDING_TOTAL_STEPS,
 } from "@/components/onboarding/onboardingConfig";
 
-
-
 const TOTAL_STEPS = ONBOARDING_TOTAL_STEPS;
-
-
-
-type StepPageProps = {
-
-  params: Promise<{ step: string }>;
-
+const STEP_METADATA: Record<number, Metadata> = {
+  1: {
+    title: "Skin Zone Selection | GlamRepairs",
+    description: "Select the areas of your skin you are most concerned about.",
+  },
+  2: {
+    title: "Primary Concern | GlamRepairs",
+    description: "Select your main skin concern to personalize your guidance.",
+  },
+  3: {
+    title: "Concern Duration | GlamRepairs",
+    description: "Tell us how long you have been dealing with your skin concern.",
+  },
+  4: {
+    title: "About You | GlamRepairs",
+    description: "Share a few basics to personalize your skin guidance report.",
+  },
+  5: {
+    title: "Your Current Routine | GlamRepairs",
+    description: "Tell us about your current skincare routine and products.",
+  },
+  6: {
+    title: "Lifestyle | GlamRepairs",
+    description: "Share sleep, water, stress, and diet habits that affect your skin.",
+  },
+  7: {
+    title: "Photo Guide | GlamRepairs",
+    description: "Learn how to take clear photos for an accurate skin assessment.",
+  },
+  8: {
+    title: "Photo Upload | GlamRepairs",
+    description: "Upload front face and concern area photos in clear, natural light.",
+  },
+  9: {
+    title: "Plan Selection | GlamRepairs",
+    description: "Choose your Clarity or Transform plan to continue your skin assessment.",
+  },
+  10: {
+    title: "Consent and Trust | GlamRepairs",
+    description: "Review and agree to our privacy and photo usage terms.",
+  },
 };
 
-
+type StepPageProps = {
+  params: Promise<{ step: string }>;
+};
 
 export async function generateMetadata({ params }: StepPageProps): Promise<Metadata> {
-
   const { step } = await params;
-
   const stepNumber = Number(step);
 
-
-
-  if (stepNumber === 1) {
-
-    return {
-
-      title: "Skin Zone Selection | GlamRepairs",
-
-      description: "Select the areas of your skin you are most concerned about.",
-
-    };
-
-  }
-
-
-
-  if (stepNumber === 2) {
-
-    return {
-
-      title: "Primary Concern | GlamRepairs",
-
-      description: "Select your main skin concern to personalize your guidance.",
-
-    };
-
-  }
-
-
-
-  if (stepNumber === 3) {
-
-    return {
-
-      title: "Concern Duration | GlamRepairs",
-
-      description: "Tell us how long you have been dealing with your skin concern.",
-
-    };
-
-  }
-
-
-
-  if (stepNumber === 4) {
-
-    return {
-
-      title: "About You | GlamRepairs",
-
-      description: "Share a few basics to personalize your skin guidance report.",
-
-    };
-
-  }
-
-
-
-  if (stepNumber === 5) {
-
-    return {
-
-      title: "Your Current Routine | GlamRepairs",
-
-      description: "Tell us about your current skincare routine and products.",
-
-    };
-
-  }
-
-
-
-  if (stepNumber === 6) {
-
-    return {
-
-      title: "Lifestyle | GlamRepairs",
-
-      description: "Share sleep, water, stress, and diet habits that affect your skin.",
-
-    };
-
-  }
-
-
-
-  if (stepNumber === 7) {
-
-    return {
-
-      title: "Photo Guide | GlamRepairs",
-
-      description: "Learn how to take clear photos for an accurate skin assessment.",
-
-    };
-
-  }
-
-
-
-  if (stepNumber === 8) {
-
-    return {
-
-      title: "Photo Upload | GlamRepairs",
-
-      description: "Upload front face and concern area photos in clear, natural light.",
-
-    };
-
-  }
-
-
-
-  if (stepNumber === 9) {
-
-    return {
-
-      title: "Plan Selection | GlamRepairs",
-
-      description: "Choose your Clarity or Transform plan to continue your skin assessment.",
-
-    };
-
-  }
-
-
-
-  if (stepNumber === 10) {
-
-    return {
-
-      title: "Consent and Trust | GlamRepairs",
-
-      description: "Review and agree to our privacy and photo usage terms.",
-
-    };
-
-  }
-
-
-
-  return {
-
-    title: `Step ${stepNumber} | GlamRepairs`,
-
-    description: "Complete your personalized skin guidance assessment.",
-
-  };
-
+  return (
+    STEP_METADATA[stepNumber] ?? {
+      title: `Step ${stepNumber} | GlamRepairs`,
+      description: "Complete your personalized skin guidance assessment.",
+    }
+  );
 }
 
 

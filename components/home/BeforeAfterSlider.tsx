@@ -153,7 +153,6 @@ export default function BeforeAfterSlider({
                 alt=""
                 fill
                 draggable={false}
-                priority
                 sizes="(max-width: 1024px) 100vw, 400px"
                 className={imageClassName}
               />
