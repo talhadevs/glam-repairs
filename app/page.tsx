@@ -12,6 +12,12 @@ import PricingSection from "@/components/pricing/PricingSection";
 export default function Home() {
   return (
     <>
+      <link
+        rel="preload"
+        as="image"
+        href="/images,svgs/hero_bg.jpg"
+        fetchPriority="high"
+      />
       <Hero />
       <SkinAssessment />
       <ProblemSection />

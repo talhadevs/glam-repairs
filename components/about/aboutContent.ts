@@ -40,4 +40,4 @@ export const aboutFeatureCards = [
   },
 ];
 
-export const aboutImage = "/svgs/women...svg";
+export const aboutImage = "/images,svgs/women_porler.jpg";

@@ -1,12 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 
-const faceMapImage = "/svgs/Rectangle 3467689.svg";
-
-type SkinZone =
-  | "whole-face"
+type SkinZone =  | "whole-face"
   | "forehead"
   | "eyes"
   | "cheeks"
@@ -88,18 +84,7 @@ export default function SkinZoneSelectionStep() {
         </h1>
       </header>
 
-      <div className="mx-auto mt-6 w-[8.5rem] sm:mt-7 sm:w-[9.5rem]">
-        <Image
-          src={faceMapImage}
-          alt="Face map for selecting skin concern areas"
-          width={224}
-          height={298}
-          className="h-auto w-full"
-        />
-      </div>
-
-      <div className="mt-6 space-y-3 sm:mt-7 sm:space-y-3.5">
-        {skinZoneOptions.map((option) => (
+      <div className="mt-6 space-y-3 sm:mt-7 sm:space-y-3.5">        {skinZoneOptions.map((option) => (
           <ZoneOptionCard
             key={option.value}
             label={option.label}

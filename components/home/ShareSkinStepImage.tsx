@@ -40,7 +40,7 @@ export default function ShareSkinStepImage({ alt }: ShareSkinStepImageProps) {
   return (
     <div className="relative aspect-[433/415] w-full overflow-hidden rounded-[25px] bg-brand-light/30">
       <Image
-        src="/svgs/image22.svg"
+        src="/images,svgs/woman-hand-.jpg"
         alt={alt}
         fill
         sizes="(max-width: 1024px) 100vw, 400px"
