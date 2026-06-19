@@ -120,16 +120,16 @@ function FooterCtaSection() {
   return (
     <section className="bg-brand-cream-light">
       <div className="grid lg:grid-cols-[minmax(0,65%)_minmax(0,35%)]">
-        <div className="flex w-full flex-col justify-center py-6 pl-6 pr-6 sm:py-8 sm:pl-10 sm:pr-8 lg:py-10 lg:pl-16 lg:pr-10 xl:pl-20 xl:pr-12">
-          <h2 className="max-w-none font-serif text-[5rem] leading-none tracking-[-0.03em] text-brand-primary sm:text-[6rem] lg:text-[6.5rem]">
+        <div className="flex w-full flex-col justify-center py-6 pl-4 pr-4 sm:py-8 sm:pl-10 sm:pr-8 lg:py-10 lg:pl-16 lg:pr-10 xl:pl-20 xl:pr-12">
+          <h2 className="max-w-none font-serif text-[2.75rem] leading-none tracking-[-0.03em] text-brand-primary sm:text-[6rem] lg:text-[6.5rem]">
             <span className="block">Ready for</span>
-            <span className="block whitespace-nowrap">Healthier Skin?</span>
+            <span className="block lg:whitespace-nowrap">Healthier Skin?</span>
           </h2>
-          <p className="mt-2 max-w-4xl text-[2rem] font-light leading-tight tracking-tight text-black [word-spacing:-0.12em] sm:mt-3 sm:text-[2.25rem] lg:max-w-5xl lg:text-[2.5rem]">
+          <p className="mt-2 max-w-4xl text-lg font-light leading-tight tracking-tight text-black [word-spacing:-0.12em] sm:mt-3 sm:text-[2.25rem] lg:max-w-5xl lg:text-[2.5rem]">
             Let our skincare specialists create a treatment plan tailored to
             your needs.
           </p>
-          <SkinAssessmentCta className="mt-5 w-fit sm:mt-6" />
+          <SkinAssessmentCta className="mx-auto mt-4 block w-full max-w-xs sm:mt-6 sm:w-fit lg:mx-0 lg:max-w-none" />
         </div>
 
         <div className="relative flex min-h-[12rem] items-end justify-center overflow-hidden sm:min-h-[14rem] lg:min-h-[16rem] lg:justify-end">
@@ -153,11 +153,11 @@ export default function Footer() {
       <FooterCtaSection />
 
       <div className="bg-brand-primary-dark text-white">
-        <div className="w-full px-4 pt-20 pb-8 sm:px-5 sm:pt-24 sm:pb-9 lg:px-6 lg:pt-28 lg:pb-10">
+        <div className="w-full px-4 pt-14 pb-8 sm:px-5 sm:pt-24 sm:pb-9 lg:px-6 lg:pt-28 lg:pb-10">
           <div className="grid gap-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-5 lg:gap-5 xl:gap-6">
-            <div className="-mt-5 sm:col-span-2 sm:-mt-7 lg:col-span-1 lg:-mt-10">
-              <Logo className="-ml-5 h-20 sm:-ml-7 sm:h-24 lg:-ml-9 lg:h-28" />
-              <p className="mt-5 max-w-[16rem] text-base font-light leading-relaxed text-white/90 sm:mt-6 sm:text-lg">
+            <div className="sm:col-span-2 lg:col-span-1 lg:-mt-10">
+              <Logo className="h-16 sm:-ml-7 sm:h-24 lg:-ml-9 lg:h-28" />
+              <p className="mt-4 max-w-[16rem] text-sm font-light leading-relaxed text-white/90 sm:mt-6 sm:text-lg">
                 Download the app by clicking the link below :
               </p>
               <AppStoreBadge />

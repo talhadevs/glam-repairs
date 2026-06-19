@@ -5,9 +5,9 @@ import AnimatedSlideIn from "@/components/home/AnimatedSlideIn";
 import Button from "@/components/ui/Button";
 
 const guidanceSizeStyles = {
-  sm: "px-10 py-3.5 text-sm sm:px-12 sm:py-4 sm:text-base",
-  md: "px-10 py-3.5 text-[1.05rem] sm:px-12 sm:py-4 sm:text-[1.2rem]",
-  lg: "px-12 py-4 text-base sm:px-16 sm:py-5 sm:text-lg",
+  sm: "w-full px-8 py-3.5 text-xs tracking-[0.12em] sm:w-auto sm:px-12 sm:py-4 sm:text-base sm:tracking-[0.15em] lg:whitespace-nowrap",
+  md: "w-full px-8 py-3.5 text-sm tracking-[0.12em] sm:w-auto sm:px-12 sm:py-4 sm:text-[1.2rem] sm:tracking-[0.15em] lg:whitespace-nowrap",
+  lg: "w-full px-10 py-4 text-sm tracking-[0.12em] sm:w-auto sm:px-16 sm:py-5 sm:text-lg sm:tracking-[0.15em] lg:whitespace-nowrap",
 } as const;
 
 type GuidanceSize = keyof typeof guidanceSizeStyles;
@@ -32,9 +32,9 @@ export default function SkinAssessmentCta({
     return (
       <AnimatedSlideIn
         direction="up"
-        className={`mt-8 w-full max-w-sm sm:mt-10 sm:w-auto sm:max-w-none ${className}`.trim()}
+        className={`mx-auto mt-8 w-full max-w-sm sm:mt-10 sm:w-auto sm:max-w-none lg:mx-0 ${className}`.trim()}
       >
-        <Button variant="cta" className="w-full sm:w-auto" type={type} {...props}>
+        <Button variant="cta" className="w-full sm:w-auto lg:whitespace-nowrap" type={type} {...props}>
           {label}
         </Button>
       </AnimatedSlideIn>
@@ -56,7 +56,7 @@ export default function SkinAssessmentCta({
   return (
     <button
       type={type}
-      className={`guidance-fill-btn rounded-full border border-brand-border-light bg-white font-normal tracking-[0.15em] text-brand-light ${guidanceSizeStyles[size]} ${className}`.trim()}
+      className={`guidance-fill-btn mx-auto block rounded-full border border-brand-border-light bg-white font-normal tracking-[0.15em] text-brand-light ${guidanceSizeStyles[size]} ${className}`.trim()}
       {...props}
     >
       {label}

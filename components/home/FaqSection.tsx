@@ -44,7 +44,7 @@ type FaqAccordionItemProps = {
 
 function FaqAccordionItem({ item, isOpen, onToggle }: FaqAccordionItemProps) {
   return (
-    <div className="rounded-[20px] bg-brand-surface px-6 py-5 sm:px-7 sm:py-6">
+    <div className="rounded-[20px] bg-brand-surface px-4 py-4 sm:px-7 sm:py-6">
       <button
         type="button"
         onClick={onToggle}
@@ -100,26 +100,29 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="w-full bg-white pt-8 pb-16 sm:pt-10 sm:pb-20 lg:pt-12 lg:pb-24">
-      <div className="grid w-full gap-10 px-6 sm:gap-12 sm:px-10 lg:grid-cols-[minmax(0,36%)_minmax(0,64%)] lg:items-start lg:gap-12 lg:px-16 xl:px-20">
+    <section className="w-full bg-white pt-6 pb-12 sm:pt-10 sm:pb-20 lg:pt-12 lg:pb-24">
+      <div className="grid w-full gap-8 px-4 sm:gap-12 sm:px-10 lg:grid-cols-[minmax(0,36%)_minmax(0,64%)] lg:items-start lg:gap-12 lg:px-16 xl:px-20">
         <AnimatedSlideIn direction="left">
-          <h2 className="font-serif text-[2.5rem] leading-[1.1] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
+          <h2 className="font-serif text-[2rem] leading-[1.1] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
             Frequently Asked Question
           </h2>
         </AnimatedSlideIn>
 
-        <AnimatedSlideIn direction="right" delay={150} className="w-full min-w-0">
-          <div className="flex w-full flex-col gap-4 sm:gap-5">
-            {faqItems.map((item, index) => (
+        <div className="flex w-full min-w-0 flex-col gap-4 sm:gap-5">
+          {faqItems.map((item, index) => (
+            <AnimatedSlideIn
+              key={item.question}
+              direction="left"
+              delay={index * 120}
+            >
               <FaqAccordionItem
-                key={item.question}
                 item={item}
                 isOpen={openItems.has(index)}
                 onToggle={() => toggleItem(index)}
               />
-            ))}
-          </div>
-        </AnimatedSlideIn>
+            </AnimatedSlideIn>
+          ))}
+        </div>
       </div>
     </section>
   );

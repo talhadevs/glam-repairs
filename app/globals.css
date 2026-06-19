@@ -68,6 +68,13 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+@media (max-width: 1023px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
 .cta-fill-btn {
   position: relative;
   overflow: hidden;

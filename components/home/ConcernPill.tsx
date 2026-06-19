@@ -24,7 +24,7 @@ export default function ConcernPill({
       >
         <Image src={icon} alt="" width={22} height={22} className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
       </span>
-      <span className="flex-1 whitespace-nowrap pl-2.5 text-[13px] font-medium tracking-wide text-brand-primary sm:pl-3 sm:text-[15px]">
+      <span className="shrink-0 whitespace-nowrap pl-2.5 text-[13px] font-medium tracking-wide text-brand-primary sm:pl-3 sm:text-[15px]">
         {label}
       </span>
     </div>

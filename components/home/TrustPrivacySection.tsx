@@ -29,7 +29,7 @@ const privacyCards = [
 export default function TrustPrivacySection() {
   return (
     <section className="relative overflow-hidden bg-white px-4 sm:px-6 lg:px-12">
-      <div className="relative -mx-4 aspect-[1440/668] min-h-[22rem] w-auto sm:-mx-6 sm:min-h-[26rem] lg:-mx-12 lg:min-h-[32rem]">
+      <div className="relative -mx-4 aspect-[4/3] min-h-[16rem] w-auto sm:-mx-6 sm:aspect-[1440/668] sm:min-h-[26rem] lg:-mx-12 lg:min-h-[32rem]">
         <Image
           src="/svgs/image 576.svg"
           alt=""
@@ -40,19 +40,21 @@ export default function TrustPrivacySection() {
         />
 
         <div className="absolute inset-0 px-4 sm:px-6 lg:px-12">
-          <div className="mx-auto flex h-full max-w-7xl items-start pt-8 sm:pt-10 lg:pt-12">
+          <div className="mx-auto flex h-full max-w-7xl items-start pt-6 sm:pt-10 lg:pt-12">
             <AnimatedSlideIn
               direction="left"
-              className="-ml-2 max-w-xl sm:-ml-3 lg:-ml-5"
+              className="max-w-full sm:-ml-3 lg:-ml-5"
             >
               <header>
-                <h2 className="font-serif text-[2.5rem] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
-                  TRUST AND PRIVACY
+                <h2 className="font-serif text-[2rem] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
+                  TRUST &amp; PRIVACY
                 </h2>
-                <p className="mt-3 text-base font-light leading-relaxed tracking-tight text-brand-gray sm:mt-4 sm:text-lg lg:text-xl">
-                  &ldquo;Your photos are reviewed by one expert and never stored
-                  or shared.&rdquo; Skincare is personal. Privacy anxiety is a
-                  real conversion blocker.
+                <p className="mt-1 text-lg font-light tracking-tight text-brand-gray sm:mt-2 sm:text-2xl lg:text-[1.75rem]">
+                  Your privacy is non-negotiable.
+                </p>
+                <p className="mt-3 text-sm font-light leading-snug tracking-tighter text-brand-gray sm:mt-4 sm:text-lg lg:text-xl">
+                  You&apos;re sharing photos of your skin. We take that
+                  seriously.
                 </p>
               </header>
             </AnimatedSlideIn>
@@ -61,7 +63,7 @@ export default function TrustPrivacySection() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="-ml-3 -mt-28 flex flex-col gap-4 sm:-ml-5 sm:-mt-32 lg:-ml-10 lg:-mt-40 lg:flex-row lg:items-start lg:gap-0">
+        <div className="-mt-16 flex flex-col gap-4 sm:-ml-5 sm:-mt-32 lg:-ml-10 lg:-mt-40 lg:flex-row lg:items-start lg:gap-0">
           {privacyCards.map((card, index) => (
             <AnimatedSlideIn
               key={card.title}
@@ -75,12 +77,12 @@ export default function TrustPrivacySection() {
         </div>
       </div>
 
-      <div className="relative -mx-4 mt-10 bg-white pb-16 pt-24 sm:-mx-6 sm:mt-12 sm:pb-20 sm:pt-28 lg:-mx-12 lg:pb-24 lg:pt-32">
+      <div className="relative -mx-4 mt-8 bg-white pb-12 pt-16 sm:-mx-6 sm:mt-12 sm:pb-20 sm:pt-28 lg:-mx-12 lg:pb-24 lg:pt-32">
         <AnimatedSlideIn
           direction="up"
           className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-12"
         >
-          <h3 className="font-serif text-3xl leading-snug text-brand-primary sm:text-4xl lg:text-[2.75rem] lg:leading-[1.3]">
+          <h3 className="font-serif text-2xl leading-snug text-brand-primary sm:text-4xl lg:text-[2.75rem] lg:leading-[1.3]">
             The consultation you&apos;ve been putting off - done in 24 hours.
           </h3>
           <SkinAssessmentCta

@@ -2,11 +2,11 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variantStyles = {
   accent:
-    "rounded-full bg-brand-accent px-4 py-2 text-[10px] font-medium tracking-[0.15em] text-white sm:px-6 sm:py-2.5 sm:text-xs",
+    "rounded-full bg-brand-accent px-4 py-2 text-[10px] font-medium tracking-[0.15em] text-white sm:px-6 sm:py-2.5 sm:text-xs lg:whitespace-nowrap",
   primary:
-    "inline-flex items-center rounded-full bg-brand-primary p-1 pr-5 sm:pr-6",
+    "inline-flex items-center rounded-full bg-brand-primary p-1 pr-5 sm:pr-6 lg:whitespace-nowrap",
   cta:
-    "cta-fill-btn rounded-full bg-white/20 px-8 py-3.5 text-sm font-medium tracking-[0.15em] text-white backdrop-blur-sm sm:px-10 sm:py-4 sm:text-base",
+    "cta-fill-btn rounded-full bg-white/20 px-8 py-3.5 text-sm font-medium tracking-[0.15em] text-white backdrop-blur-sm sm:px-10 sm:py-4 sm:text-base lg:whitespace-nowrap",
 } as const;
 
 type ButtonVariant = keyof typeof variantStyles;
@@ -33,7 +33,7 @@ export default function Button({
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white">
           {icon}
         </span>
-        <span className="pl-2.5 text-xl font-normal tracking-wide text-white sm:pl-3">
+        <span className="pl-2.5 text-xl font-normal tracking-wide text-white sm:pl-3 lg:whitespace-nowrap">
           {children}
         </span>
       </button>

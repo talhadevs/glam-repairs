@@ -17,7 +17,7 @@ type ProblemCardsGroupProps = {
 
 export default function ProblemCardsGroup({ cards }: ProblemCardsGroupProps) {
   return (
-    <div className="relative z-10 mt-10 flex flex-col gap-5 sm:gap-6 lg:contents lg:mt-0">
+    <div className="relative z-10 mt-8 flex flex-col gap-4 sm:mt-10 sm:gap-6 lg:contents lg:mt-0">
       {cards.map((card, index) => (
         <AnimatedProblemCard
           key={card.title}

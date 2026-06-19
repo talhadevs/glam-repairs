@@ -162,11 +162,11 @@ export default function BeforeAfterSlider({
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-[2] flex justify-between px-7 pt-7">
-        <span className="font-serif text-[1.375rem] leading-none tracking-[0.01em] text-black">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[2] flex justify-between px-4 pt-4 sm:px-7 sm:pt-7">
+        <span className="font-serif text-lg leading-none tracking-[0.01em] text-black sm:text-[1.375rem]">
           {beforeLabel}
         </span>
-        <span className="font-serif text-[1.375rem] leading-none tracking-[0.01em] text-black">
+        <span className="font-serif text-lg leading-none tracking-[0.01em] text-black sm:text-[1.375rem]">
           {afterLabel}
         </span>
       </div>

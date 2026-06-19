@@ -33,23 +33,34 @@ const steps = [
 
 export default function WhatWeDoSection() {
   return (
-    <section className="bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-12 lg:py-24">
+    <section className="bg-white px-4 py-12 sm:px-6 sm:py-20 lg:px-12 lg:py-24">
       <div className="mx-auto max-w-7xl">
         <AnimatedSlideIn
           direction="left"
-          className="-ml-2 max-w-xl sm:-ml-3 lg:-ml-5"
+          className="max-w-3xl sm:-ml-3 lg:-ml-5"
         >
           <header>
-            <h2 className="font-serif text-[2.5rem] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
+            <h2 className="font-serif text-[2rem] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
               WHAT WE DO
             </h2>
-            <p className="mt-1.5 text-xl font-light tracking-tight text-brand-gray sm:mt-2 sm:text-2xl lg:text-[1.75rem]">
+            <p className="mt-1 text-lg font-light tracking-tight text-brand-gray sm:mt-2 sm:text-2xl lg:text-[1.75rem]">
               Real experts. Real photos. Real results.
+            </p>
+            <p className="mt-3 text-sm font-light leading-snug tracking-tighter text-brand-gray sm:mt-4 sm:text-lg lg:text-xl">
+              You fill out a detailed intake form and share photos of your skin
+              and concern areas. A certified aesthetics professional reviews
+              everything manually. You receive a personalized assessment, a
+              step-by-step routine, and follow-up support to make sure
+              it&apos;s actually working.
+            </p>
+            <p className="mt-2 text-sm font-light leading-snug tracking-tighter text-brand-gray sm:mt-3 sm:text-lg lg:text-xl">
+              This is what a clinic visit should feel like. Minus the commute,
+              the cost, and the wait.
             </p>
           </header>
         </AnimatedSlideIn>
 
-        <div className="mt-12 grid gap-12 sm:mt-14 lg:mt-16 lg:grid-cols-3 lg:gap-8 xl:gap-10">
+        <div className="mt-8 grid gap-10 sm:mt-14 lg:mt-16 lg:grid-cols-3 lg:gap-8 xl:gap-10">
           {steps.map((step, index) => (
             <AnimatedSlideIn
               key={step.number}
@@ -71,7 +82,7 @@ export default function WhatWeDoSection() {
                   </div>
                 )}
 
-                <p className="mt-6 font-serif text-5xl leading-none text-brand-light sm:mt-7 sm:text-6xl lg:text-7xl">
+                <p className="mt-5 font-serif text-4xl leading-none text-brand-light sm:mt-7 sm:text-6xl lg:text-7xl">
                   {step.number}
                 </p>
                 <h3 className="mt-3 font-serif text-2xl text-brand-primary sm:text-[1.75rem] lg:text-3xl">
