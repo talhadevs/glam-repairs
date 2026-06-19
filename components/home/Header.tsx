@@ -87,15 +87,15 @@ export default function Header({ variant = "overlay" }: HeaderProps) {
 
   return (
     <header
-      className={`z-50 px-4 sm:px-6 lg:px-12 ${
-        isSolid ? "relative" : "absolute inset-x-0 top-0"
+      className={`z-50 ${
+        isSolid ? "relative" : "absolute inset-x-0 top-0 px-4 sm:px-6 lg:px-12"
       }`}
     >
-      <div className="relative mx-auto max-w-7xl lg:hidden">
+      <div className={`relative lg:hidden ${isSolid ? "w-full bg-brand-primary" : "mx-auto max-w-7xl"}`}>
         <div
-          className={`relative z-50 grid grid-cols-[1fr_auto_1fr] items-center gap-2 ${
+          className={`relative z-50 mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-2 ${
             isSolid
-              ? "-mx-4 min-h-[3.5rem] bg-brand-primary px-4 sm:-mx-6 sm:min-h-[4rem] sm:px-6"
+              ? "min-h-[3.5rem] px-4 sm:min-h-[4rem] sm:px-6"
               : "py-3 sm:py-5"
           }`}
         >
@@ -157,36 +157,38 @@ export default function Header({ variant = "overlay" }: HeaderProps) {
       </div>
 
       <div
-        className={`mx-auto hidden max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 lg:grid ${
-          isSolid ? "h-[4.5rem] bg-brand-primary" : ""
-        }`}
+        className={`hidden w-full lg:block ${isSolid ? "bg-brand-primary" : ""}`}
       >
-        <AnimatedSlideIn
-          direction="down"
-          className="col-start-2 flex items-center justify-self-center self-center"
-        >
-          <Link href="/" aria-label="Glam Repairs home">
-            <Logo className="h-14 xl:h-[4.5rem]" />
-          </Link>
-        </AnimatedSlideIn>
-
-        <div className="col-start-3 flex items-center justify-end self-center">
-          <AnimatedSlideIn direction="right">
-            <Button variant="accent">BOOK NOW</Button>
-          </AnimatedSlideIn>
-        </div>
-
-        <AnimatedSlideIn
-          direction="left"
-          className={`col-start-1 row-start-1 flex items-center ${
-            isSolid ? "self-center" : "self-start"
+        <div
+          className={`mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6 lg:px-12 ${
+            isSolid ? "h-[4.5rem]" : ""
           }`}
         >
-          <NavLinks
-            pathname={pathname}
-            className="flex items-center justify-start gap-6 xl:gap-10"
-          />
-        </AnimatedSlideIn>
+          <AnimatedSlideIn
+            direction="down"
+            className="col-start-2 flex items-center justify-self-center self-center"
+          >
+            <Link href="/" aria-label="Glam Repairs home">
+              <Logo className="h-14 xl:h-[4.5rem]" />
+            </Link>
+          </AnimatedSlideIn>
+
+          <div className="col-start-3 flex items-center justify-end self-center">
+            <AnimatedSlideIn direction="right">
+              <Button variant="accent">BOOK NOW</Button>
+            </AnimatedSlideIn>
+          </div>
+
+          <AnimatedSlideIn
+            direction="left"
+            className="col-start-1 row-start-1 flex items-center self-start pt-3 -ml-2 xl:-ml-4"
+          >
+            <NavLinks
+              pathname={pathname}
+              className="flex items-center justify-start gap-6 xl:gap-10"
+            />
+          </AnimatedSlideIn>
+        </div>
       </div>
     </header>
   );

@@ -1,8 +1,10 @@
 "use client";
 
-import type { ButtonHTMLAttributes } from "react";
+import Link from "next/link";
+import type { ComponentProps } from "react";
 import AnimatedSlideIn from "@/components/home/AnimatedSlideIn";
-import Button from "@/components/ui/Button";
+
+const onboardingHref = "/onboarding";
 
 const guidanceSizeStyles = {
   sm: "w-full px-8 py-3.5 text-xs tracking-[0.12em] sm:w-auto sm:px-12 sm:py-4 sm:text-base sm:tracking-[0.15em] lg:whitespace-nowrap",
@@ -13,11 +15,12 @@ const guidanceSizeStyles = {
 type GuidanceSize = keyof typeof guidanceSizeStyles;
 type SkinAssessmentCtaVariant = "guidance" | "analysis" | "hero";
 
-type SkinAssessmentCtaProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type SkinAssessmentCtaProps = Omit<ComponentProps<typeof Link>, "href"> & {
   variant?: SkinAssessmentCtaVariant;
   label?: string;
   size?: GuidanceSize;
   className?: string;
+  href?: string;
 };
 
 export default function SkinAssessmentCta({
@@ -25,7 +28,7 @@ export default function SkinAssessmentCta({
   label = "GET MY SKIN ASSESSMENT",
   size = "sm",
   className = "",
-  type = "button",
+  href = onboardingHref,
   ...props
 }: SkinAssessmentCtaProps) {
   if (variant === "hero") {
@@ -34,32 +37,36 @@ export default function SkinAssessmentCta({
         direction="up"
         className={`mx-auto mt-8 w-full max-w-sm sm:mt-10 sm:w-auto sm:max-w-none lg:mx-0 ${className}`.trim()}
       >
-        <Button variant="cta" className="w-full sm:w-auto lg:whitespace-nowrap" type={type} {...props}>
+        <Link
+          href={href}
+          className="cta-fill-btn inline-block w-full rounded-full bg-white/20 px-8 py-3.5 text-center text-sm font-medium tracking-[0.15em] text-white backdrop-blur-sm sm:w-auto sm:px-10 sm:py-4 sm:text-base lg:whitespace-nowrap"
+          {...props}
+        >
           {label}
-        </Button>
+        </Link>
       </AnimatedSlideIn>
     );
   }
 
   if (variant === "analysis") {
     return (
-      <button
-        type={type}
-        className={`analysis-fill-btn cursor-pointer whitespace-nowrap rounded-full bg-white px-6 py-3 text-xs font-normal tracking-[0.15em] sm:px-8 sm:py-3.5 sm:text-sm ${className}`.trim()}
+      <Link
+        href={href}
+        className={`analysis-fill-btn inline-block cursor-pointer whitespace-nowrap rounded-full bg-white px-6 py-3 text-xs font-normal tracking-[0.15em] sm:px-8 sm:py-3.5 sm:text-sm ${className}`.trim()}
         {...props}
       >
         {label}
-      </button>
+      </Link>
     );
   }
 
   return (
-    <button
-      type={type}
-      className={`guidance-fill-btn mx-auto block rounded-full border border-brand-border-light bg-white font-normal tracking-[0.15em] text-brand-light ${guidanceSizeStyles[size]} ${className}`.trim()}
+    <Link
+      href={href}
+      className={`guidance-fill-btn mx-auto block rounded-full border border-brand-border-light bg-white text-center font-normal tracking-[0.15em] text-brand-light ${guidanceSizeStyles[size]} ${className}`.trim()}
       {...props}
     >
       {label}
-    </button>
+    </Link>
   );
 }
