@@ -100,7 +100,10 @@ export default function WhatYouGetSection() {
             className="lg:col-span-4 lg:col-start-9 lg:row-span-2 lg:row-start-1"
           >
             <article className="relative aspect-[433/610] min-h-[22rem] overflow-hidden rounded-[20px] sm:min-h-[26rem] lg:h-full lg:min-h-0">
-              <BeforeAfterSlider />
+              <BeforeAfterSlider
+                beforeSrc="/svgs/image 571.svg"
+                afterSrc="/svgs/image 571.svg"
+              />
             </article>
           </AnimatedSlideIn>
 

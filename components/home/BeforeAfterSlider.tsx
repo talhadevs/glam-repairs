@@ -24,7 +24,7 @@ const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value));
 
 const imageClassName =
-  "pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-center";
+  "pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-bottom";
 
 export default function BeforeAfterSlider({
   beforeLabel = "Before",
@@ -121,7 +121,7 @@ export default function BeforeAfterSlider({
       ref={containerRef}
       className={`relative h-full w-full overflow-hidden rounded-[20px] bg-brand-lavender ${className}`}
     >
-      <div className="absolute inset-0 origin-center scale-[0.88]">
+      <div className="absolute inset-0 origin-bottom scale-[0.94]">
         <Image
           src={beforeSrc}
           alt=""
