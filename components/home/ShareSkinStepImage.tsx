@@ -27,7 +27,7 @@ const concernLabels: {
     label: "BLACK HEADS",
     icon: "/svgs/Group 2085660670.svg",
     className: "absolute left-[34%] top-[66%] z-10",
-    pillWidthClassName: "w-[8.5rem] sm:w-[11.5rem]",
+    pillWidthClassName: "w-auto sm:w-[11.5rem]",
     delay: 500,
   },
 ];
