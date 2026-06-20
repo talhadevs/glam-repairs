@@ -16,6 +16,8 @@ export default function OurStorySection() {
               title={aboutFeatureCards[0].title}
               description={aboutFeatureCards[0].description}
               icon={aboutFeatureCards[0].icon}
+              animationDirection={aboutFeatureCards[0].animationDirection}
+              animationDelay={aboutFeatureCards[0].animationDelay}
               className={`pointer-events-auto ${aboutFeatureCards[0].className}`}
             />
           </div>
@@ -42,6 +44,8 @@ export default function OurStorySection() {
                 title={card.title}
                 description={card.description}
                 icon={card.icon}
+                animationDirection={card.animationDirection}
+                animationDelay={card.animationDelay}
               />
             ))}
           </div>
@@ -53,6 +57,8 @@ export default function OurStorySection() {
                 title={card.title}
                 description={card.description}
                 icon={card.icon}
+                animationDirection={card.animationDirection}
+                animationDelay={card.animationDelay}
                 className={`pointer-events-auto ${card.className}`}
               />
             ))}

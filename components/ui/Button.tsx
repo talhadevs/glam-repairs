@@ -2,11 +2,11 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variantStyles = {
   accent:
-    "rounded-full bg-brand-accent px-4 py-2 text-[10px] font-medium tracking-[0.15em] text-white sm:px-6 sm:py-2.5 sm:text-xs lg:whitespace-nowrap",
+    "cursor-pointer rounded-full bg-brand-accent px-4 py-2 text-[10px] font-medium tracking-[0.15em] text-white disabled:cursor-not-allowed sm:px-6 sm:py-2.5 sm:text-xs lg:whitespace-nowrap",
   primary:
-    "inline-flex items-center rounded-full bg-brand-primary p-1 pr-5 sm:pr-6 lg:whitespace-nowrap",
+    "inline-flex cursor-pointer items-center rounded-full bg-brand-primary p-1 pr-5 disabled:cursor-not-allowed sm:pr-6 lg:whitespace-nowrap",
   cta:
-    "cta-fill-btn rounded-full bg-white/20 px-8 py-3.5 text-sm font-medium tracking-[0.15em] text-white backdrop-blur-sm sm:px-10 sm:py-4 sm:text-base lg:whitespace-nowrap",
+    "cta-fill-btn cursor-pointer rounded-full bg-white/20 px-8 py-3.5 text-sm font-medium tracking-[0.15em] text-white backdrop-blur-sm disabled:cursor-not-allowed sm:px-10 sm:py-4 sm:text-base lg:whitespace-nowrap",
 } as const;
 
 type ButtonVariant = keyof typeof variantStyles;

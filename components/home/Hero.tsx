@@ -1,7 +1,10 @@
+import { preload } from "react-dom";
 import Header from "@/components/home/Header";
 import SkinAssessmentCta from "@/components/home/SkinAssessmentCta";
 
 const heroBackground = "/images,svgs/hero_bg.jpg";
+
+preload(heroBackground, { as: "image", fetchPriority: "high" });
 
 export default function Hero() {
   return (

@@ -47,7 +47,7 @@ export default function PricingCard({
         <div className="relative flex h-full min-h-[15rem] flex-col overflow-hidden rounded-[20px] px-4 pb-3 pt-3 sm:min-h-[16rem] sm:px-5 sm:pb-4 sm:pt-4 lg:min-h-0">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[20px] bg-[radial-gradient(ellipse_90%_55%_at_50%_0%,_#fff9e5_0%,_rgba(255,249,229,0.45)_42%,_transparent_68%),linear-gradient(to_top,_rgba(214,205,234,0.72)_0%,_rgba(214,205,234,0.38)_38%,_transparent_68%)]"
+            className="pointer-events-none absolute inset-0 rounded-[20px] pricing-card-gradient"
           />
 
           <div className="relative z-10 flex h-full flex-1 flex-col">
@@ -153,7 +153,7 @@ export default function PricingCard({
         ) : null}
 
         {upgradeNudge ? (
-          <div className="mx-5 rounded-[16px] border border-brand-lavender bg-[#faf8ff] px-4 py-5 sm:mx-6 sm:px-5 sm:py-6">
+          <div className="mx-5 rounded-[16px] border border-brand-lavender bg-brand-purple-tint px-4 py-5 sm:mx-6 sm:px-5 sm:py-6">
             <p className="text-sm italic leading-relaxed text-brand-gray">
               &ldquo;{upgradeNudge}&rdquo;
             </p>

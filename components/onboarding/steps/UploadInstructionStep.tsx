@@ -43,7 +43,7 @@ function PhotoExample({
       </div>
       <span
         className={`absolute bottom-0 left-1/2 z-10 flex h-7 w-7 -translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full text-white sm:h-8 sm:w-8 ${
-          badge === "wrong" ? "bg-[#ef4444]" : "bg-[#22c55e]"
+          badge === "wrong" ? "bg-brand-error" : "bg-brand-success"
         }`}
       >
         {badge === "wrong" ? (

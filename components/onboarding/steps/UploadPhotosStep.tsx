@@ -134,7 +134,7 @@ export default function UploadPhotosStep() {
               type="button"
               onClick={() => openFilePicker(index)}
               aria-label={slot.label ? `Upload ${slot.label} photo` : `Upload photo ${index + 1}`}
-              className="relative aspect-[3/4] overflow-hidden rounded-[1.1rem] bg-[#ececec] transition-opacity hover:opacity-95"
+              className="relative aspect-[3/4] overflow-hidden rounded-[1.1rem] bg-brand-surface-muted transition-opacity hover:opacity-95"
             >
               {photos[index] ? (
                 <Image

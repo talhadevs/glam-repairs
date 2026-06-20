@@ -11,7 +11,7 @@ function CheckIcon() {
     <svg
       aria-hidden
       viewBox="0 0 16 12"
-      className="mx-auto h-3 w-4 text-[#22c55e]"
+      className="mx-auto h-3 w-4 text-brand-success"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

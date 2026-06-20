@@ -15,7 +15,7 @@ const nextSteps = [
 
 function SuccessIcon() {
   return (
-    <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-[3px] border-[#22c55e] text-[#22c55e] sm:h-[4.5rem] sm:w-[4.5rem]">
+    <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-[3px] border-brand-success text-brand-success sm:h-[4.5rem] sm:w-[4.5rem]">
       <svg
         aria-hidden
         viewBox="0 0 24 24"

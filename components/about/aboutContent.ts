@@ -21,6 +21,8 @@ export const aboutFeatureCards = [
     title: "Easy & Trusted",
     description: "Clear guidance you can rely on.",
     icon: "/svgs/Group 2085660866.svg",
+    animationDirection: "left" as const,
+    animationDelay: 0,
     className:
       "lg:absolute lg:-left-12 lg:top-[6%] lg:max-w-[15rem] xl:-left-16 xl:max-w-[16rem]",
   },
@@ -28,6 +30,8 @@ export const aboutFeatureCards = [
     title: "Personalized",
     description: "Tailored to your unique skin concerns.",
     icon: "/svgs/Group 2085660871.svg",
+    animationDirection: "right" as const,
+    animationDelay: 150,
     className:
       "lg:absolute lg:left-[56%] lg:top-[2%] lg:max-w-[15rem] xl:left-[60%] xl:max-w-[16rem]",
   },
@@ -35,6 +39,8 @@ export const aboutFeatureCards = [
     title: "Expert Reviewed",
     description: "Dermatologist-backed recommendations.",
     icon: "/svgs/Group 2085660878.svg",
+    animationDirection: "up" as const,
+    animationDelay: 300,
     className:
       "lg:absolute lg:bottom-[10%] lg:right-0 lg:max-w-[15rem] xl:max-w-[16rem]",
   },

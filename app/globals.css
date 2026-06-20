@@ -23,6 +23,15 @@
   --brand-surface: #f5f5f5;
   --brand-surface-alt: #fcfbfd;
   --brand-border-light: #e8e8e8;
+
+  /* Semantic colors */
+  --brand-success: #22c55e;
+  --brand-success-strong: #16a34a;
+  --brand-error: #ef4444;
+  --brand-error-strong: #dc2626;
+  --brand-info: #7eb8ff;
+  --brand-surface-muted: #ececec;
+  --brand-purple-tint: #faf8ff;
 }
 
 @theme inline {
@@ -46,6 +55,13 @@
   --color-brand-surface: var(--brand-surface);
   --color-brand-surface-alt: var(--brand-surface-alt);
   --color-brand-border-light: var(--brand-border-light);
+  --color-brand-success: var(--brand-success);
+  --color-brand-success-strong: var(--brand-success-strong);
+  --color-brand-error: var(--brand-error);
+  --color-brand-error-strong: var(--brand-error-strong);
+  --color-brand-info: var(--brand-info);
+  --color-brand-surface-muted: var(--brand-surface-muted);
+  --color-brand-purple-tint: var(--brand-purple-tint);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-playfair);
@@ -66,6 +82,19 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+@layer base {
+  button:not(:disabled),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
 }
 
 @media (max-width: 1023px) {
@@ -136,6 +165,7 @@ body {
   position: relative;
   overflow: hidden;
   z-index: 1;
+  cursor: pointer;
 }
 
 .cta-fill-btn::before {
@@ -164,6 +194,7 @@ body {
   position: relative;
   overflow: hidden;
   z-index: 1;
+  cursor: pointer;
   transition: color 0.5s ease, border-color 0.5s ease;
 }
 
@@ -196,6 +227,7 @@ body {
   overflow: hidden;
   isolation: isolate;
   z-index: 1;
+  cursor: pointer;
   color: var(--brand-light) !important;
   transition: color 0.5s ease;
 }
@@ -228,6 +260,7 @@ body {
   overflow: hidden;
   isolation: isolate;
   z-index: 1;
+  cursor: pointer;
   transition: background-color 0.5s ease;
 }
 
@@ -253,6 +286,30 @@ body {
   background-color: transparent !important;
 }
 
+.subscribe-fill-btn.is-incomplete:hover::before {
+  width: 0;
+}
+
+.subscribe-fill-btn.is-incomplete:hover {
+  background-color: var(--brand-light) !important;
+}
+
+.pricing-card-gradient {
+  background:
+    radial-gradient(
+      ellipse 90% 55% at 50% 0%,
+      var(--brand-cream-light) 0%,
+      color-mix(in srgb, var(--brand-cream-light) 45%, transparent) 42%,
+      transparent 68%
+    ),
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--brand-lavender) 72%, transparent) 0%,
+      color-mix(in srgb, var(--brand-lavender) 38%, transparent) 38%,
+      transparent 68%
+    );
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -262,19 +319,19 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
-  box-shadow: 0 0 0 1000px #ffffff inset;
-  -webkit-text-fill-color: #000000;
-  caret-color: #000000;
+  -webkit-box-shadow: 0 0 0 1000px var(--background) inset;
+  box-shadow: 0 0 0 1000px var(--background) inset;
+  -webkit-text-fill-color: var(--foreground);
+  caret-color: var(--foreground);
   transition: background-color 9999s ease-out 0s;
 }
 
 input:autofill,
 textarea:autofill,
 select:autofill {
-  box-shadow: 0 0 0 1000px #ffffff inset;
-  -webkit-text-fill-color: #000000;
-  caret-color: #000000;
+  box-shadow: 0 0 0 1000px var(--background) inset;
+  -webkit-text-fill-color: var(--foreground);
+  caret-color: var(--foreground);
 }
 
 @keyframes onboarding-step-in {
@@ -322,4 +379,26 @@ select:autofill {
   .onboarding-progress-fill {
     transition: none;
   }
+
+  .notification-toast {
+    transition: none;
+  }
+}
+
+.notification-toast {
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.notification-toast--enter,
+.notification-toast--exit {
+  transform: translateX(calc(100% + 1.5rem));
+  opacity: 0;
+}
+
+.notification-toast--visible {
+  transform: translateX(0);
+  opacity: 1;
 }

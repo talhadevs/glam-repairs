@@ -18,14 +18,14 @@ export default function OnboardingNav({
   isNextDisabled = false,
 }: OnboardingNavProps) {
   const nextClasses =
-    "text-sm font-medium text-brand-primary transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40";
+    "cursor-pointer text-sm font-medium text-brand-primary transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40";
 
   return (
     <div className="flex items-center justify-between gap-4">
       {backHref ? (
         <Link
           href={backHref}
-          className="text-sm font-medium text-brand-gray transition-opacity hover:opacity-80"
+          className="cursor-pointer text-sm font-medium text-brand-gray transition-opacity hover:opacity-80"
         >
           {backLabel}
         </Link>

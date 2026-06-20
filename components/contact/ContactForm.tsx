@@ -1,41 +1,60 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
+import {
+  contactFieldIds,
+  contactGridFields,
+  contactMessageField,
+} from "@/components/contact/contactFormFields";
 import FillButton from "@/components/ui/FillButton";
+import FormField from "@/components/ui/FormField";
+import Notification from "@/components/ui/Notification";
+import TextArea from "@/components/ui/TextArea";
+import TextInput from "@/components/ui/TextInput";
 import {
   buildContactFormPayload,
   submitContactForm,
 } from "@/lib/contact/submitContactForm";
-import type { ContactFormPayload } from "@/types/contact";
-
-const inputClassName =
-  "w-full rounded-xl border border-brand-border-light bg-white px-4 py-3 text-sm text-black outline-none transition-colors placeholder:text-brand-gray/50 focus:border-brand-light sm:text-[15px]";
-
-const labelClassName = "mb-2 block text-sm text-brand-gray sm:text-[15px]";
+import {
+  CONTACT_FORM_ERRORS,
+  getFirstInvalidContactField,
+  getRequiredFieldError,
+  isContactFormComplete,
+  validateContactForm,
+  type ContactField,
+} from "@/lib/contact/validateContactForm";
 
 type SubmitState =
   | { type: "idle" }
-  | { type: "success"; message: string }
   | { type: "error"; message: string };
 
-type ContactField = keyof ContactFormPayload;
+const SUCCESS_MESSAGE = "Form submitted successfully.";
 
-const requiredFields: ContactField[] = [
-  "firstName",
-  "lastName",
-  "company",
-  "workEmail",
-  "phone",
-  "country",
-  "message",
-];
+function focusField(field: ContactField) {
+  document.getElementById(contactFieldIds[field])?.focus();
+}
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitState, setSubmitState] = useState<SubmitState>({ type: "idle" });
+  const [successNotificationId, setSuccessNotificationId] = useState<number | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<ContactField, string>>>(
     {},
   );
+  const [isFormComplete, setIsFormComplete] = useState(false);
+
+  const dismissSuccessNotification = useCallback(() => {
+    setSuccessNotificationId(null);
+  }, []);
+
+  const updateFormCompleteState = (form: HTMLFormElement) => {
+    const payload = buildContactFormPayload(new FormData(form));
+    setIsFormComplete(isContactFormComplete(payload));
+  };
+
+  const handleFormChange = (event: FormEvent<HTMLFormElement>) => {
+    updateFormCompleteState(event.currentTarget);
+  };
 
   const clearFieldError = (field: ContactField) => {
     setFieldErrors((current) => {
@@ -49,35 +68,22 @@ export default function ContactForm() {
     });
   };
 
-  const validatePayload = (payload: ContactFormPayload) => {
-    const errors: Partial<Record<ContactField, string>> = {};
-
-    for (const field of requiredFields) {
-      if (!payload[field]) {
-        errors[field] = "This field is required.";
-      }
-    }
-
-    if (payload.workEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.workEmail)) {
-      errors.workEmail = "Please enter a valid email address.";
-    }
-
-    return errors;
-  };
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
     const payload = buildContactFormPayload(new FormData(form));
-    const validationErrors = validatePayload(payload);
+    const validationErrors = validateContactForm(payload);
 
     if (Object.keys(validationErrors).length > 0) {
       setFieldErrors(validationErrors);
-      setSubmitState({
-        type: "error",
-        message: "Please fill all required fields.",
-      });
+      setSubmitState({ type: "idle" });
+
+      const firstInvalidField = getFirstInvalidContactField(validationErrors);
+      if (firstInvalidField) {
+        focusField(firstInvalidField);
+      }
+
       return;
     }
 
@@ -89,19 +95,18 @@ export default function ContactForm() {
       const result = await submitContactForm(payload);
 
       if (result.ok) {
-        setSubmitState({
-          type: "success",
-          message: "Form submitted successfully.",
-        });
         form.reset();
+        setIsFormComplete(false);
+        setSuccessNotificationId(Date.now());
         return;
       }
 
       if (result.reason === "validation") {
-        setSubmitState({
-          type: "error",
-          message: "Please add a valid work email and a short message.",
+        setFieldErrors({
+          workEmail: CONTACT_FORM_ERRORS.invalidEmail,
+          message: getRequiredFieldError("message"),
         });
+        focusField("workEmail");
         return;
       }
 
@@ -120,161 +125,62 @@ export default function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex h-full flex-col">
+    <>
+      <Notification
+        key={successNotificationId ?? "closed"}
+        isOpen={successNotificationId !== null}
+        message={SUCCESS_MESSAGE}
+        onDismiss={dismissSuccessNotification}
+        duration={4000}
+        variant="success"
+      />
+
+      <form
+        onSubmit={handleSubmit}
+        onChange={handleFormChange}
+        onInput={handleFormChange}
+        noValidate
+        className="flex h-full flex-col"
+      >
       <div className="grid gap-5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-5">
-        <div>
-          <label htmlFor="first-name" className={labelClassName}>
-            First name
-          </label>
-          <input
-            id="first-name"
-            name="firstName"
-            type="text"
-            autoComplete="given-name"
+        {contactGridFields.map((field) => (
+          <FormField
+            key={field.name}
+            id={field.id}
+            label={field.label}
+            error={fieldErrors[field.name]}
             required
-            aria-invalid={Boolean(fieldErrors.firstName)}
-            aria-describedby={fieldErrors.firstName ? "first-name-error" : undefined}
-            onChange={() => clearFieldError("firstName")}
-            className={inputClassName}
-          />
-          {fieldErrors.firstName ? (
-            <p id="first-name-error" className="mt-1 text-xs text-red-600 sm:text-sm">
-              {fieldErrors.firstName}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="last-name" className={labelClassName}>
-            Last name
-          </label>
-          <input
-            id="last-name"
-            name="lastName"
-            type="text"
-            autoComplete="family-name"
-            required
-            aria-invalid={Boolean(fieldErrors.lastName)}
-            aria-describedby={fieldErrors.lastName ? "last-name-error" : undefined}
-            onChange={() => clearFieldError("lastName")}
-            className={inputClassName}
-          />
-          {fieldErrors.lastName ? (
-            <p id="last-name-error" className="mt-1 text-xs text-red-600 sm:text-sm">
-              {fieldErrors.lastName}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="company" className={labelClassName}>
-            Company
-          </label>
-          <input
-            id="company"
-            name="company"
-            type="text"
-            autoComplete="organization"
-            required
-            aria-invalid={Boolean(fieldErrors.company)}
-            aria-describedby={fieldErrors.company ? "company-error" : undefined}
-            onChange={() => clearFieldError("company")}
-            className={inputClassName}
-          />
-          {fieldErrors.company ? (
-            <p id="company-error" className="mt-1 text-xs text-red-600 sm:text-sm">
-              {fieldErrors.company}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="work-email" className={labelClassName}>
-            Work email
-          </label>
-          <input
-            id="work-email"
-            name="workEmail"
-            type="email"
-            autoComplete="email"
-            required
-            aria-invalid={Boolean(fieldErrors.workEmail)}
-            aria-describedby={fieldErrors.workEmail ? "work-email-error" : undefined}
-            onChange={() => clearFieldError("workEmail")}
-            className={inputClassName}
-          />
-          {fieldErrors.workEmail ? (
-            <p id="work-email-error" className="mt-1 text-xs text-red-600 sm:text-sm">
-              {fieldErrors.workEmail}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="phone" className={labelClassName}>
-            Phone
-          </label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            required
-            aria-invalid={Boolean(fieldErrors.phone)}
-            aria-describedby={fieldErrors.phone ? "phone-error" : undefined}
-            onChange={() => clearFieldError("phone")}
-            className={inputClassName}
-          />
-          {fieldErrors.phone ? (
-            <p id="phone-error" className="mt-1 text-xs text-red-600 sm:text-sm">
-              {fieldErrors.phone}
-            </p>
-          ) : null}
-        </div>
-
-        <div>
-          <label htmlFor="country" className={labelClassName}>
-            Country
-          </label>
-          <input
-            id="country"
-            name="country"
-            type="text"
-            autoComplete="country-name"
-            required
-            aria-invalid={Boolean(fieldErrors.country)}
-            aria-describedby={fieldErrors.country ? "country-error" : undefined}
-            onChange={() => clearFieldError("country")}
-            className={inputClassName}
-          />
-          {fieldErrors.country ? (
-            <p id="country-error" className="mt-1 text-xs text-red-600 sm:text-sm">
-              {fieldErrors.country}
-            </p>
-          ) : null}
-        </div>
+          >
+            <TextInput
+              id={field.id}
+              name={field.name}
+              type={field.type}
+              autoComplete={field.autoComplete}
+              hasError={Boolean(fieldErrors[field.name])}
+              required
+              onChange={() => clearFieldError(field.name)}
+            />
+          </FormField>
+        ))}
       </div>
 
-      <div className="mt-5">
-        <label htmlFor="message" className={labelClassName}>
-          Message
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          rows={6}
+      <FormField
+        id={contactMessageField.id}
+        label={contactMessageField.label}
+        error={fieldErrors.message}
+        required
+        className="mt-5"
+      >
+        <TextArea
+          id={contactMessageField.id}
+          name={contactMessageField.name}
+          rows={contactMessageField.rows}
+          hasError={Boolean(fieldErrors.message)}
           required
-          aria-invalid={Boolean(fieldErrors.message)}
-          aria-describedby={fieldErrors.message ? "message-error" : undefined}
+          className="min-h-[9rem] resize-y"
           onChange={() => clearFieldError("message")}
-          className={`${inputClassName} min-h-[9rem] resize-y`}
         />
-        {fieldErrors.message ? (
-          <p id="message-error" className="mt-1 text-xs text-red-600 sm:text-sm">
-            {fieldErrors.message}
-          </p>
-        ) : null}
-      </div>
+      </FormField>
 
       <div className="mt-5 flex justify-end pt-4 sm:pt-5">
         <FillButton
@@ -282,19 +188,13 @@ export default function ContactForm() {
           variant="subscribe"
           disabled={isSubmitting}
           aria-disabled={isSubmitting}
-          className="px-8 py-3.5 text-sm sm:px-10 sm:py-4 sm:text-base"
+          className={`px-8 py-3.5 text-sm sm:px-10 sm:py-4 sm:text-base${isFormComplete && !isSubmitting ? "" : " is-incomplete"}`}
         >
           {isSubmitting ? "Sending..." : "Get in touch"}
         </FillButton>
       </div>
 
       <div className="mt-3 min-h-[1.25rem] text-right">
-        {submitState.type === "success" ? (
-          <p role="status" aria-live="polite" className="text-xs text-green-600 sm:text-sm">
-            {submitState.message}
-          </p>
-        ) : null}
-
         {submitState.type === "error" ? (
           <p role="alert" className="text-xs text-brand-ink sm:text-sm">
             {submitState.message}
@@ -302,5 +202,6 @@ export default function ContactForm() {
         ) : null}
       </div>
     </form>
+    </>
   );
 }
