@@ -132,23 +132,6 @@ export default function ImproveAreasStep() {
         </div>
 
         <div className="relative flex flex-col justify-center space-y-2 sm:space-y-2.5">
-          {selectedArea === "whole-face" ? (
-            <svg
-              aria-hidden
-              className="pointer-events-none absolute -left-7 top-1/2 hidden h-[72%] w-7 -translate-y-1/2 sm:block"
-              viewBox="0 0 28 220"
-              fill="none"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M26 18 C 14 28, 10 72, 8 118 C 6 154, 4 188, 2 214"
-                stroke="#662D91"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          ) : null}
-
           {areaOptions.map((option) => (
             <AreaOptionCard
               key={option.value}
