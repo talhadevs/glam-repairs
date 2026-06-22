@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { useIntersectionAnimation } from "@/lib/hooks/useIntersectionAnimation";
 
 type AnimatedSlideInProps = {
   children: ReactNode;
@@ -24,30 +25,8 @@ export default function AnimatedSlideIn({
   className = "",
   threshold = 0,
 }: AnimatedSlideInProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  const [ref, inView] = useIntersectionAnimation({ threshold });
   const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => setInView(true));
-          });
-        } else {
-          setInView(false);
-        }
-      },
-      { threshold },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [threshold]);
 
   useEffect(() => {
     if (!inView) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useIntersectionAnimation } from "@/lib/hooks/useIntersectionAnimation";
 
 const AREA_CLIP_ID = "skin-wellness-area-clip";
 const AREA_FILL_ID = "skin-wellness-area-fill";
@@ -71,35 +72,13 @@ function setPathHidden(path: SVGPathElement, length: number) {
 }
 
 export default function SkinWellnessChart() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const clipRectRef = useRef<SVGRectElement>(null);
   const averageLineRef = useRef<SVGPathElement>(null);
   const glamLineRef = useRef<SVGPathElement>(null);
-  const [inView, setInView] = useState(false);
+  const [containerRef, inView] = useIntersectionAnimation({ threshold: 0.35 });
   const [visible, setVisible] = useState(false);
   const [legendVisible, setLegendVisible] = useState(false);
   const [glamDashed, setGlamDashed] = useState(false);
-
-  useEffect(() => {
-    const element = containerRef.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => setInView(true));
-          });
-        } else {
-          setInView(false);
-        }
-      },
-      { threshold: 0.35 },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (!inView) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useIntersectionAnimation } from "@/lib/hooks/useIntersectionAnimation";
 
 const VIEWBOX_WIDTH = 328;
 const VIEWBOX_HEIGHT = 196;
@@ -67,29 +67,7 @@ function roundedTopBarPath(x: number, y: number, width: number, height: number, 
 }
 
 export default function SkinImprovementChart() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const element = containerRef.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => setVisible(true));
-          });
-        } else {
-          setVisible(false);
-        }
-      },
-      { threshold: 0.35 },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
+  const [containerRef, visible] = useIntersectionAnimation({ threshold: 0.35 });
 
   return (
     <div ref={containerRef} className="mx-auto w-full max-w-[22rem] sm:max-w-[24rem]">
