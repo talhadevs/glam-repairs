@@ -24,6 +24,7 @@ import PdrnInfoStep from "@/components/booking/steps/PdrnInfoStep";
 import PdrnStep from "@/components/booking/steps/PdrnStep";
 import ProfileReadyStep from "@/components/booking/steps/ProfileReadyStep";
 import RetinolVitaminCStep from "@/components/booking/steps/RetinolVitaminCStep";
+import SkinConditionWorseningStep from "@/components/booking/steps/SkinConditionWorseningStep";
 import SkincareJourneyFeelStep from "@/components/booking/steps/SkincareJourneyFeelStep";
 import SkinImprovementStep from "@/components/booking/steps/SkinImprovementStep";
 import SkinSensitivityStep from "@/components/booking/steps/SkinSensitivityStep";
@@ -31,6 +32,7 @@ import SleepStep from "@/components/booking/steps/SleepStep";
 import SkincareRoutineTimeStep from "@/components/booking/steps/SkincareRoutineTimeStep";
 import SkincareProductsStep from "@/components/booking/steps/SkincareProductsStep";
 import SocialMediaStep from "@/components/booking/steps/SocialMediaStep";
+import StatementAgreementStep from "@/components/booking/steps/StatementAgreementStep";
 import SkinProfileStep from "@/components/booking/steps/SkinProfileStep";
 import SkinToneStep from "@/components/booking/steps/SkinToneStep";
 import SkinTypeStep from "@/components/booking/steps/SkinTypeStep";
@@ -40,6 +42,7 @@ import SulfatesStep from "@/components/booking/steps/SulfatesStep";
 import TreatmentFitStep from "@/components/booking/steps/TreatmentFitStep";
 import TreatmentProgramFitStep from "@/components/booking/steps/TreatmentProgramFitStep";
 import WaterIntakeStep from "@/components/booking/steps/WaterIntakeStep";
+import WithGlamGoalsStep from "@/components/booking/steps/WithGlamGoalsStep";
 
 type BookingStepContentProps = {
   stepNumber: number;
@@ -131,6 +134,30 @@ export default function BookingStepContent({ stepNumber }: BookingStepContentPro
       return <FeelGreatSkinGoalsStep />;
     case 42:
       return <SkincareJourneyFeelStep />;
+    case 43:
+      return <WithGlamGoalsStep />;
+    case 44:
+      return (
+        <StatementAgreementStep statement="Finding skincare products that suit me is challenging" />
+      );
+    case 45:
+      return (
+        <StatementAgreementStep statement="I often consider the price of skincare products" />
+      );
+    case 46:
+      return (
+        <StatementAgreementStep statement="Brand loyalty matters to me" />
+      );
+    case 47:
+      return (
+        <StatementAgreementStep statement="Occasionally, I purchase products due to the hype" />
+      );
+    case 48:
+      return (
+        <StatementAgreementStep statement="I'm not always sure if I'm applying my skincare products correctly" />
+      );
+    case 49:
+      return <SkinConditionWorseningStep />;
     default:
       return (
         <div>

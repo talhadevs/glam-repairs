@@ -179,6 +179,34 @@ const STEP_METADATA: Record<number, Metadata> = {
     title: "Skincare Journey Feelings | GlamRepairs Booking",
     description: "Select how you want to feel during your glam skincare journey.",
   },
+  43: {
+    title: "Glam Goals | GlamRepairs Booking",
+    description: "Select what you would like to achieve with glam.",
+  },
+  44: {
+    title: "Statement Agreement | GlamRepairs Booking",
+    description: "Rate how much you relate to a statement about finding skincare products.",
+  },
+  45: {
+    title: "Statement Agreement | GlamRepairs Booking",
+    description: "Rate how much you relate to a statement about skincare product pricing.",
+  },
+  46: {
+    title: "Statement Agreement | GlamRepairs Booking",
+    description: "Rate how much you relate to a statement about brand loyalty.",
+  },
+  47: {
+    title: "Statement Agreement | GlamRepairs Booking",
+    description: "Rate how much you relate to a statement about purchasing products due to hype.",
+  },
+  48: {
+    title: "Statement Agreement | GlamRepairs Booking",
+    description: "Rate how much you relate to a statement about applying skincare products correctly.",
+  },
+  49: {
+    title: "Skin Condition Trend | GlamRepairs Booking",
+    description: "See how skin condition can worsen without glam and start improving your routine.",
+  },
 };
 
 type StepPageProps = {
@@ -210,7 +238,11 @@ export default async function BookingStepPage({ params }: StepPageProps) {
   const nextHref =
     stepNumber < BOOKING_FORM_STEPS ? `/booking/step/${stepNumber + 1}` : "/";
   const nextLabel =
-    stepNumber === 3 || stepNumber === 26 || stepNumber === 33 || stepNumber === 39
+    stepNumber === 3 ||
+    stepNumber === 26 ||
+    stepNumber === 33 ||
+    stepNumber === 39 ||
+    stepNumber === 49
       ? "Let's make it 100%"
       : stepNumber === BOOKING_FORM_STEPS
         ? "Finish"
