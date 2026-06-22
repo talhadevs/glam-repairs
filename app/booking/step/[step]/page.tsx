@@ -123,6 +123,50 @@ const STEP_METADATA: Record<number, Metadata> = {
     title: "Cosmetologists | GlamRepairs Booking",
     description: "Learn how Glam repair was created in collaboration with cosmetologists.",
   },
+  29: {
+    title: "Additional Concerns | GlamRepairs Booking",
+    description: "Select any additional skin concerns to personalize your treatment program.",
+  },
+  30: {
+    title: "Moisturized Skin | GlamRepairs Booking",
+    description: "Tell us whether you think your skin is well moisturized.",
+  },
+  31: {
+    title: "Daytime Skin Concerns | GlamRepairs Booking",
+    description: "Select what bothers your skin during the day.",
+  },
+  32: {
+    title: "Skin Sensitivity | GlamRepairs Booking",
+    description: "Tell us whether you feel your skin is sensitive.",
+  },
+  33: {
+    title: "Skin Improvement | GlamRepairs Booking",
+    description: "See how your treatment program fits your hydration, sensitivity, and goals.",
+  },
+  34: {
+    title: "Sleep Habits | GlamRepairs Booking",
+    description: "Tell us how much sleep you usually get.",
+  },
+  35: {
+    title: "Water Intake | GlamRepairs Booking",
+    description: "Tell us about your daily water intake.",
+  },
+  36: {
+    title: "Stress Levels | GlamRepairs Booking",
+    description: "Tell us how often you feel stressed and tense.",
+  },
+  37: {
+    title: "Skincare Routine Time | GlamRepairs Booking",
+    description: "Tell us how much time you spend on your daily skin care routine.",
+  },
+  38: {
+    title: "Profile Ready | GlamRepairs Booking",
+    description: "Review your personalized skin profile summary.",
+  },
+  39: {
+    title: "Treatment Program Fit | GlamRepairs Booking",
+    description: "See how well your treatment program fits your skin goals.",
+  },
 };
 
 type StepPageProps = {
@@ -154,7 +198,7 @@ export default async function BookingStepPage({ params }: StepPageProps) {
   const nextHref =
     stepNumber < BOOKING_FORM_STEPS ? `/booking/step/${stepNumber + 1}` : "/";
   const nextLabel =
-    stepNumber === 3 || stepNumber === 26
+    stepNumber === 3 || stepNumber === 26 || stepNumber === 33 || stepNumber === 39
       ? "Let's make it 100%"
       : stepNumber === BOOKING_FORM_STEPS
         ? "Finish"

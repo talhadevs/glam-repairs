@@ -1,9 +1,11 @@
 import AcidsStep from "@/components/booking/steps/AcidsStep";
+import AdditionalConcernsStep from "@/components/booking/steps/AdditionalConcernsStep";
 import AddExosomesStep from "@/components/booking/steps/AddExosomesStep";
 import AddPdrnStep from "@/components/booking/steps/AddPdrnStep";
 import CosmetologistsStep from "@/components/booking/steps/CosmetologistsStep";
 import AntioxidantsStep from "@/components/booking/steps/AntioxidantsStep";
 import DailyRoutineStep from "@/components/booking/steps/DailyRoutineStep";
+import DaytimeSkinBothersStep from "@/components/booking/steps/DaytimeSkinBothersStep";
 import ExosomesInfoStep from "@/components/booking/steps/ExosomesInfoStep";
 import ExosomesStep from "@/components/booking/steps/ExosomesStep";
 import ImproveAreasStep from "@/components/booking/steps/ImproveAreasStep";
@@ -14,18 +16,27 @@ import KoreanIngredientsStep from "@/components/booking/steps/KoreanIngredientsS
 import KoreanRoutineStepsStep from "@/components/booking/steps/KoreanRoutineStepsStep";
 import KoreanSkincareProductsStep from "@/components/booking/steps/KoreanSkincareProductsStep";
 import LocationStep from "@/components/booking/steps/LocationStep";
+import MoisturizedStep from "@/components/booking/steps/MoisturizedStep";
 import NotAloneStep from "@/components/booking/steps/NotAloneStep";
 import PdrnInfoStep from "@/components/booking/steps/PdrnInfoStep";
 import PdrnStep from "@/components/booking/steps/PdrnStep";
+import ProfileReadyStep from "@/components/booking/steps/ProfileReadyStep";
 import RetinolVitaminCStep from "@/components/booking/steps/RetinolVitaminCStep";
+import SkinImprovementStep from "@/components/booking/steps/SkinImprovementStep";
+import SkinSensitivityStep from "@/components/booking/steps/SkinSensitivityStep";
+import SleepStep from "@/components/booking/steps/SleepStep";
+import SkincareRoutineTimeStep from "@/components/booking/steps/SkincareRoutineTimeStep";
 import SkincareProductsStep from "@/components/booking/steps/SkincareProductsStep";
 import SocialMediaStep from "@/components/booking/steps/SocialMediaStep";
 import SkinProfileStep from "@/components/booking/steps/SkinProfileStep";
 import SkinToneStep from "@/components/booking/steps/SkinToneStep";
 import SkinTypeStep from "@/components/booking/steps/SkinTypeStep";
 import SunscreenStep from "@/components/booking/steps/SunscreenStep";
+import StressStep from "@/components/booking/steps/StressStep";
 import SulfatesStep from "@/components/booking/steps/SulfatesStep";
 import TreatmentFitStep from "@/components/booking/steps/TreatmentFitStep";
+import TreatmentProgramFitStep from "@/components/booking/steps/TreatmentProgramFitStep";
+import WaterIntakeStep from "@/components/booking/steps/WaterIntakeStep";
 
 type BookingStepContentProps = {
   stepNumber: number;
@@ -89,6 +100,28 @@ export default function BookingStepContent({ stepNumber }: BookingStepContentPro
       return <SocialMediaStep />;
     case 28:
       return <CosmetologistsStep />;
+    case 29:
+      return <AdditionalConcernsStep />;
+    case 30:
+      return <MoisturizedStep />;
+    case 31:
+      return <DaytimeSkinBothersStep />;
+    case 32:
+      return <SkinSensitivityStep />;
+    case 33:
+      return <SkinImprovementStep />;
+    case 34:
+      return <SleepStep />;
+    case 35:
+      return <WaterIntakeStep />;
+    case 36:
+      return <StressStep />;
+    case 37:
+      return <SkincareRoutineTimeStep />;
+    case 38:
+      return <ProfileReadyStep />;
+    case 39:
+      return <TreatmentProgramFitStep />;
     default:
       return (
         <div>
