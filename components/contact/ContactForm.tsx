@@ -182,7 +182,7 @@ export default function ContactForm() {
         />
       </FormField>
 
-      <div className="mt-5 flex justify-end pt-4 sm:pt-5">
+      <div className="mt-5 flex justify-start pt-4 sm:pt-5">
         <FillButton
           type="submit"
           variant="subscribe"
@@ -194,7 +194,7 @@ export default function ContactForm() {
         </FillButton>
       </div>
 
-      <div className="mt-3 min-h-[1.25rem] text-right">
+      <div className="mt-3 min-h-[1.25rem] text-left">
         {submitState.type === "error" ? (
           <p role="alert" className="text-xs text-brand-ink sm:text-sm">
             {submitState.message}

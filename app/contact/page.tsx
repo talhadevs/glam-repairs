@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import ContactHeroSection from "@/components/contact/ContactHeroSection";
 import ContactSection from "@/components/contact/ContactSection";
 import FaqSection from "@/components/home/FaqSection";
 import Footer from "@/components/home/Footer";
-import Header from "@/components/home/Header";
 
 export const metadata: Metadata = {
   title: "Contact Us | GlamRepairs",
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <Header variant="solid" />
       <main>
+        <ContactHeroSection />
         <ContactSection />
         <FaqSection />
       </main>

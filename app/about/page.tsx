@@ -3,7 +3,6 @@ import AboutHeroSection from "@/components/about/AboutHeroSection";
 import OurStorySection from "@/components/about/OurStorySection";
 import FaqSection from "@/components/home/FaqSection";
 import Footer from "@/components/home/Footer";
-import Header from "@/components/home/Header";
 
 export const metadata: Metadata = {
   title: "About Us | GlamRepairs",
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <Header variant="solid" />
       <main>
         <AboutHeroSection />
         <OurStorySection />

@@ -1,10 +1,16 @@
+export const aboutHeroBackground =
+  "/images,svgs/radiant-natural-skin-texture 1 (1).jpg";
+
 export const aboutHero = {
   headline: "A Better Way to Understand Your Skin",
-  paragraphs: [
-    "Healthy skin shouldn't require endless searching, conflicting advice, or guessing which products might work. Yet millions of people struggle to find clear, personalized guidance they can trust.",
-    "We started with a simple belief: everyone deserves access to expert skincare guidance tailored to their unique skin concerns. Glam Repairs was built to bridge the gap between professional aesthetics expertise and everyday skincare decisions.",
-  ],
-  trustTags: ["Expert-reviewed", "Clinic-trained", "Ingredient-first"],
+  subtitle:
+    "We believe everyone deserves clear, expert skincare guidance. Glam Repairs brings professional aesthetics expertise into your everyday routine.",
+};
+
+export const aboutIntro = {
+  title: "About us",
+  subtitle:
+    "Expert-led, personalized skincare guidance tailored to your skin's unique needs.",
 };
 
 export const aboutStory = {
