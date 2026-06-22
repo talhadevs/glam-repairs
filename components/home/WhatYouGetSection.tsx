@@ -101,8 +101,11 @@ export default function WhatYouGetSection() {
           >
             <article className="relative aspect-[433/610] min-h-[22rem] overflow-hidden rounded-[20px] sm:min-h-[26rem] lg:h-full lg:min-h-0">
               <BeforeAfterSlider
-                beforeSrc="/svgs/image 571.svg"
-                afterSrc="/svgs/image 571.svg"
+                beforeSrc="/svgs/Rectangle 3467729.svg"
+                afterSrc="/svgs/Rectangle 3467730.svg"
+                imagePosition="center"
+                contentScale={1}
+                unoptimized
               />
             </article>
           </AnimatedSlideIn>
