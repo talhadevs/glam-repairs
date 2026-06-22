@@ -55,6 +55,10 @@ const STEP_METADATA: Record<number, Metadata> = {
     title: "K-Beauty Glow | GlamRepairs Booking",
     description: "Choose which K-beauty glow inspires you most for your personalized plan.",
   },
+  12: {
+    title: "Korean Ingredients | GlamRepairs Booking",
+    description: "Pick the K-beauty ingredients you are curious about for your plan.",
+  },
 };
 
 type StepPageProps = {
