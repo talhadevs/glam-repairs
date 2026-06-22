@@ -51,6 +51,10 @@ const STEP_METADATA: Record<number, Metadata> = {
     title: "Routine Steps | GlamRepairs Booking",
     description: "Choose how many steps you want in your Korean skincare routine.",
   },
+  11: {
+    title: "K-Beauty Glow | GlamRepairs Booking",
+    description: "Choose which K-beauty glow inspires you most for your personalized plan.",
+  },
 };
 
 type StepPageProps = {
