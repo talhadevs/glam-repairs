@@ -39,6 +39,18 @@ const STEP_METADATA: Record<number, Metadata> = {
     title: "Daily Routine | GlamRepairs Booking",
     description: "Tell us about your daily skincare routine to personalize your treatment program.",
   },
+  8: {
+    title: "Skincare Products | GlamRepairs Booking",
+    description: "Select the skincare products you currently use in your routine.",
+  },
+  9: {
+    title: "K-Beauty Routine | GlamRepairs Booking",
+    description: "Choose whether to add a Korean skincare routine to your personalized plan.",
+  },
+  10: {
+    title: "Routine Steps | GlamRepairs Booking",
+    description: "Choose how many steps you want in your Korean skincare routine.",
+  },
 };
 
 type StepPageProps = {
@@ -69,7 +81,12 @@ export default async function BookingStepPage({ params }: StepPageProps) {
   const backHref = stepNumber === 1 ? "/" : `/booking/step/${stepNumber - 1}`;
   const nextHref =
     stepNumber < BOOKING_FORM_STEPS ? `/booking/step/${stepNumber + 1}` : "/";
-  const nextLabel = stepNumber === 3 ? "Let's make it 100%" : "Next";
+  const nextLabel =
+    stepNumber === 3
+      ? "Let's make it 100%"
+      : stepNumber === BOOKING_FORM_STEPS
+        ? "Finish"
+        : "Next";
 
   return (
     <OnboardingShell

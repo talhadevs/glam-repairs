@@ -1,6 +1,9 @@
 import DailyRoutineStep from "@/components/booking/steps/DailyRoutineStep";
 import ImproveAreasStep from "@/components/booking/steps/ImproveAreasStep";
+import KBeautyRoutineStep from "@/components/booking/steps/KBeautyRoutineStep";
+import KoreanRoutineStepsStep from "@/components/booking/steps/KoreanRoutineStepsStep";
 import NotAloneStep from "@/components/booking/steps/NotAloneStep";
+import SkincareProductsStep from "@/components/booking/steps/SkincareProductsStep";
 import SkinProfileStep from "@/components/booking/steps/SkinProfileStep";
 import SkinToneStep from "@/components/booking/steps/SkinToneStep";
 import SkinTypeStep from "@/components/booking/steps/SkinTypeStep";
@@ -26,6 +29,12 @@ export default function BookingStepContent({ stepNumber }: BookingStepContentPro
       return <SkinProfileStep />;
     case 7:
       return <DailyRoutineStep />;
+    case 8:
+      return <SkincareProductsStep />;
+    case 9:
+      return <KBeautyRoutineStep />;
+    case 10:
+      return <KoreanRoutineStepsStep />;
     default:
       return (
         <div>
