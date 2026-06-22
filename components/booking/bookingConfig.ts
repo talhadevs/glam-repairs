@@ -1,4 +1,4 @@
-export const BOOKING_TOTAL_STEPS = 71;
+export const BOOKING_TOTAL_STEPS = 59;
 
 export const BOOKING_FORM_STEPS = BOOKING_TOTAL_STEPS;
 

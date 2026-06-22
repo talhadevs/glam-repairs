@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import BookingStepContent from "@/components/booking/BookingStepContent";
+import SkinSelfieBookingStep from "@/components/booking/SkinSelfieBookingStep";
 import {
   BOOKING_FORM_STEPS,
   BOOKING_TOTAL_STEPS,
@@ -207,6 +208,48 @@ const STEP_METADATA: Record<number, Metadata> = {
     title: "Skin Condition Trend | GlamRepairs Booking",
     description: "See how skin condition can worsen without glam and start improving your routine.",
   },
+  50: {
+    title: "Special Event | GlamRepairs Booking",
+    description: "Select if you have a special event coming up as motivation for your skincare goal.",
+  },
+  51: {
+    title: "Event Date | GlamRepairs Booking",
+    description: "Tell us when your special event is so we can keep it in mind for your journey.",
+  },
+  52: {
+    title: "Goal Plan | GlamRepairs Booking",
+    description: "See your predicted skin goal timeline and personalized plan progress.",
+  },
+  53: {
+    title: "Skin Selfie | GlamRepairs Booking",
+    description: "Take a well-lit selfie to analyze your skin safely and privately.",
+  },
+  54: {
+    title: "Program Journey | GlamRepairs Booking",
+    description: "See your current skin metrics and how your personalized program supports your goals.",
+  },
+  55: {
+    title: "Keep Your Results | GlamRepairs Booking",
+    description: "Enter your email to save your skin analysis results to your account.",
+  },
+  56: {
+    title: "Your Name | GlamRepairs Booking",
+    description: "Enter your name to personalize your booking experience.",
+  },
+  57: {
+    title: "Your Skin, Elevated | GlamRepairs Booking",
+    description:
+      "Compare your before and after skin results with hydration and elasticity metrics.",
+  },
+  58: {
+    title: "Scratch To Reveal | GlamRepairs Booking",
+    description: "Scratch off the card to reveal your elevated skin result.",
+  },
+  59: {
+    title: "Skin Results Timeline | GlamRepairs Booking",
+    description:
+      "See when most users notice skin adjustments, visible improvements, and stable results.",
+  },
 };
 
 type StepPageProps = {
@@ -236,17 +279,33 @@ export default async function BookingStepPage({ params }: StepPageProps) {
   const progressStep = getBookingStepProgress(stepNumber);
   const backHref = stepNumber === 1 ? "/" : `/booking/step/${stepNumber - 1}`;
   const nextHref =
-    stepNumber < BOOKING_FORM_STEPS ? `/booking/step/${stepNumber + 1}` : "/";
+    stepNumber === BOOKING_FORM_STEPS
+      ? "/booking/report"
+      : stepNumber < BOOKING_FORM_STEPS
+        ? `/booking/step/${stepNumber + 1}`
+        : "/";
   const nextLabel =
     stepNumber === 3 ||
     stepNumber === 26 ||
     stepNumber === 33 ||
     stepNumber === 39 ||
-    stepNumber === 49
+    stepNumber === 49 ||
+    stepNumber === 52
       ? "Let's make it 100%"
       : stepNumber === BOOKING_FORM_STEPS
-        ? "Finish"
+        ? "View Report"
         : "Next";
+
+  if (stepNumber === 53) {
+    return (
+      <SkinSelfieBookingStep
+        backHref={backHref}
+        nextHref={nextHref}
+        currentStep={progressStep}
+        totalSteps={BOOKING_TOTAL_STEPS}
+      />
+    );
+  }
 
   return (
     <OnboardingShell
@@ -257,6 +316,7 @@ export default async function BookingStepPage({ params }: StepPageProps) {
           backHref={backHref}
           nextHref={nextHref}
           nextLabel={nextLabel}
+          skipHref={stepNumber === 51 ? nextHref : undefined}
         />
       }
     >

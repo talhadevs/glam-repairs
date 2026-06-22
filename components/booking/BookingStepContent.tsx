@@ -22,9 +22,17 @@ import MoisturizedStep from "@/components/booking/steps/MoisturizedStep";
 import NotAloneStep from "@/components/booking/steps/NotAloneStep";
 import PdrnInfoStep from "@/components/booking/steps/PdrnInfoStep";
 import PdrnStep from "@/components/booking/steps/PdrnStep";
+import EventDateStep from "@/components/booking/steps/EventDateStep";
+import GoalPlanStep from "@/components/booking/steps/GoalPlanStep";
+import KeepResultsStep from "@/components/booking/steps/KeepResultsStep";
+import NameStep from "@/components/booking/steps/NameStep";
 import ProfileReadyStep from "@/components/booking/steps/ProfileReadyStep";
+import ProgramJourneyStep from "@/components/booking/steps/ProgramJourneyStep";
 import RetinolVitaminCStep from "@/components/booking/steps/RetinolVitaminCStep";
 import SkinConditionWorseningStep from "@/components/booking/steps/SkinConditionWorseningStep";
+import SkinElevatedScratchStep from "@/components/booking/steps/SkinElevatedScratchStep";
+import SkinElevatedStep from "@/components/booking/steps/SkinElevatedStep";
+import SkinResultsTimelineStep from "@/components/booking/steps/SkinResultsTimelineStep";
 import SkincareJourneyFeelStep from "@/components/booking/steps/SkincareJourneyFeelStep";
 import SkinImprovementStep from "@/components/booking/steps/SkinImprovementStep";
 import SkinSensitivityStep from "@/components/booking/steps/SkinSensitivityStep";
@@ -32,6 +40,7 @@ import SleepStep from "@/components/booking/steps/SleepStep";
 import SkincareRoutineTimeStep from "@/components/booking/steps/SkincareRoutineTimeStep";
 import SkincareProductsStep from "@/components/booking/steps/SkincareProductsStep";
 import SocialMediaStep from "@/components/booking/steps/SocialMediaStep";
+import SpecialEventStep from "@/components/booking/steps/SpecialEventStep";
 import StatementAgreementStep from "@/components/booking/steps/StatementAgreementStep";
 import SkinProfileStep from "@/components/booking/steps/SkinProfileStep";
 import SkinToneStep from "@/components/booking/steps/SkinToneStep";
@@ -158,6 +167,24 @@ export default function BookingStepContent({ stepNumber }: BookingStepContentPro
       );
     case 49:
       return <SkinConditionWorseningStep />;
+    case 50:
+      return <SpecialEventStep />;
+    case 51:
+      return <EventDateStep />;
+    case 52:
+      return <GoalPlanStep />;
+    case 54:
+      return <ProgramJourneyStep />;
+    case 55:
+      return <KeepResultsStep />;
+    case 56:
+      return <NameStep />;
+    case 57:
+      return <SkinElevatedStep />;
+    case 58:
+      return <SkinElevatedScratchStep />;
+    case 59:
+      return <SkinResultsTimelineStep />;
     default:
       return (
         <div>

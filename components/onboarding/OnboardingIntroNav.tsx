@@ -4,12 +4,16 @@ type OnboardingIntroNavProps = {
   backHref: string;
   nextHref: string;
   nextLabel?: string;
+  skipHref?: string;
+  skipLabel?: string;
 };
 
 export default function OnboardingIntroNav({
   backHref,
   nextHref,
   nextLabel = "Next",
+  skipHref,
+  skipLabel = "Skip",
 }: OnboardingIntroNavProps) {
   return (
     <div className="flex items-center justify-between gap-4">
@@ -35,12 +39,23 @@ export default function OnboardingIntroNav({
         </svg>
       </Link>
 
-      <Link
-        href={nextHref}
-        className="subscribe-fill-btn rounded-full bg-brand-light px-10 py-3 text-xs font-normal uppercase tracking-[0.15em] text-white sm:px-12 sm:py-3.5 sm:text-sm"
-      >
-        {nextLabel}
-      </Link>
+      <div className="flex items-center gap-4 sm:gap-5">
+        {skipHref ? (
+          <Link
+            href={skipHref}
+            className="text-xs font-medium uppercase tracking-[0.12em] text-brand-light transition-opacity hover:opacity-80 sm:text-sm"
+          >
+            {skipLabel}
+          </Link>
+        ) : null}
+
+        <Link
+          href={nextHref}
+          className="subscribe-fill-btn rounded-full bg-brand-light px-10 py-3 text-xs font-normal uppercase tracking-[0.15em] text-white sm:px-12 sm:py-3.5 sm:text-sm"
+        >
+          {nextLabel}
+        </Link>
+      </div>
     </div>
   );
 }
