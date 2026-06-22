@@ -59,6 +59,70 @@ const STEP_METADATA: Record<number, Metadata> = {
     title: "Korean Ingredients | GlamRepairs Booking",
     description: "Pick the K-beauty ingredients you are curious about for your plan.",
   },
+  13: {
+    title: "Korean Skincare Products | GlamRepairs Booking",
+    description: "Choose which Korean skincare products you are most excited to try.",
+  },
+  14: {
+    title: "PDRN | GlamRepairs Booking",
+    description: "Tell us if you have heard of PDRN, the K-beauty favorite for skin repair and glow.",
+  },
+  15: {
+    title: "What is PDRN? | GlamRepairs Booking",
+    description: "Learn how PDRN supports skin repair, hydration, and elasticity.",
+  },
+  16: {
+    title: "Add PDRN | GlamRepairs Booking",
+    description: "Choose whether to add PDRN to your personalized treatment plan.",
+  },
+  17: {
+    title: "Exosomes | GlamRepairs Booking",
+    description: "Tell us if you have heard about advanced skincare ingredients like exosomes.",
+  },
+  18: {
+    title: "Why Exosomes | GlamRepairs Booking",
+    description: "Learn why exosomes are changing skincare and how they support skin regeneration.",
+  },
+  19: {
+    title: "Add Exosomes | GlamRepairs Booking",
+    description: "Choose whether to add exosomes-powered care to your routine.",
+  },
+  20: {
+    title: "Sunscreen | GlamRepairs Booking",
+    description: "Tell us how often you wear sunscreen outdoors.",
+  },
+  21: {
+    title: "Location | GlamRepairs Booking",
+    description: "Share your location so we can tailor recommendations to your local climate.",
+  },
+  22: {
+    title: "Sulfates | GlamRepairs Booking",
+    description: "Tell us whether you use skincare products that contain sulfates.",
+  },
+  23: {
+    title: "Antioxidants | GlamRepairs Booking",
+    description: "Tell us if you have tried skincare products with antioxidants.",
+  },
+  24: {
+    title: "Acids | GlamRepairs Booking",
+    description: "Tell us if you have used skincare products with acids.",
+  },
+  25: {
+    title: "Retinol & Vitamin C | GlamRepairs Booking",
+    description: "Tell us if you are aware of the benefits of retinol and vitamin C for skin.",
+  },
+  26: {
+    title: "Ingredients Fit | GlamRepairs Booking",
+    description: "See how well your treatment program matches your hydration, sensitivity, and goals.",
+  },
+  27: {
+    title: "Social Media | GlamRepairs Booking",
+    description: "Tell us if you heard about Glam repair from social media.",
+  },
+  28: {
+    title: "Cosmetologists | GlamRepairs Booking",
+    description: "Learn how Glam repair was created in collaboration with cosmetologists.",
+  },
 };
 
 type StepPageProps = {
@@ -90,7 +154,7 @@ export default async function BookingStepPage({ params }: StepPageProps) {
   const nextHref =
     stepNumber < BOOKING_FORM_STEPS ? `/booking/step/${stepNumber + 1}` : "/";
   const nextLabel =
-    stepNumber === 3
+    stepNumber === 3 || stepNumber === 26
       ? "Let's make it 100%"
       : stepNumber === BOOKING_FORM_STEPS
         ? "Finish"
