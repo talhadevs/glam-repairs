@@ -24,6 +24,7 @@ import PdrnInfoStep from "@/components/booking/steps/PdrnInfoStep";
 import PdrnStep from "@/components/booking/steps/PdrnStep";
 import ProfileReadyStep from "@/components/booking/steps/ProfileReadyStep";
 import RetinolVitaminCStep from "@/components/booking/steps/RetinolVitaminCStep";
+import SkincareJourneyFeelStep from "@/components/booking/steps/SkincareJourneyFeelStep";
 import SkinImprovementStep from "@/components/booking/steps/SkinImprovementStep";
 import SkinSensitivityStep from "@/components/booking/steps/SkinSensitivityStep";
 import SleepStep from "@/components/booking/steps/SleepStep";
@@ -128,6 +129,8 @@ export default function BookingStepContent({ stepNumber }: BookingStepContentPro
       return <GlamImproveGoalsStep />;
     case 41:
       return <FeelGreatSkinGoalsStep />;
+    case 42:
+      return <SkincareJourneyFeelStep />;
     default:
       return (
         <div>

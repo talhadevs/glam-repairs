@@ -175,6 +175,10 @@ const STEP_METADATA: Record<number, Metadata> = {
     title: "Skin Confidence Goals | GlamRepairs Booking",
     description: "Select what you would like when you feel great about your skin.",
   },
+  42: {
+    title: "Skincare Journey Feelings | GlamRepairs Booking",
+    description: "Select how you want to feel during your glam skincare journey.",
+  },
 };
 
 type StepPageProps = {
