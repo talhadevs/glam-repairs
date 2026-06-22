@@ -23,6 +23,22 @@ const STEP_METADATA: Record<number, Metadata> = {
     title: "Treatment Fit | GlamRepairs Booking",
     description: "See how well your personalized treatment program matches your skin profile.",
   },
+  4: {
+    title: "Improve Areas | GlamRepairs Booking",
+    description: "Select the face areas you would like to improve in your treatment program.",
+  },
+  5: {
+    title: "Skin Tone | GlamRepairs Booking",
+    description: "Select the color closest to your skin tone to personalize your treatment program.",
+  },
+  6: {
+    title: "Skin Profile | GlamRepairs Booking",
+    description: "See what balanced hydration and protection means for your skin profile.",
+  },
+  7: {
+    title: "Daily Routine | GlamRepairs Booking",
+    description: "Tell us about your daily skincare routine to personalize your treatment program.",
+  },
 };
 
 type StepPageProps = {
