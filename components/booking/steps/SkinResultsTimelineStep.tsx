@@ -1,20 +1,17 @@
 import SkinResultsTimeline from "@/components/booking/SkinResultsTimeline";
+import { StepBody, StepHeader } from "@/components/steps";
 
 export default function SkinResultsTimelineStep() {
   return (
     <div>
-      <header>
-        <h1 className="font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          Skin results timeline
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-brand-gray sm:mt-4 sm:text-[0.9375rem]">
-          Most users see visible improvements within 4-12 weeks
-        </p>
-      </header>
+      <StepHeader
+        title="Skin results timeline"
+        subtitle="Most users see visible improvements within 4-12 weeks"
+      />
 
-      <div className="mt-6 sm:mt-7">
+      <StepBody>
         <SkinResultsTimeline />
-      </div>
+      </StepBody>
     </div>
   );
 }

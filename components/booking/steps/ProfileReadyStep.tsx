@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ProfileGlowMeter from "@/components/booking/ProfileGlowMeter";
+import { StepHeader } from "@/components/steps";
 
 const profileAvatar = "/images,svgs/women_porler.jpg";
 
@@ -31,11 +32,7 @@ function SummaryField({ label, value }: { label: string; value: string }) {
 export default function ProfileReadyStep() {
   return (
     <div>
-      <header>
-        <h1 className="font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          Your profile is ready
-        </h1>
-      </header>
+      <StepHeader title="Your profile is ready" />
 
       <div className="mt-5 sm:mt-6">
         <ProfileGlowMeter />

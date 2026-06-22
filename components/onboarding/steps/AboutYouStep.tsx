@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { saveOnboardingFirstName } from "@/components/onboarding/onboardingStorage";
+import { StepHeader } from "@/components/steps";
 
 const inputClassName =
   "w-full rounded-2xl border border-brand-border-light/70 bg-white px-4 py-3.5 text-sm text-brand-ink shadow-sm outline-none transition-colors placeholder:text-brand-gray/45 focus:border-brand-light sm:py-4 sm:text-[15px]";
@@ -57,14 +58,7 @@ export default function AboutYouStep() {
 
   return (
     <div>
-      <header>
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-brand-light">
-          About You
-        </p>
-        <h1 className="mt-3 font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          Let&apos;s start with a few basics.
-        </h1>
-      </header>
+      <StepHeader eyebrow="About You" title="Let's start with a few basics." />
 
       <div className="mt-6 space-y-4 sm:mt-7 sm:space-y-5">
         <div>

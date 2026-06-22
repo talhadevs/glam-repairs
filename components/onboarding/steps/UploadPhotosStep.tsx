@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import CameraUploadIcon from "@/components/onboarding/CameraUploadIcon";
+import { StepHeader } from "@/components/steps";
 
 const PHOTO_SLOTS = [
   {
@@ -153,14 +154,11 @@ export default function UploadPhotosStep() {
 
   return (
     <div>
-      <header>
-        <h1 className="font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          Upload your photos
-        </h1>
-        <p className="mt-2 text-sm leading-relaxed text-brand-gray sm:mt-2.5 sm:text-[0.9375rem]">
-          Front face + concern areas. Clear, natural light. No filters.
-        </p>
-      </header>
+      <StepHeader
+        title="Upload your photos"
+        subtitle="Front face + concern areas. Clear, natural light. No filters."
+        subtitleClassName="mt-2 text-sm leading-relaxed text-brand-gray sm:mt-2.5 sm:text-[0.9375rem]"
+      />
 
       <input
         ref={inputRef}

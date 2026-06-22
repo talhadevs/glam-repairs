@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { StepHeader } from "@/components/steps";
 
 const cosmetologistImage = "/svgs/women_dr.svg";
 
@@ -16,9 +17,11 @@ export default function CosmetologistsStep() {
         />
 
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-lavender/20 via-white to-transparent px-4 pb-5 pt-14 sm:px-5 sm:pb-6 sm:pt-16">
-          <h1 className="mx-auto max-w-[16rem] text-center font-serif text-[1.65rem] leading-tight text-brand-ink sm:max-w-[18rem] sm:text-[1.85rem]">
-            Created in collaboration with cosmetologists
-          </h1>
+          <StepHeader
+            className="mx-auto max-w-[16rem] text-center sm:max-w-[18rem]"
+            title="Created in collaboration with cosmetologists"
+            titleClassName="text-[1.65rem] leading-tight sm:text-[1.85rem]"
+          />
         </div>
       </div>
     </div>

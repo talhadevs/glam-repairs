@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { StepBody, StepHeader } from "@/components/steps";
 
 const inputClassName =
   "w-full rounded-2xl border border-brand-border-light/70 bg-white px-4 py-3.5 text-sm text-brand-ink shadow-sm outline-none transition-colors placeholder:text-brand-gray/45 focus:border-brand-light sm:py-4 sm:text-[15px]";
@@ -111,17 +112,12 @@ export default function LocationStep() {
 
   return (
     <div>
-      <header>
-        <h1 className="font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          I live in.....
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-brand-gray sm:mt-4 sm:text-[0.9375rem]">
-          Your local climate, air quality, and sun exposure impact your skin. We
-          use location to tailor our recommendations
-        </p>
-      </header>
+      <StepHeader
+        title="I live in....."
+        subtitle="Your local climate, air quality, and sun exposure impact your skin. We use location to tailor our recommendations"
+      />
 
-      <div className="mt-6 sm:mt-7">
+      <StepBody>
         <label htmlFor="location" className="sr-only">
           City, Country
         </label>
@@ -129,23 +125,24 @@ export default function LocationStep() {
           id="location"
           name="location"
           type="text"
+          autoComplete="address-level2"
           placeholder="City, Country"
           value={location}
           onChange={(event) => setLocation(event.target.value)}
           className={inputClassName}
         />
-      </div>
 
-      <div className="mt-6 flex items-start justify-between gap-2 sm:mt-7 sm:gap-3">
-        {environmentStats.map((stat) => (
-          <EnvironmentStat
-            key={stat.label}
-            label={stat.label}
-            value={stat.value}
-            icon={"icon" in stat ? stat.icon : undefined}
-          />
-        ))}
-      </div>
+        <div className="mt-5 flex items-start justify-between gap-3 rounded-2xl border border-brand-border-light/50 bg-white px-4 py-4 shadow-sm sm:mt-6 sm:gap-4 sm:px-5 sm:py-5">
+          {environmentStats.map((stat) => (
+            <EnvironmentStat
+              key={stat.label}
+              label={stat.label}
+              value={stat.value}
+              icon={"icon" in stat ? stat.icon : undefined}
+            />
+          ))}
+        </div>
+      </StepBody>
     </div>
   );
 }

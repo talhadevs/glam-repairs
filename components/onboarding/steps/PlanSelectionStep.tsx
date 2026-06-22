@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_PROGRESS } from "@/components/onboarding/onboardingConfig";
+import { StepHeader } from "@/components/steps";
 
 type PlanId = "clarity" | "transform";
 
@@ -159,14 +160,10 @@ export default function PlanSelectionStep({
       }
     >
       <div>
-        <header>
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-brand-light">
-            Plan Selection &amp; Payment
-          </p>
-          <h1 className="mt-3 font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-            Choose your plan
-          </h1>
-        </header>
+        <StepHeader
+          eyebrow="Plan Selection & Payment"
+          title="Choose your plan"
+        />
 
         <div className="mt-6 space-y-3 sm:mt-7 sm:space-y-4">
           {plans.map((plan) => (

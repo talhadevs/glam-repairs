@@ -1,6 +1,7 @@
 import Link from "next/link";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import WelcomeHeroImage from "@/components/onboarding/WelcomeHeroImage";
+import { StepHeader } from "@/components/steps";
 
 export default function WelcomeScreen() {
   return (
@@ -17,15 +18,13 @@ export default function WelcomeScreen() {
     >
       <WelcomeHeroImage />
 
-      <div className="mt-7 text-center sm:mt-8">
-        <h1 className="font-serif text-[1.75rem] leading-none text-brand-primary sm:text-[2rem]">
-          Welcome
-        </h1>
-        <p className="mx-auto mt-3 max-w-[18rem] text-sm font-normal leading-relaxed text-brand-ink sm:mt-3.5 sm:max-w-none sm:text-[0.9375rem]">
-          Tell us what your skin is going through. We&apos;ll guide you with a
-          simple, routine-based report.
-        </p>
-      </div>
+      <StepHeader
+        className="mt-7 text-center sm:mt-8"
+        title="Welcome"
+        titleClassName="font-serif text-[1.75rem] leading-none text-brand-primary sm:text-[2rem]"
+        subtitle="Tell us what your skin is going through. We'll guide you with a simple, routine-based report."
+        subtitleClassName="mx-auto mt-3 max-w-[18rem] text-sm font-normal leading-relaxed text-brand-ink sm:mt-3.5 sm:max-w-none sm:text-[0.9375rem]"
+      />
     </OnboardingShell>
   );
 }

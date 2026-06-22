@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import {
+  StepBody,
+  StepChoiceList,
+  StepFilledCheckboxCard,
+  StepHeader,
+  StepRadioChoiceCard,
+} from "@/components/steps";
 
 type SleepOption = "under-5" | "5-6" | "7-8" | "over-8";
 type WaterOption = "under-4" | "4-6" | "7-8" | "over-8";
@@ -39,86 +46,6 @@ const dietOptions: { value: DietOption; label: string }[] = [
 const sectionLabelClassName =
   "text-sm font-medium text-brand-ink sm:text-[0.9375rem]";
 
-function RadioOptionCard({
-  label,
-  selected,
-  onSelect,
-}: {
-  label: string;
-  selected: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={`flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left shadow-sm transition-colors sm:px-5 sm:py-3.5 ${
-        selected
-          ? "border-brand-light bg-brand-light text-white"
-          : "border-brand-border-light/60 bg-white text-brand-ink hover:border-brand-lavender"
-      }`}
-    >
-      <span
-        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
-          selected
-            ? "border-white bg-white"
-            : "border-brand-border-light bg-white"
-        }`}
-      >
-        {selected ? <span className="h-2.5 w-2.5 rounded-full bg-brand-light" /> : null}
-      </span>
-      <span className="text-sm sm:text-[0.9375rem]">{label}</span>
-    </button>
-  );
-}
-
-function DietCheckboxCard({
-  label,
-  selected,
-  onSelect,
-}: {
-  label: string;
-  selected: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={`flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left shadow-sm transition-colors sm:px-5 sm:py-3.5 ${
-        selected
-          ? "border-brand-light bg-brand-light text-white"
-          : "border-brand-border-light/60 bg-white text-brand-ink hover:border-brand-lavender"
-      }`}
-    >
-      <span
-        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-[4px] border ${
-          selected
-            ? "border-white bg-white text-brand-light"
-            : "border-brand-border-light bg-white text-transparent"
-        }`}
-      >
-        <svg
-          aria-hidden
-          viewBox="0 0 10 8"
-          className="h-2.5 w-3"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M1 4.2L3.5 6.7L9 1.2"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-      <span className="text-sm sm:text-[0.9375rem]">{label}</span>
-    </button>
-  );
-}
-
 function LifestyleSection({
   title,
   children,
@@ -129,7 +56,9 @@ function LifestyleSection({
   return (
     <section>
       <h2 className={sectionLabelClassName}>{title}</h2>
-      <div className="mt-3 space-y-2.5 sm:space-y-3">{children}</div>
+      <StepChoiceList spacing="compact" className="mt-3">
+        {children}
+      </StepChoiceList>
     </section>
   );
 }
@@ -150,20 +79,15 @@ export default function LifestyleStep() {
 
   return (
     <div>
-      <header>
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-brand-light">
-          Lifestyle
-        </p>
-        <h1 className="mt-3 font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          Tell us a bit about your lifestyle — it affects your skin more than most
-          people realize.
-        </h1>
-      </header>
+      <StepHeader
+        eyebrow="Lifestyle"
+        title="Tell us a bit about your lifestyle — it affects your skin more than most people realize."
+      />
 
-      <div className="mt-6 space-y-6 sm:mt-7 sm:space-y-7">
+      <StepBody className="space-y-6 sm:space-y-7">
         <LifestyleSection title="Sleep (per night on average):">
           {sleepOptions.map((option) => (
-            <RadioOptionCard
+            <StepRadioChoiceCard
               key={option.value}
               label={option.label}
               selected={sleep === option.value}
@@ -174,7 +98,7 @@ export default function LifestyleStep() {
 
         <LifestyleSection title="Water intake (per day):">
           {waterOptions.map((option) => (
-            <RadioOptionCard
+            <StepRadioChoiceCard
               key={option.value}
               label={option.label}
               selected={water === option.value}
@@ -185,7 +109,7 @@ export default function LifestyleStep() {
 
         <LifestyleSection title="Stress level:">
           {stressOptions.map((option) => (
-            <RadioOptionCard
+            <StepRadioChoiceCard
               key={option.value}
               label={option.label}
               selected={stress === option.value}
@@ -196,7 +120,7 @@ export default function LifestyleStep() {
 
         <LifestyleSection title="Diet (select all that apply):">
           {dietOptions.map((option) => (
-            <DietCheckboxCard
+            <StepFilledCheckboxCard
               key={option.value}
               label={option.label}
               selected={diet.includes(option.value)}
@@ -204,7 +128,7 @@ export default function LifestyleStep() {
             />
           ))}
         </LifestyleSection>
-      </div>
+      </StepBody>
     </div>
   );
 }

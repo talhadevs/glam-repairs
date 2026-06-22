@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import SkinMetricsPanel from "@/components/booking/SkinMetricsPanel";
+import { StepHeader } from "@/components/steps";
 
 const currentConcerns = [
   {
@@ -47,15 +48,10 @@ function ConcernBadge({
 export default function ProgramJourneyStep() {
   return (
     <div>
-      <header>
-        <h1 className="font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          Do you have a special event coming up?
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-brand-gray sm:mt-4 sm:text-[0.9375rem]">
-          Having something to look forward to can be a great motivator for
-          reaching your goal
-        </p>
-      </header>
+      <StepHeader
+        title="Do you have a special event coming up?"
+        subtitle="Having something to look forward to can be a great motivator for reaching your goal"
+      />
 
       <div className="mt-5 sm:mt-6">
         <SkinMetricsPanel />

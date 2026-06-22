@@ -1,21 +1,20 @@
 import GoalProgressChart from "@/components/booking/GoalProgressChart";
+import { StepBody, StepHeader } from "@/components/steps";
 
 export default function GoalPlanStep() {
   return (
     <div>
-      <header>
-        <h1 className="font-serif text-[1.75rem] leading-snug text-brand-ink sm:text-[2rem]">
-          The last plan you&apos;ll ever need for normal skin type
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-brand-gray sm:mt-4 sm:text-[0.9375rem]">
-          We predict you&apos;ll reach goal by Jul 10 just in time for the
-          holiday
-        </p>
-      </header>
+      <StepHeader
+        title="The last plan you'll ever need for normal skin type"
+        subtitle="We predict you'll reach goal by Jul 10 just in time for the holiday"
+        titleClassName="leading-snug sm:leading-snug"
+      />
 
-      <div className="mt-6 flex justify-center sm:mt-7">
-        <GoalProgressChart />
-      </div>
+      <StepBody>
+        <div className="flex justify-center">
+          <GoalProgressChart />
+        </div>
+      </StepBody>
     </div>
   );
 }

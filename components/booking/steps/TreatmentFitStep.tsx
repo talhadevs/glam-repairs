@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import AnimatedCount from "@/components/booking/AnimatedCount";
 import SkinWellnessChart from "@/components/booking/SkinWellnessChart";
+import { StepHeader } from "@/components/steps";
 
 const programFeatures = [
   {
@@ -54,11 +55,21 @@ export default function TreatmentFitStep() {
         <SkinWellnessChart />
       </div>
 
-      <h1 className="mt-5 font-serif text-[1.35rem] leading-snug text-brand-ink sm:mt-6 sm:text-[1.5rem]">
-        Your treatment program is a{" "}
-        <AnimatedCount value={93} className="inline-block text-brand-primary" duration={1600} />
-        % fit to you by knowing your skin type and concerns
-      </h1>
+      <StepHeader
+        className="mt-5 sm:mt-6"
+        titleSize="sm"
+        title={
+          <>
+            Your treatment program is a{" "}
+            <AnimatedCount
+              value={93}
+              className="inline-block text-brand-primary"
+              duration={1600}
+            />
+            % fit to you by knowing your skin type and concerns
+          </>
+        }
+      />
 
       <div className="mt-6 grid grid-cols-4 gap-2 sm:mt-7 sm:gap-3">
         {programFeatures.map((feature) => (

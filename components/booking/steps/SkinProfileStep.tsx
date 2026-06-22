@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { StepHeader } from "@/components/steps";
 
 const profileDetails = [
   { label: "Tone: Fair", color: "#F8DCC8" },
@@ -65,11 +66,7 @@ function SkinInsightCard({
 export default function SkinProfileStep() {
   return (
     <div>
-      <header>
-        <h1 className="font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          Your skin need balanced hydration &amp; protection
-        </h1>
-      </header>
+      <StepHeader title="Your skin need balanced hydration & protection" />
 
       <div className="mt-5 space-y-3 sm:mt-6 sm:space-y-3.5">
         {profileDetails.map((detail) => (
@@ -81,30 +78,15 @@ export default function SkinProfileStep() {
         ))}
       </div>
 
-      <p className="mt-4 text-sm leading-relaxed text-brand-gray sm:mt-5 sm:text-[0.9375rem]">
-        Neutral undertones benefit most from maintaining a strong balanced
-      </p>
-
-      <div className="mt-5 sm:mt-6">
-        <h2 className="text-sm font-semibold text-brand-ink sm:text-[0.9375rem]">
-          What this means for your skin:
-        </h2>
-
-        <div className="mt-3 space-y-2.5 sm:mt-3.5 sm:space-y-3">
-          {skinInsights.map((insight) => (
-            <SkinInsightCard
-              key={insight.label}
-              label={insight.label}
-              icon={insight.icon}
-            />
-          ))}
-        </div>
+      <div className="mt-5 space-y-3 sm:mt-6 sm:space-y-3.5">
+        {skinInsights.map((insight) => (
+          <SkinInsightCard
+            key={insight.label}
+            label={insight.label}
+            icon={insight.icon}
+          />
+        ))}
       </div>
-
-      <p className="mt-4 text-sm leading-relaxed text-brand-gray sm:mt-5 sm:text-[0.9375rem]">
-        We&apos;ll focus on maintaining balance and protecting your skin for
-        healthy, long-lasting results
-      </p>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { StepBody, StepHeader } from "@/components/steps";
 
 const scaleValues = [1, 2, 3, 4, 5] as const;
 
@@ -43,16 +44,13 @@ export default function StatementAgreementStep({
 
   return (
     <div>
-      <header>
-        <p className="text-sm text-brand-gray sm:text-[0.9375rem]">
-          Did you relate to this statement?
-        </p>
-        <h1 className="mt-3 font-serif text-[1.75rem] leading-snug text-brand-ink sm:mt-4 sm:text-[2rem]">
-          &ldquo;{statement}&rdquo;
-        </h1>
-      </header>
+      <StepHeader
+        eyebrow="Did you relate to this statement?"
+        title={`\u201c${statement}\u201d`}
+        titleSize="statement"
+      />
 
-      <div className="mt-8 sm:mt-10">
+      <StepBody spacing="lg">
         <div
           className="flex items-center justify-between gap-2"
           role="group"
@@ -72,7 +70,7 @@ export default function StatementAgreementStep({
           <span>Strongly disagree</span>
           <span className="text-right">Strongly agree</span>
         </div>
-      </div>
+      </StepBody>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import PrimaryConcernStep from "@/components/onboarding/steps/PrimaryConcernStep
 import SkinZoneSelectionStep from "@/components/onboarding/steps/SkinZoneSelectionStep";
 import UploadInstructionStep from "@/components/onboarding/steps/UploadInstructionStep";
 import UploadPhotosStep from "@/components/onboarding/steps/UploadPhotosStep";
+import { StepHeader } from "@/components/steps";
 
 type StepContentProps = {
   stepNumber: number;
@@ -14,15 +15,12 @@ type StepContentProps = {
 function StepPlaceholder({ stepNumber }: { stepNumber: number }) {
   return (
     <div>
-      <p className="text-xs font-medium uppercase tracking-[0.12em] text-brand-light">
-        Step {stepNumber}
-      </p>
-      <h1 className="mt-3 font-serif text-[1.75rem] leading-tight text-brand-primary sm:text-[2rem]">
-        Coming soon
-      </h1>
-      <p className="mt-3 text-sm leading-relaxed text-brand-gray">
-        This step will be added next.
-      </p>
+      <StepHeader
+        eyebrow={`Step ${stepNumber}`}
+        title="Coming soon"
+        titleClassName="font-serif text-[1.75rem] leading-tight text-brand-primary sm:text-[2rem]"
+        subtitle="This step will be added next."
+      />
     </div>
   );
 }

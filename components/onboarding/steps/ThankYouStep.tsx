@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_TOTAL_STEPS } from "@/components/onboarding/onboardingConfig";
 import { getOnboardingFirstName } from "@/components/onboarding/onboardingStorage";
+import { StepHeader } from "@/components/steps";
 
 const nextSteps = [
   "Our certified expert reviews your photos and intake form",
@@ -66,12 +67,12 @@ export default function ThankYouStep({
       <div className="text-center">
         <SuccessIcon />
 
-        <h1 className="mt-5 font-serif text-[1.75rem] leading-tight text-brand-ink sm:mt-6 sm:text-[2rem]">
-          {headline}
-        </h1>
-        <p className="mt-2 text-sm text-brand-ink sm:text-[0.9375rem]">
-          Your submission has been received.
-        </p>
+        <StepHeader
+          title={headline}
+          subtitle="Your submission has been received."
+          titleClassName="mt-5 font-serif text-[1.75rem] leading-tight text-brand-ink sm:mt-6 sm:text-[2rem]"
+          subtitleClassName="mt-2 text-sm text-brand-ink sm:text-[0.9375rem]"
+        />
 
         <p className="mx-auto mt-5 max-w-[20rem] text-sm leading-relaxed text-brand-gray sm:mt-6 sm:max-w-none sm:text-[0.9375rem]">
           Our certified expert will review your skin assessment and deliver your

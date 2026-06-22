@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { StepHeader } from "@/components/steps";
 
 const wrongPhoto = "/svgs/Rectangle 3467693.svg";
 const correctPhoto = "/svgs/Rectangle 3467692.svg";
@@ -103,18 +104,12 @@ function PhotoTip({
 export default function UploadInstructionStep() {
   return (
     <div>
-      <header>
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-brand-light">
-          Photo Guide
-        </p>
-        <h1 className="mt-3 font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          How to take your photos
-        </h1>
-        <p className="mt-2 text-sm leading-relaxed text-brand-ink sm:mt-2.5 sm:text-[0.9375rem]">
-          Clear photos help a certified aesthetics professional assess your skin accurately.
-          Follow these tips for the best results.
-        </p>
-      </header>
+      <StepHeader
+        eyebrow="Photo Guide"
+        title="How to take your photos"
+        subtitle="Clear photos help a certified aesthetics professional assess your skin accurately. Follow these tips for the best results."
+        subtitleClassName="mt-2 text-sm leading-relaxed text-brand-ink sm:mt-2.5 sm:text-[0.9375rem]"
+      />
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-7 sm:gap-4">
         <PhotoExample

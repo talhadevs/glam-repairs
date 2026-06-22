@@ -4,6 +4,7 @@ import Link from "next/link";
 import { createContext, useContext, useState } from "react";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_PROGRESS } from "@/components/onboarding/onboardingConfig";
+import { StepHeader } from "@/components/steps";
 
 type ConsentContextValue = {
   privateReview: boolean;
@@ -131,14 +132,11 @@ function ConsentContent() {
 
   return (
     <div>
-      <header>
-        <h1 className="font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-          Consent and trust
-        </h1>
-        <p className="mt-2 text-sm leading-relaxed text-brand-ink sm:mt-2.5 sm:text-[0.9375rem]">
-          Your privacy matters. You&apos;re in control of your photos and data.
-        </p>
-      </header>
+      <StepHeader
+        title="Consent and trust"
+        subtitle="Your privacy matters. You're in control of your photos and data."
+        subtitleClassName="mt-2 text-sm leading-relaxed text-brand-ink sm:mt-2.5 sm:text-[0.9375rem]"
+      />
 
       <div className="mt-6 space-y-3 sm:mt-7 sm:space-y-3.5">
         <ConsentCheckbox
