@@ -8,6 +8,7 @@ import DailyRoutineStep from "@/components/booking/steps/DailyRoutineStep";
 import DaytimeSkinBothersStep from "@/components/booking/steps/DaytimeSkinBothersStep";
 import ExosomesInfoStep from "@/components/booking/steps/ExosomesInfoStep";
 import ExosomesStep from "@/components/booking/steps/ExosomesStep";
+import FeelGreatSkinGoalsStep from "@/components/booking/steps/FeelGreatSkinGoalsStep";
 import GlamImproveGoalsStep from "@/components/booking/steps/GlamImproveGoalsStep";
 import ImproveAreasStep from "@/components/booking/steps/ImproveAreasStep";
 import IngredientsFitStep from "@/components/booking/steps/IngredientsFitStep";
@@ -125,6 +126,8 @@ export default function BookingStepContent({ stepNumber }: BookingStepContentPro
       return <TreatmentProgramFitStep />;
     case 40:
       return <GlamImproveGoalsStep />;
+    case 41:
+      return <FeelGreatSkinGoalsStep />;
     default:
       return (
         <div>
