@@ -142,7 +142,7 @@ export default function LocationStep() {
             key={stat.label}
             label={stat.label}
             value={stat.value}
-            icon={stat.icon}
+            icon={"icon" in stat ? stat.icon : undefined}
           />
         ))}
       </div>
