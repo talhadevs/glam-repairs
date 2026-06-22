@@ -118,9 +118,11 @@ export default function Header({ variant = "overlay" }: HeaderProps) {
           </AnimatedSlideIn>
 
           <div className="flex items-center justify-end">
-            <Button variant="accent" className="shrink-0 whitespace-nowrap">
-              BOOK NOW
-            </Button>
+            <Link href="/booking/step/1" className="shrink-0">
+              <Button variant="accent" className="whitespace-nowrap">
+                BOOK NOW
+              </Button>
+            </Link>
           </div>
         </div>
 
@@ -175,7 +177,9 @@ export default function Header({ variant = "overlay" }: HeaderProps) {
 
           <div className="col-start-3 flex items-center justify-end self-center">
             <AnimatedSlideIn direction="right">
-              <Button variant="accent">BOOK NOW</Button>
+              <Link href="/booking/step/1">
+                <Button variant="accent">BOOK NOW</Button>
+              </Link>
             </AnimatedSlideIn>
           </div>
 

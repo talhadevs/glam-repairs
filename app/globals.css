@@ -370,6 +370,38 @@ select:autofill {
   transition: width 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@keyframes map-dot-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.75);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+.map-dot {
+  animation: map-dot-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes animated-count-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 0 transparent;
+  }
+
+  50% {
+    text-shadow: 0 0 12px rgba(102, 45, 145, 0.35);
+  }
+}
+
+.animated-count {
+  animation: animated-count-glow 2.4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .onboarding-step-enter,
   .onboarding-card {
@@ -382,6 +414,16 @@ select:autofill {
 
   .notification-toast {
     transition: none;
+  }
+
+  .map-dot {
+    animation: none;
+    opacity: 0.85;
+    transform: scale(1);
+  }
+
+  .animated-count {
+    animation: none;
   }
 }
 
