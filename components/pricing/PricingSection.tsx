@@ -25,16 +25,16 @@ export default function PricingSection({
       className="bg-white px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-12 lg:px-10 lg:pb-24 lg:pt-14 xl:px-12"
     >
       <div className="mx-auto max-w-[86rem]">
-        <header className="mx-auto max-w-xl text-center">
-          <h2 className="font-serif text-[2.75rem] tracking-normal text-brand-primary sm:text-5xl lg:text-[4.25rem]">
+        <header className="mx-auto max-w-2xl text-center">
+          <h2 className="font-serif text-[2.75rem] italic tracking-normal text-brand-primary sm:text-5xl lg:text-[4.25rem]">
             {title}
           </h2>
-          <p className="mt-4 text-xl font-light leading-snug text-black sm:mt-5 sm:text-2xl lg:text-[1.5rem] lg:leading-[1.35]">
+          <p className="mt-4 text-base font-light leading-snug text-black sm:mt-5 sm:text-lg lg:text-xl">
             {subtitle}
           </p>
         </header>
 
-        <div className="mt-10 grid gap-6 sm:mt-12 lg:mt-14 lg:grid-cols-3 lg:grid-rows-[auto_1fr] lg:items-stretch lg:gap-4 xl:gap-5">
+        <div className="mt-10 grid gap-6 sm:mt-12 lg:mt-14 lg:grid-cols-3 lg:items-stretch lg:gap-5 xl:gap-6">
           {pricingPlans.map((plan) => (
             <PricingCard key={plan.name} {...plan} />
           ))}

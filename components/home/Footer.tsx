@@ -55,6 +55,23 @@ const trustBadges = [
 const contactEmail = "hello@glamrepairs.com";
 const contactPhone = "+92 300 0000000";
 
+const FOOTER_CTA_IMAGE = "/svgs/girl_footer.svg";
+
+const OVAL_MASK = `url("data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 749"><ellipse cx="420" cy="374.5" rx="226" ry="468.125" fill="white" transform="rotate(45 420 374.5)"/></svg>',
+)}")`;
+
+const footerImageMaskStyle = {
+  WebkitMaskImage: OVAL_MASK,
+  maskImage: OVAL_MASK,
+  WebkitMaskSize: "100% 100%",
+  maskSize: "100% 100%",
+  WebkitMaskRepeat: "no-repeat",
+  maskRepeat: "no-repeat",
+  WebkitMaskPosition: "center",
+  maskPosition: "center",
+} as const;
+
 function FooterHeading({ children }: { children: ReactNode }) {
   return (
     <h3 className="-mt-4 font-serif text-4xl tracking-normal text-brand-cream [text-shadow:0_2px_10px_rgba(0,0,0,0.22),0_1px_3px_rgba(0,0,0,0.14)] sm:-mt-6 sm:text-[2.625rem] lg:-mt-8">
@@ -142,28 +159,33 @@ function FooterSocialLinks() {
 
 function FooterCtaSection() {
   return (
-    <section className="bg-[color-mix(in_srgb,var(--brand-cream-light)_50%,white)]">
-      <div className="grid lg:grid-cols-[minmax(0,65%)_minmax(0,35%)]">
-        <div className="flex w-full flex-col justify-center py-6 pl-4 pr-4 sm:py-8 sm:pl-10 sm:pr-8 lg:py-10 lg:pl-16 lg:pr-10 xl:pl-20 xl:pr-12">
-          <h2 className="max-w-none font-serif text-[2.75rem] leading-none tracking-[-0.03em] text-brand-primary sm:text-[6rem] lg:text-[6.5rem]">
+    <section className="overflow-hidden bg-brand-cream-light">
+      <div className="grid items-center lg:grid-cols-2">
+        <div className="relative flex min-h-[14rem] items-end justify-start overflow-visible pl-6 sm:min-h-[16rem] sm:pl-10 lg:min-h-[22rem] lg:pl-14">
+          <div className="relative aspect-[840/749] w-full max-w-[16rem] translate-x-2 sm:max-w-[18rem] sm:translate-x-4 lg:max-w-[22rem] lg:translate-x-6 xl:max-w-[26rem]">
+            <Image
+              src={FOOTER_CTA_IMAGE}
+              alt="Woman thoughtfully considering her skincare"
+              fill
+              sizes="(max-width: 1024px) 85vw, 45vw"
+              className="object-cover object-center"
+              style={footerImageMaskStyle}
+            />
+          </div>
+        </div>
+
+        <div className="flex w-full flex-col justify-center px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12 xl:px-16">
+          <h2 className="font-serif text-[2.75rem] leading-[1.05] tracking-normal text-brand-primary sm:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem]">
             <span className="block">Ready for</span>
-            <span className="block lg:whitespace-nowrap">Healthier Skin?</span>
+            <span className="block">Healthier Skin?</span>
           </h2>
-          <p className="mt-2 max-w-4xl text-lg font-light leading-tight tracking-tight text-black [word-spacing:-0.12em] sm:mt-3 sm:text-[2.25rem] lg:max-w-5xl lg:text-[2.5rem]">
+          <p className="mt-3 max-w-md text-base font-light leading-snug text-brand-ink sm:mt-4 sm:max-w-lg sm:text-lg lg:text-xl">
             Let our skincare specialists create a treatment plan tailored to
             your needs.
           </p>
-          <SkinAssessmentCta className="mx-auto mt-4 block w-full max-w-xs sm:mt-6 sm:w-fit lg:mx-0 lg:max-w-none" />
-        </div>
-
-        <div className="relative flex min-h-[12rem] items-end justify-center overflow-hidden sm:min-h-[14rem] lg:min-h-[16rem] lg:justify-end">
-          <Image
-            src="/svgs/girl.svg"
-            alt="Woman thoughtfully considering her skincare"
-            width={471}
-            height={494}
-            sizes="(max-width: 1024px) 85vw, 45vw"
-            className="h-auto w-full max-w-[18rem] object-contain object-bottom sm:max-w-[20rem] lg:max-w-[24rem] xl:max-w-[28rem]"
+          <SkinAssessmentCta
+            size="md"
+            className="mx-auto mt-5 block w-full max-w-xs sm:mt-6 sm:w-fit lg:mx-0 lg:max-w-none"
           />
         </div>
       </div>

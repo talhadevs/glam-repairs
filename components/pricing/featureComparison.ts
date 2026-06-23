@@ -8,18 +8,25 @@ export type ComparisonRow = {
   values: [ComparisonCell, ComparisonCell, ComparisonCell];
 };
 
-export const comparisonTitle = "See what's included in each plan";
+export const comparisonTitle = "See Features includes";
+
+export const comparisonTabLabels = [
+  "Features included",
+  "Free skin check",
+  "Core skin plan",
+  "Advanced skin guide",
+] as const;
 
 export const comparisonPlans = [
-  { name: "Skin Starter", subtitle: "Free" },
-  { name: "Clarity", subtitle: "Rs. 1,500" },
-  { name: "Transform", subtitle: "Rs. 3,000" },
+  { name: "Skin Savvy", subtitle: "Free" },
+  { name: "Skin Clarity", subtitle: "Rs. 1,500" },
+  { name: "Skin Transform", subtitle: "Rs. 3,000" },
 ] as const;
 
 export const comparisonPrices: [string, string, string] = [
-  "Free",
-  "Rs. 1,500 one-time",
-  "Rs. 3,000 one-time",
+  "0.00 Rs /monthly",
+  "1500 Rs /monthly",
+  "3000 Rs /monthly",
 ];
 
 export const comparisonRows: ComparisonRow[] = [

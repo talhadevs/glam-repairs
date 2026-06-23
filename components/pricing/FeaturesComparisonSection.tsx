@@ -1,7 +1,7 @@
 import {
-  comparisonPlans,
   comparisonPrices,
   comparisonRows,
+  comparisonTabLabels,
   comparisonTitle,
   type ComparisonCell,
 } from "@/components/pricing/featureComparison";
@@ -46,37 +46,44 @@ function ComparisonCellContent({ cell }: { cell: ComparisonCell }) {
   );
 }
 
+function getTabColumnRadius(index: number, total: number) {
+  if (index === 0) {
+    return "rounded-tl-full rounded-tr-full rounded-bl-full rounded-br-full";
+  }
+
+  if (index === total - 1) {
+    return "rounded-tr-full rounded-br-full rounded-bl-full";
+  }
+
+  return "rounded-tr-full rounded-bl-full rounded-br-full";
+}
+
 export default function FeaturesComparisonSection() {
   return (
     <section className="bg-white px-4 pb-16 sm:px-6 sm:pb-20 lg:px-10 lg:pb-24 xl:px-12">
       <div className="mx-auto max-w-[86rem]">
-        <h2 className="text-center font-serif text-[2rem] tracking-normal text-brand-primary sm:text-[2.75rem] lg:text-[3.25rem]">
+        <h2 className="text-center font-serif text-[2rem] tracking-normal text-[#662D91] sm:text-[2.75rem] lg:text-[3.25rem]">
           {comparisonTitle}
         </h2>
 
         <div className="mt-8 overflow-x-auto sm:mt-10">
-          <div className="min-w-[48rem] overflow-hidden rounded-[20px] border border-brand-border-light">
-            <div className="grid grid-cols-[1.4fr_repeat(3,1fr)] bg-brand-primary text-white">
-              <div className="border-r border-white/20 px-5 py-4 text-sm font-medium sm:px-6 sm:py-5 sm:text-base">
-                Feature
-              </div>
-              {comparisonPlans.map((plan, index) => (
+          <div className="min-w-[48rem]">
+            <div className="grid grid-cols-[1.4fr_repeat(3,1fr)] overflow-hidden">
+              {comparisonTabLabels.map((label, index) => (
                 <div
-                  key={plan.name}
-                  className={`px-3 py-4 text-center sm:px-4 sm:py-5 ${
-                    index < comparisonPlans.length - 1
-                      ? "border-r border-white/20"
+                  key={label}
+                  className={`bg-[#A88EC3] px-4 py-3.5 text-center text-sm font-medium text-white sm:px-5 sm:py-4 sm:text-base ${getTabColumnRadius(index, comparisonTabLabels.length)} ${
+                    index < comparisonTabLabels.length - 1
+                      ? "border-r border-white/25"
                       : ""
                   }`}
                 >
-                  <p className="text-sm font-medium sm:text-base">{plan.name}</p>
-                  <p className="mt-0.5 text-xs font-light text-white/85 sm:text-sm">
-                    ({plan.subtitle})
-                  </p>
+                  {label}
                 </div>
               ))}
             </div>
 
+            <div className="mt-4 overflow-hidden rounded-[20px] border border-brand-border-light">
             <div className="grid grid-cols-[1.4fr_repeat(3,1fr)] border-b border-brand-border-light bg-white">
               <div className="border-r border-brand-border-light px-5 py-3 text-sm font-semibold text-black sm:px-6 sm:py-4 sm:text-base">
                 Price
@@ -121,6 +128,7 @@ export default function FeaturesComparisonSection() {
                 ))}
               </div>
             ))}
+            </div>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 export type PricingPlan = {
   name: string;
   price: string;
-  priceNote?: string;
   cta: string;
   description: string;
   features: {
@@ -9,21 +8,20 @@ export type PricingPlan = {
     description: string;
   }[];
   exclusions?: string;
-  upgradeNudge?: string;
   badge?: string;
 };
 
 export const pricingPlans: PricingPlan[] = [
   {
-    name: "Skin Starter",
-    price: "Free",
-    cta: "Try it free →",
+    name: "Skin Savvy",
+    price: "0.00",
+    cta: "TRY IT FREE",
     description: "Know your skin before you fix it.",
     features: [
       {
         title: "Skin concern quiz",
         description:
-          "Questions covering skin type, lifestyle, concerns",
+          "questions covering skin type, lifestyle, concerns",
       },
       {
         title: "Instant skin type result",
@@ -31,35 +29,32 @@ export const pricingPlans: PricingPlan[] = [
       },
       {
         title: "Generic routine guide based on your skin type",
-        description: "Downloadable",
+        description: "downloadable",
       },
       {
         title: "Access to Glam Repairs skin tips",
         description: "",
       },
     ],
-    exclusions: "No photo upload. No expert review.",
-    upgradeNudge:
-      "Your routine above is built for your skin type, not your skin. Upload photos and let a certified aesthetics professional build one for you.",
+    exclusions: "No photo upload. No expert review",
   },
   {
-    name: "Clarity",
-    price: "Rs. 1,500",
-    priceNote: "(one-time)",
-    cta: "Get my assessment →",
-    description: "Your skin, studied — not scanned.",
+    name: "Skin Clarity",
+    price: "1500",
+    cta: "GET MY SKIN ASSESSMENT",
+    description: "Your skin, studied - not scanned.",
     features: [
       {
         title: "Full intake form",
-        description: "Concerns, history, current products, diet basics",
+        description: "concerns, history, current products, diet basics",
       },
       {
         title: "Photo upload — up to 3 images",
-        description: "Face + concern areas",
+        description: "face + concern areas",
       },
       {
         title: "Manual expert review",
-        description: "Delivered within 48 hours",
+        description: "delivered within 48 hours",
       },
       {
         title: "Personalized AM + PM skincare routine",
@@ -67,7 +62,7 @@ export const pricingPlans: PricingPlan[] = [
       },
       {
         title: "Ingredient & product-type guidance",
-        description: "What to look for, what to avoid",
+        description: "what to look for, what to avoid",
       },
       {
         title: "Written skin assessment report",
@@ -80,11 +75,10 @@ export const pricingPlans: PricingPlan[] = [
     ],
   },
   {
-    name: "Transform",
-    price: "Rs. 3,000",
-    priceNote: "(one-time)",
-    badge: "Most complete",
-    cta: "Start my full journey →",
+    name: "Skin Transform",
+    price: "3000",
+    badge: "Most Complete",
+    cta: "START MY FULL SKIN JOURNEY",
     description: "A full skin strategy. Not just a routine.",
     features: [
       {
@@ -101,11 +95,11 @@ export const pricingPlans: PricingPlan[] = [
       },
       {
         title: "Detailed month-long skin plan",
-        description: "Week-by-week expectations set",
+        description: "week-by-week expectations set",
       },
       {
         title: "2 biweekly follow-ups",
-        description: "Full month of expert support",
+        description: "full month of expert support",
       },
       {
         title: "Ingredient recommendations across price ranges",
@@ -113,7 +107,7 @@ export const pricingPlans: PricingPlan[] = [
       },
       {
         title: "Vitamin & supplement guide",
-        description: "Key nutrients for your skin concerns",
+        description: "key nutrients for your skin concerns",
       },
       {
         title: "Lifestyle & diet tips tied to your skin",
@@ -122,7 +116,7 @@ export const pricingPlans: PricingPlan[] = [
       {
         title: "Aesthetic procedure roadmap",
         description:
-          "If and when you'd benefit from in-clinic treatment",
+          "if and when you'd benefit from in-clinic treatment",
       },
       {
         title: "Direct communication access during the plan period",

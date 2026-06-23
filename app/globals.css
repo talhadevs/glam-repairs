@@ -294,22 +294,6 @@ body {
   background-color: var(--brand-light) !important;
 }
 
-.pricing-card-gradient {
-  background:
-    radial-gradient(
-      ellipse 90% 55% at 50% 0%,
-      var(--brand-cream-light) 0%,
-      color-mix(in srgb, var(--brand-cream-light) 45%, transparent) 42%,
-      transparent 68%
-    ),
-    linear-gradient(
-      to top,
-      color-mix(in srgb, var(--brand-lavender) 72%, transparent) 0%,
-      color-mix(in srgb, var(--brand-lavender) 38%, transparent) 38%,
-      transparent 68%
-    );
-}
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
