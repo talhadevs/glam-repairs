@@ -22,6 +22,7 @@ type BeforeAfterSliderProps = {
   handleVariant?: "chevrons" | "arrow-right";
   contentScale?: number;
   imagePosition?: "bottom" | "center";
+  priority?: boolean;
   unoptimized?: boolean;
   roundedClassName?: string;
   handleClassName?: string;
@@ -47,6 +48,7 @@ export default function BeforeAfterSlider({
   handleVariant = "chevrons",
   contentScale = 0.94,
   imagePosition = "bottom",
+  priority = false,
   unoptimized = false,
   roundedClassName = "rounded-[20px]",
   handleClassName = "h-14 w-14",
@@ -148,7 +150,7 @@ export default function BeforeAfterSlider({
           alt=""
           fill
           draggable={false}
-          priority
+          priority={priority}
           unoptimized={unoptimized}
           sizes="(max-width: 1024px) 100vw, 400px"
           className={imageClassName}

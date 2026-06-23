@@ -6,7 +6,7 @@ import ShareSkinStepImage from "@/components/home/ShareSkinStepImage";
 
 const steps = [
   {
-    image: "/images,svgs/woman-hand-.jpg",
+    image: "/images,svgs/woman-hand-.webp",
     alt: "Hands holding a phone with skin concern tags for acne scars, pimples, and blackheads",
     number: "01",
     title: "Share your Skin",
@@ -14,7 +14,7 @@ const steps = [
       "Fill out your skin intake form and upload clear photos of your concern areas. Takes under 5 minutes.",
   },
   {
-    image: "/images,svgs/face_pimples.jpg",
+    image: "/images,svgs/face_pimples.webp",
     alt: "Close-up face photo with expert markers for sebaceous filaments, pustules, papules, and acne scars",
     number: "02",
     title: "Experts Review",
@@ -22,7 +22,7 @@ const steps = [
       "Our qualified aesthetics expert manually reviews your submission - no AI shortcuts, no automated reports.",
   },
   {
-    image: "/images,svgs/men_face_pimple.jpg",
+    image: "/images,svgs/men_face_pimple.webp",
     alt: "Side profile with personalized skincare guidance for moisture, cleansing, and product recommendations",
     number: "03",
     title: "Your Personalized Plan",

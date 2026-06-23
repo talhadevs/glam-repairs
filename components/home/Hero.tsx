@@ -1,17 +1,21 @@
-import { preload } from "react-dom";
+import Image from "next/image";
 import Header from "@/components/home/Header";
 import SkinAssessmentCta from "@/components/home/SkinAssessmentCta";
 
 const heroBackground = "/images,svgs/hero_bg.webp";
 
-preload(heroBackground, { as: "image", fetchPriority: "high" });
-
 export default function Hero() {
   return (
-    <section
-      className="relative min-h-[100dvh] overflow-hidden bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url("${heroBackground}")` }}
-    >
+    <section className="relative min-h-[100dvh] overflow-hidden">
+      <Image
+        src={heroBackground}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-center"
+      />
+
       <Header />
 
       <div className="relative flex min-h-[100dvh] flex-col items-center justify-center px-4 pb-12 pt-44 text-center text-white sm:px-6 sm:pb-16 sm:pt-40 lg:px-8 lg:pt-32">

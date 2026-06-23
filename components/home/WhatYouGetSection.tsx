@@ -84,7 +84,7 @@ export default function WhatYouGetSection() {
 
               <div className="pointer-events-none absolute inset-x-0 bottom-5 z-0 h-[9.25rem] -translate-x-1 sm:bottom-6 sm:h-[10.25rem] sm:translate-x-0 lg:inset-x-0 lg:bottom-0 lg:top-8 lg:h-auto lg:translate-x-6">
                 <Image
-                  src="/images,svgs/men.png"
+                  src="/images,svgs/men.webp"
                   alt="Man examining his skin in the mirror"
                   fill
                   sizes="(max-width: 1024px) 90vw, 560px"
@@ -101,8 +101,8 @@ export default function WhatYouGetSection() {
           >
             <article className="relative aspect-[433/610] min-h-[22rem] overflow-hidden rounded-[20px] sm:min-h-[26rem] lg:h-full lg:min-h-0">
               <BeforeAfterSlider
-                beforeSrc="/images,svgs/Rectangle 3467729.png"
-                afterSrc="/images,svgs/Rectangle 3467730.png"
+                beforeSrc="/images,svgs/Rectangle 3467729.webp"
+                afterSrc="/images,svgs/Rectangle 3467730.webp"
                 imagePosition="center"
                 contentScale={1}
               />
@@ -129,7 +129,7 @@ export default function WhatYouGetSection() {
           <AnimatedSlideIn direction="up" delay={250} className="lg:col-span-3 lg:col-start-6 lg:row-start-2">
             <article className="relative flex h-full min-h-[12rem] flex-col items-center justify-center overflow-hidden rounded-[20px] bg-brand-primary px-4 py-5 text-center sm:min-h-[16rem] sm:px-5 sm:py-7 lg:min-h-[17rem]">
               <Image
-                src="/icons/shadow.svg"
+                src="/images,svgs/shadow.webp"
                 alt=""
                 fill
                 sizes="(max-width: 1024px) 50vw, 400px"

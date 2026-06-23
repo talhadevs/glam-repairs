@@ -2,8 +2,8 @@ import SkinElevatedMetricsGrid from "@/components/booking/SkinElevatedMetricsGri
 import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 import { StepBody, StepHeader } from "@/components/steps";
 
-const beforeImage = "/images,svgs/Rectangle 3467729.png";
-const afterImage = "/images,svgs/Rectangle 3467730.png";
+const beforeImage = "/images,svgs/Rectangle 3467729.webp";
+const afterImage = "/images,svgs/Rectangle 3467730.webp";
 
 export default function SkinElevatedStep() {
   return (

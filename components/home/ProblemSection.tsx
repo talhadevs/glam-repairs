@@ -2,7 +2,7 @@ import Image from "next/image";
 import ProblemCardsGroup from "@/components/home/ProblemCardsGroup";
 import ProblemSectionHeader from "@/components/home/ProblemSectionHeader";
 
-const WOMAN_IMAGE = "/images,svgs/woman-hands-shoulder.jpg";
+const WOMAN_IMAGE = "/images,svgs/woman-hands-shoulder.webp";
 
 const OVAL_MASK = `url("data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 749"><ellipse cx="420" cy="374.5" rx="226" ry="468.125" fill="white" transform="rotate(45 420 374.5)"/></svg>',

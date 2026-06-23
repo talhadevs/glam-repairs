@@ -13,7 +13,7 @@ export default function CeoSection() {
           className="relative flex min-h-[18rem] flex-col items-end justify-end bg-brand-cream pl-4 sm:min-h-[28rem] sm:pl-6 lg:min-h-[42rem] lg:pl-10 xl:pl-12"
         >
           <Image
-            src="/svgs/ceo.svg"
+            src="/images,svgs/ceo.webp"
             alt="Ayma Arif, aesthetics expert and co-founder of Glam Repairs"
             width={518}
             height={672}
