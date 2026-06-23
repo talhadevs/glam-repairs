@@ -33,6 +33,10 @@ function promoteLazyImagesToEager() {
   });
 }
 
+export function waitForPreloadImages(urls: string[]): Promise<void> {
+  return Promise.all(urls.map(preloadImage)).then(() => undefined);
+}
+
 export async function waitForAllPageImages(
   preloadUrls: string[] = [],
   pollIntervalMs = 200,

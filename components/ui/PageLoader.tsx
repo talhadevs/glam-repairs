@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Logo from "@/components/home/Logo";
-import { waitForAllPageImages } from "@/lib/waitForPageImages";
+import { waitForPreloadImages } from "@/lib/waitForPageImages";
 
 type PageLoaderProps = {
   children: ReactNode;
@@ -40,7 +40,7 @@ export default function PageLoader({
         });
       });
 
-      await waitForAllPageImages([...preloadUrls]);
+      await waitForPreloadImages([...preloadUrls]);
       finish();
     };
 

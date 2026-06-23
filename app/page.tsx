@@ -10,15 +10,15 @@ import WhatYouGetSection from "@/components/home/WhatYouGetSection";
 import PricingSection from "@/components/pricing/PricingSection";
 import PageLoader from "@/components/ui/PageLoader";
 import {
-  HOME_PAGE_LOADER_TIMEOUT_MS,
-  HOME_PAGE_PRELOAD_URLS,
-} from "@/lib/homePagePreloadUrls";
+  HERO_SECTION_LOADER_TIMEOUT_MS,
+  HERO_SECTION_PRELOAD_URLS,
+} from "@/lib/heroSectionPreloadUrls";
 
 export default function Home() {
   return (
     <PageLoader
-      preloadUrls={HOME_PAGE_PRELOAD_URLS}
-      timeoutMs={HOME_PAGE_LOADER_TIMEOUT_MS}
+      preloadUrls={HERO_SECTION_PRELOAD_URLS}
+      timeoutMs={HERO_SECTION_LOADER_TIMEOUT_MS}
     >
       <Hero />
       <SkinAssessment />
