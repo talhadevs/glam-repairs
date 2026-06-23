@@ -8,15 +8,31 @@ import { getOnboardingFirstName } from "@/components/onboarding/onboardingStorag
 import { StepHeader } from "@/components/steps";
 
 const nextSteps = [
-  "Our certified expert reviews your photos and intake form",
-  "Your personalized skin report is prepared",
-  "You receive your report + routine within your plan's timeframe",
-  "Your follow-up check-in is scheduled automatically",
+  {
+    number: "1",
+    title: "Expert review",
+    description: "Our certified expert reviews your photos and intake form",
+  },
+  {
+    number: "2",
+    title: "Personalized report",
+    description: "Your personalized skin report is prepared",
+  },
+  {
+    number: "3",
+    title: "Report delivery",
+    description: "You receive your report + routine within your plan's timeframe",
+  },
+  {
+    number: "4",
+    title: "Follow-up scheduled",
+    description: "Your follow-up check-in is scheduled automatically",
+  },
 ] as const;
 
 function SuccessIcon() {
   return (
-    <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-[3px] border-brand-success text-brand-success sm:h-[4.5rem] sm:w-[4.5rem]">
+    <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-success text-white sm:h-[4.5rem] sm:w-[4.5rem]">
       <svg
         aria-hidden
         viewBox="0 0 24 24"
@@ -33,6 +49,36 @@ function SuccessIcon() {
         />
       </svg>
     </span>
+  );
+}
+
+function ContactNotice() {
+  return (
+    <div className="mx-auto mt-5 flex items-start gap-3 rounded-2xl bg-white px-4 py-3.5 text-left shadow-sm sm:mt-6 sm:gap-3.5 sm:px-5 sm:py-4">
+      <span
+        className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-lavender/40 text-brand-gray"
+        aria-hidden
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="h-[1.125rem] w-[1.125rem]"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7 9.5H17M7 13H13M6 19L7.5 15.5H18C19.1 15.5 20 14.6 20 13.5V7.5C20 6.4 19.1 5.5 18 5.5H6C4.9 5.5 4 6.4 4 7.5V17C4 18.1 4.9 19 6 19Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+      <p className="text-sm leading-relaxed text-brand-gray sm:text-[0.9375rem]">
+        We&apos;ll reach out via the contact details you provided. Keep an eye
+        on your WhatsApp or email.
+      </p>
+    </div>
   );
 }
 
@@ -58,9 +104,9 @@ export default function ThankYouStep({
       footer={
         <Link
           href="/"
-          className="subscribe-fill-btn block w-full rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal tracking-[0.08em] text-white sm:py-3.5 sm:text-sm"
+          className="subscribe-fill-btn block w-full rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal uppercase tracking-[0.08em] text-white sm:py-3.5 sm:text-sm"
         >
-          Back to Home →
+          Back to Home
         </Link>
       }
     >
@@ -69,35 +115,40 @@ export default function ThankYouStep({
 
         <StepHeader
           title={headline}
-          subtitle="Your submission has been received."
+          subtitle="Your submission was successful."
           titleClassName="mt-5 font-serif text-[1.75rem] leading-tight text-brand-ink sm:mt-6 sm:text-[2rem]"
-          subtitleClassName="mt-2 text-sm text-brand-ink sm:text-[0.9375rem]"
+          subtitleClassName="mt-2 text-sm font-normal text-brand-ink sm:text-[0.9375rem]"
         />
 
         <p className="mx-auto mt-5 max-w-[20rem] text-sm leading-relaxed text-brand-gray sm:mt-6 sm:max-w-none sm:text-[0.9375rem]">
           Our certified expert will review your skin assessment and deliver your
           personalized report within 24 or 48 hours — depending on your plan.
         </p>
-        <p className="mx-auto mt-3 max-w-[20rem] text-sm leading-relaxed text-brand-gray sm:max-w-none sm:text-[0.9375rem]">
-          We&apos;ll reach out via the contact details you provided. Keep an eye
-          on your WhatsApp or email.
-        </p>
+
+        <ContactNotice />
 
         <div className="mt-6 text-left sm:mt-7">
-          <h2 className="text-center text-sm font-semibold text-brand-ink sm:text-[0.9375rem]">
-            What happens next:
+          <h2 className="text-base font-semibold text-brand-ink sm:text-[1.0625rem]">
+            What happens next
           </h2>
-          <ul className="mt-4 space-y-3">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-3.5">
             {nextSteps.map((step) => (
-              <li
-                key={step}
-                className="flex items-start gap-2.5 text-sm leading-relaxed text-brand-gray sm:text-[0.9375rem]"
+              <article
+                key={step.number}
+                className="rounded-2xl bg-white px-3.5 py-3.5 shadow-sm sm:px-4 sm:py-4"
               >
-                <span className="mt-0.5 shrink-0 text-brand-light">→</span>
-                <span>{step}</span>
-              </li>
+                <span className="text-lg font-medium leading-none text-brand-light sm:text-xl">
+                  {step.number}
+                </span>
+                <h3 className="mt-2 text-sm font-semibold leading-snug text-brand-ink sm:text-[0.9375rem]">
+                  {step.title}
+                </h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-brand-gray sm:text-[0.8125rem]">
+                  {step.description}
+                </p>
+              </article>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </OnboardingShell>
