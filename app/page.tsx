@@ -8,10 +8,18 @@ import TrustPrivacySection from "@/components/home/TrustPrivacySection";
 import WhatWeDoSection from "@/components/home/WhatWeDoSection";
 import WhatYouGetSection from "@/components/home/WhatYouGetSection";
 import PricingSection from "@/components/pricing/PricingSection";
+import PageLoader from "@/components/ui/PageLoader";
+import {
+  HOME_PAGE_LOADER_TIMEOUT_MS,
+  HOME_PAGE_PRELOAD_URLS,
+} from "@/lib/homePagePreloadUrls";
 
 export default function Home() {
   return (
-    <>
+    <PageLoader
+      preloadUrls={HOME_PAGE_PRELOAD_URLS}
+      timeoutMs={HOME_PAGE_LOADER_TIMEOUT_MS}
+    >
       <Hero />
       <SkinAssessment />
       <ProblemSection />
@@ -26,6 +34,6 @@ export default function Home() {
       />
       <FaqSection />
       <Footer />
-    </>
+    </PageLoader>
   );
 }
