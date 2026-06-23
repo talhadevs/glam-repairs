@@ -55,7 +55,7 @@ const trustBadges = [
 const contactEmail = "hello@glamrepairs.com";
 const contactPhone = "+92 300 0000000";
 
-const FOOTER_CTA_IMAGE = "/svgs/girl_footer.svg";
+const FOOTER_CTA_IMAGE = "/images,svgs/footer.jpg";
 
 const OVAL_MASK = `url("data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 749"><ellipse cx="420" cy="374.5" rx="226" ry="468.125" fill="white" transform="rotate(45 420 374.5)"/></svg>',
