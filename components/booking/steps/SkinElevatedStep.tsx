@@ -2,8 +2,8 @@ import SkinElevatedMetricsGrid from "@/components/booking/SkinElevatedMetricsGri
 import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 import { StepBody, StepHeader } from "@/components/steps";
 
-const beforeImage = "/svgs/Rectangle 3467729.svg";
-const afterImage = "/svgs/Rectangle 3467730.svg";
+const beforeImage = "/images,svgs/Rectangle 3467729.png";
+const afterImage = "/images,svgs/Rectangle 3467730.png";
 
 export default function SkinElevatedStep() {
   return (
@@ -23,7 +23,6 @@ export default function SkinElevatedStep() {
             handleVariant="arrow-right"
             contentScale={1}
             imagePosition="center"
-            unoptimized
             roundedClassName="rounded-2xl"
             handleClassName="h-10 w-10"
           />

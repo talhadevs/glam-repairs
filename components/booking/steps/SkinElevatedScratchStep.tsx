@@ -1,7 +1,7 @@
 import ScratchCard from "@/components/booking/ScratchCard";
 import { StepBody, StepHeader } from "@/components/steps";
 
-const revealImage = "/svgs/Rectangle 3467730.svg";
+const revealImage = "/images,svgs/Rectangle 3467730.png";
 
 export default function SkinElevatedScratchStep() {
   return (

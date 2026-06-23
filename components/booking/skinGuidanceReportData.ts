@@ -10,8 +10,8 @@ export const reportPatient = {
 } as const;
 
 export const reportPhotos = [
-  "/svgs/Rectangle 3467729.svg",
-  "/svgs/Rectangle 3467730.svg",
+  "/images,svgs/Rectangle 3467729.png",
+  "/images,svgs/Rectangle 3467730.png",
 ] as const;
 
 export const reportNoticedItems = [
