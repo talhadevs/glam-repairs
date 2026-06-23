@@ -13,7 +13,7 @@ import {
 
 type ExosomesChoice = "actively-look" | "heard-of-them" | "not-really";
 
-const faceImage = "/svgs/Rectangle 3467689 (2).svg";
+const faceImage = "/images,svgs/Rectangle 3467689 (1).jpg";
 
 const pillProps = {
   paddingClassName: "py-0.5 pl-1 pr-2 sm:py-1 sm:pl-1.5 sm:pr-2.5",
