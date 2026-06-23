@@ -84,7 +84,7 @@ export default function WhatYouGetSection() {
 
               <div className="pointer-events-none absolute inset-x-0 bottom-5 z-0 h-[9.25rem] -translate-x-1 sm:bottom-6 sm:h-[10.25rem] sm:translate-x-0 lg:inset-x-0 lg:bottom-0 lg:top-8 lg:h-auto lg:translate-x-6">
                 <Image
-                  src="/svgs/men.svg"
+                  src="/images,svgs/men.png"
                   alt="Man examining his skin in the mirror"
                   fill
                   sizes="(max-width: 1024px) 90vw, 560px"
