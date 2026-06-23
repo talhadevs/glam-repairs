@@ -11,10 +11,12 @@ import {
 
 type ImproveArea =
   | "whole-face"
+  | "forehead"
   | "eyes"
   | "cheeks"
-  | "under-nose"
-  | "chin";
+  | "nose-tzone"
+  | "chin-jawline"
+  | "neck";
 
 const areaOptions: {
   value: ImproveArea;
@@ -24,11 +26,16 @@ const areaOptions: {
   {
     value: "whole-face",
     label: "whole face",
-    icon: "/svgs/Group 2085660829.svg",
+    icon: "/svgs/Group 2085660902.svg",
+  },
+  {
+    value: "forehead",
+    label: "Forehead",
+    icon: "/svgs/Group (10).svg",
   },
   {
     value: "eyes",
-    label: "Eyes",
+    label: "Eyes / under-eye",
     icon: "/svgs/Vector (10).svg",
   },
   {
@@ -37,14 +44,19 @@ const areaOptions: {
     icon: "/svgs/Group (5).svg",
   },
   {
-    value: "under-nose",
-    label: "Under nose",
+    value: "nose-tzone",
+    label: "Nose & T-zone",
+    icon: "/svgs/Group 2085660901.svg",
+  },
+  {
+    value: "chin-jawline",
+    label: "Chin & jawline",
     icon: "/svgs/Group 2085660827.svg",
   },
   {
-    value: "chin",
-    label: "Chin",
-    icon: "/svgs/Group 2085660901.svg",
+    value: "neck",
+    label: "Neck",
+    icon: "/svgs/Group 2085660950.svg",
   },
 ];
 
@@ -72,14 +84,13 @@ export default function ImproveAreasStep() {
             />
           </div>
 
-          <StepChoiceList
-            spacing="compact"
-            className="relative flex flex-col justify-center"
-          >
+          <StepChoiceList className="relative flex flex-col justify-center space-y-2 sm:space-y-2.5">
             {areaOptions.map((option) => (
               <StepChoiceCard
                 key={option.value}
-                variant="compact-icon"
+                variant="icon-multi"
+                iconSize="product"
+                indicatorBorder="lavender"
                 icon={option.icon}
                 label={option.label}
                 selected={selectedArea === option.value}
