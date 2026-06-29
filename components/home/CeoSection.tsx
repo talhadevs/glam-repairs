@@ -24,7 +24,7 @@ export default function CeoSection() {
 
         <AnimatedSlideIn
           direction="right"
-          className="order-1 min-w-0 pt-12 sm:pt-16 lg:order-2 lg:py-16 lg:pt-16"
+          className="order-1 min-w-0 pt-12 sm:pt-16 md:mx-auto md:max-w-[34rem] lg:order-2 lg:mx-0 lg:max-w-none lg:py-16 lg:pt-16"
         >
           <header>
             <span className="relative inline-block">
@@ -54,7 +54,7 @@ export default function CeoSection() {
             Clinic-trained)
           </p>
 
-          <p className="mt-6 max-w-xl text-justify font-sans leading-relaxed text-brand-ink text-base sm:text-lg lg:max-w-2xl lg:text-xl">
+          <p className="mt-6 max-w-xl text-justify font-sans leading-relaxed text-brand-ink text-base sm:text-lg md:max-w-none lg:max-w-2xl lg:text-xl">
             <span className="font-serif italic">Dr. Ayma Arif</span>{" "}is a
             certified aesthetics professional with a Bachelor&apos;s degree in
             Cosmetology and Dermatology Science. With hands-on experience across
@@ -62,7 +62,7 @@ export default function CeoSection() {
             assessments, treatment planning, and evidence-based skincare
             routines for a wide range of concerns.
           </p>
-          <p className="mt-5 max-w-xl text-justify font-sans leading-relaxed text-brand-ink text-base sm:text-lg lg:max-w-2xl lg:text-xl">
+          <p className="mt-5 max-w-xl text-justify font-sans leading-relaxed text-brand-ink text-base sm:text-lg md:max-w-none lg:max-w-2xl lg:text-xl">
             She co-founded Glam Repairs because she saw firsthand how many people
             were struggling with their skin, not from a lack of care, but from a
             lack of access to clear, personalized guidance. Glam Repairs is her

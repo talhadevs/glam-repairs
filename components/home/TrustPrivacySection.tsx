@@ -44,7 +44,7 @@ export default function TrustPrivacySection() {
           <div className="mx-auto flex h-full max-w-7xl items-start pt-6 sm:pt-10 lg:pt-12">
             <AnimatedSlideIn
               direction="left"
-              className="max-w-full sm:-ml-3 lg:-ml-5"
+              className="max-w-full md:mx-auto md:max-w-[34rem] lg:-ml-5 lg:mx-0 lg:max-w-none"
             >
               <header>
                 <h2 className="flex flex-wrap items-baseline gap-x-2 leading-none text-[#fdf6e4] text-[1.875rem] sm:text-[3rem] lg:text-[3.875rem]">
@@ -67,13 +67,15 @@ export default function TrustPrivacySection() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="-mt-16 flex flex-col gap-4 sm:-ml-5 sm:-mt-32 lg:-ml-10 lg:-mt-40 lg:flex-row lg:items-start lg:gap-0">
+        <div className="-mt-16 grid grid-cols-1 place-items-center gap-12 sm:-mt-32 md:grid-cols-2 md:gap-x-6 md:gap-y-16 lg:-ml-10 lg:-mt-40 lg:flex lg:flex-row lg:items-start lg:gap-0">
           {privacyCards.map((card, index) => (
             <AnimatedSlideIn
               key={card.title}
               direction="up"
               delay={index * 150}
-              className={`w-full shrink-0 lg:w-auto ${cardTopOffsets[index]}`}
+              className={`w-full shrink-0 sm:w-[20rem] lg:w-auto ${
+                index === 2 ? "md:col-span-2 md:justify-self-center" : ""
+              } ${cardTopOffsets[index]}`}
             >
               <TrustPrivacyCard {...card} />
             </AnimatedSlideIn>
