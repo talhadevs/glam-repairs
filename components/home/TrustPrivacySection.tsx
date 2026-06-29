@@ -23,6 +23,7 @@ const privacyCards = [
     title: "Deletion On Request",
     description:
       "After your report is delivered, you can request complete deletion of your photos from our system at any time.",
+    icon: "/icons/bin_icon.svg",
   },
 ];
 
@@ -31,11 +32,11 @@ export default function TrustPrivacySection() {
     <section className="relative overflow-hidden bg-white px-4 sm:px-6 lg:px-12">
       <div className="relative -mx-4 aspect-[4/3] min-h-[16rem] w-auto sm:-mx-6 sm:aspect-[1440/668] sm:min-h-[26rem] lg:-mx-12 lg:min-h-[32rem]">
         <Image
-          src="/images,svgs/women_flower.webp"
+          src="/images,svgs/privacy_bubbles_bg.png"
           alt=""
           fill
           sizes="100vw"
-          className="object-cover object-center"
+          className="-scale-x-100 object-cover object-center"
           priority={false}
         />
 
@@ -46,13 +47,16 @@ export default function TrustPrivacySection() {
               className="max-w-full sm:-ml-3 lg:-ml-5"
             >
               <header>
-                <h2 className="font-serif text-[1.4rem] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
-                  TRUST &amp; PRIVACY
+                <h2 className="flex flex-wrap items-baseline gap-x-2 leading-none text-[#fdf6e4] text-[1.875rem] sm:text-[3rem] lg:text-[3.875rem]">
+                  <span className="font-sans font-normal tracking-[-0.02em]">
+                    Trust
+                  </span>
+                  <span className="font-serif italic">and Privacy</span>
                 </h2>
-                <p className="mt-1 hidden text-sm font-light tracking-tight text-brand-gray sm:mt-2 sm:block sm:text-2xl lg:text-[1.75rem]">
+                <p className="mt-2 hidden font-sans font-medium text-brand-ink sm:mt-4 sm:block sm:text-lg lg:text-[1.25rem]">
                   Your privacy is non-negotiable.
                 </p>
-                <p className="mt-3 hidden text-[11px] font-light leading-snug tracking-tighter text-brand-gray sm:mt-4 sm:block sm:text-lg lg:text-xl">
+                <p className="mt-2 hidden font-sans font-normal leading-normal text-brand-ink sm:mt-3 sm:block sm:text-base lg:text-[1.25rem]">
                   You&apos;re sharing photos of your skin. We take that
                   seriously.
                 </p>
@@ -82,8 +86,11 @@ export default function TrustPrivacySection() {
           direction="up"
           className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-12"
         >
-          <h3 className="font-serif text-2xl leading-snug text-brand-primary sm:text-4xl lg:text-[2.75rem] lg:leading-[1.3]">
-            The consultation you&apos;ve been putting off - done in 24 hours.
+          <h3 className="text-brand-primary text-2xl leading-snug sm:text-4xl lg:text-[3.25rem] lg:leading-[1.25]">
+            <span className="font-sans italic tracking-[-0.015em]">
+              The consultation you&apos;ve been putting off
+            </span>{" "}
+            <span className="font-serif italic">- done in 24 hours.</span>
           </h3>
           <SkinAssessmentCta
             label="GET MY SKIN GUIDANCE"

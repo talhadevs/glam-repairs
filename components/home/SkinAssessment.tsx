@@ -1,77 +1,204 @@
-"use client";
+import type { ReactNode } from "react";
 
-import Image from "next/image";
-import AnimatedSlideIn from "@/components/home/AnimatedSlideIn";
-import PillBadge from "@/components/home/PillBadge";
-import Button from "@/components/ui/Button";
+function EyeIcon() {
+  return (
+    <svg
+      viewBox="0 0 20 18"
+      fill="none"
+      className="h-[18px] w-[20px]"
+      aria-hidden
+    >
+      <path
+        d="M0.970936 3.21408C3.36408 3.21408 4.57678 2.87017 5.75078 2.53591C6.84414 2.22414 7.87945 1.92845 10.0017 1.92845C12.1239 1.92845 13.156 2.22414 14.2526 2.53269C15.4266 2.86696 16.6425 3.21408 19.0324 3.21408C19.5646 3.21408 20 2.78018 20 2.24985C20 1.71953 19.5646 1.28563 19.0324 1.28563C16.9102 1.28563 15.8781 0.989936 14.7815 0.681385C13.6075 0.347121 12.3916 0 10.0017 0C7.61175 0 6.39583 0.343906 5.22183 0.67817C4.12847 0.989936 3.09316 1.28563 0.970936 1.28563C0.438767 1.28563 0.00335693 1.71953 0.00335693 2.24985C0.00335693 2.78018 0.438767 3.21408 0.970936 3.21408Z"
+        fill="#A88EC3"
+      />
+      <path
+        d="M9.51782 17.8704C9.97903 18.1372 10.5725 17.9797 10.8402 17.5169C10.9692 17.2951 11.0047 17.0348 10.9369 16.7841C10.8692 16.5366 10.7112 16.3277 10.4854 16.1991C10.3338 16.1123 10.1661 16.0706 10.0016 16.0706C9.66618 16.0706 9.34043 16.2441 9.16304 16.5527C9.03403 16.7744 8.99855 17.0348 9.06628 17.2855C9.13401 17.533 9.29205 17.7419 9.51782 17.8704Z"
+        fill="#A88EC3"
+      />
+      <path
+        d="M15.9684 17.8704C16.4296 18.1372 17.023 17.9797 17.2907 17.5169C17.4197 17.2951 17.4552 17.0348 17.3875 16.7841C17.3198 16.5366 17.1617 16.3277 16.936 16.1991C16.7844 16.1123 16.6167 16.0706 16.4522 16.0706C16.1167 16.0706 15.791 16.2441 15.6136 16.5527C15.4846 16.7744 15.4491 17.0348 15.5168 17.2855C15.5846 17.533 15.7426 17.7419 15.9684 17.8704Z"
+        fill="#A88EC3"
+      />
+      <path
+        d="M12.743 13.692C13.2042 13.9587 13.7977 13.8013 14.0654 13.3384C14.1944 13.1167 14.2299 12.8563 14.1622 12.6056C14.0944 12.3581 13.9364 12.1492 13.7106 12.0207C13.559 11.9339 13.3913 11.8921 13.2268 11.8921C12.8914 11.8921 12.5656 12.0656 12.3883 12.3742C12.2592 12.596 12.2238 12.8563 12.2915 13.107C12.3592 13.3545 12.5173 13.5634 12.743 13.692Z"
+        fill="#A88EC3"
+      />
+      <path
+        d="M6.29247 13.692C6.75369 13.9587 7.34713 13.8013 7.61483 13.3384C7.74384 13.1167 7.77932 12.8563 7.71159 12.6056C7.64386 12.3581 7.48582 12.1492 7.26005 12.0207C7.10847 11.9339 6.94075 11.8921 6.77626 11.8921C6.44084 11.8921 6.11509 12.0656 5.9377 12.3742C5.80869 12.596 5.77321 12.8563 5.84094 13.107C5.90867 13.3545 6.06671 13.5634 6.29247 13.692Z"
+        fill="#A88EC3"
+      />
+      <path
+        d="M3.06725 17.8704C3.52847 18.1372 4.12191 17.9765 4.38961 17.5169C4.51862 17.2951 4.5541 17.0348 4.48637 16.7841C4.41864 16.5366 4.2606 16.3277 4.03483 16.1991C3.88325 16.1123 3.71553 16.0706 3.55104 16.0706C3.21562 16.0706 2.88986 16.2441 2.71248 16.5527C2.58346 16.7744 2.54799 17.0348 2.61572 17.2855C2.68345 17.533 2.84149 17.7419 3.06725 17.8704Z"
+        fill="#A88EC3"
+      />
+      <path
+        d="M0.970804 9.64217C2.45765 9.64217 3.23494 8.98007 3.85742 8.44653C4.39281 7.99013 4.71533 7.71372 5.48617 7.71372C6.25701 7.71372 6.57954 7.99013 7.11493 8.44653C7.74063 8.98007 8.5147 9.64217 10.0015 9.64217C11.4884 9.64217 12.2657 8.98007 12.8882 8.44653C13.4235 7.99013 13.7461 7.71372 14.5137 7.71372C15.2813 7.71372 15.607 7.99013 16.1424 8.44653C16.7649 8.98007 17.5422 9.64217 19.0291 9.64217C19.5612 9.64217 19.9966 9.20827 19.9966 8.67795C19.9966 8.14762 19.5612 7.71372 19.0291 7.71372C18.2582 7.71372 17.9357 7.43731 17.4003 6.98092C16.7778 6.44738 16.0005 5.78528 14.5137 5.78528C13.0268 5.78528 12.2528 6.44738 11.6271 6.98092C11.0917 7.43731 10.7692 7.71372 9.99832 7.71372C9.22748 7.71372 8.90495 7.43731 8.36956 6.98092C7.74386 6.44738 6.96979 5.78528 5.48295 5.78528C3.9961 5.78528 3.21881 6.44738 2.59634 6.98092C2.06094 7.43731 1.73842 7.71372 0.967579 7.71372C0.435411 7.71372 0 8.14762 0 8.67795C0 9.20827 0.435411 9.64217 0.967579 9.64217H0.970804Z"
+        fill="#A88EC3"
+      />
+    </svg>
+  );
+}
+
+function LotusIcon() {
+  return (
+    <svg
+      viewBox="0 0 26 19"
+      fill="none"
+      className="h-[19px] w-[26px]"
+      aria-hidden
+    >
+      <path
+        d="M25.8697 5.55213C25.8367 5.31827 25.6742 5.15104 25.447 5.11706C23.9845 4.8832 22.522 4.94983 21.0596 5.31826C19.8243 5.61876 18.6869 6.12044 17.614 6.82335C17.3867 5.88658 17.0935 4.9838 16.639 4.14764C15.8265 2.54194 14.656 1.17144 13.2597 0.099948C13.0972 -0.033316 12.837 -0.033316 12.6745 0.099948C11.4723 1.00273 10.4973 2.10673 9.71654 3.41061C9.06656 4.48063 8.61209 5.61861 8.35183 6.82181C7.53935 6.28614 6.62911 5.8524 5.71887 5.55058C4.06089 5.0149 2.27331 4.88165 0.552146 5.14949C0.324905 5.18346 0.162416 5.35069 0.129397 5.58456C-0.129583 7.32482 -9.36784e-05 9.16434 0.520395 10.8708C1.07262 12.6437 2.01588 14.282 3.31585 15.5874C4.5828 16.8913 6.17604 17.8947 7.89889 18.4643C9.00335 18.8328 10.1738 19 11.3445 19C11.8967 19 12.4489 18.966 13.0024 18.8667C13.5547 18.9334 14.1069 19 14.6604 19C15.8309 19 17.0001 18.8328 18.106 18.4643C19.8287 17.896 21.4206 16.9252 22.689 15.5874C23.956 14.2835 24.931 12.6438 25.4845 10.8708C25.9999 9.16447 26.1294 7.32478 25.8704 5.55212L25.8697 5.55213ZM12.9994 1.17132C15.4698 3.1781 16.9324 6.25484 16.9324 9.49881C16.9324 12.475 15.6972 15.2854 13.6178 17.2922C13.6826 15.8877 13.5201 14.4492 13.0973 13.1114C12.5451 11.3384 11.6018 9.70016 10.3019 8.39475C9.97686 8.06028 9.61885 7.72582 9.26214 7.45798C9.74963 4.9495 11.0494 2.74297 12.9994 1.17132ZM12.5449 17.8945C9.42444 18.2617 6.27221 17.1577 4.02911 14.8504C1.78718 12.5431 0.714513 9.2976 1.07116 6.08775C4.19161 5.7193 7.34384 6.8233 9.58563 9.13191C11.8288 11.4392 12.9016 14.6833 12.5449 17.8945ZM21.9697 14.8504C19.955 16.9238 17.2241 18.0278 14.397 17.9612C15.3073 17.0584 16.0867 16.021 16.672 14.8504C17.4844 13.212 17.9389 11.3385 17.9389 9.49895C17.9389 8.96327 17.9059 8.42893 17.8412 7.92723C19.9206 6.45612 22.3911 5.81984 24.9263 6.12166C25.2843 9.33175 24.1786 12.5757 21.9697 14.8504Z"
+        fill="#A88EC3"
+      />
+    </svg>
+  );
+}
+
+function AnalyzeIcon() {
+  return (
+    <svg
+      viewBox="0 0 22 22"
+      fill="none"
+      className="h-[22px] w-[22px]"
+      aria-hidden
+    >
+      <path
+        d="M11.576 0.0153928C5.50951 -0.302536 0.333312 4.35733 0.0153384 10.4246C-0.302591 16.4911 4.35727 21.6673 10.4246 21.9852C16.4919 22.3032 21.6672 17.6433 21.9852 11.576C22.2964 5.51148 17.6395 0.339698 11.576 0.0153928ZM11.309 5.10992C14.5627 5.28044 17.0612 8.05543 16.8907 11.309C16.7202 14.5626 13.9451 17.0612 10.6916 16.8907C7.43797 16.7202 4.93935 13.9452 5.10986 10.6916C5.28358 7.44035 8.05742 4.94263 11.309 5.10992ZM10.5136 20.2874C8.34427 20.1759 6.28245 19.304 4.69034 17.8248L5.95973 16.6818C9.09973 19.4661 13.9007 19.1766 16.685 16.0377C19.4693 12.8977 19.1799 8.09674 16.041 5.31242C14.971 4.36391 13.6558 3.73623 12.2445 3.50262L12.334 1.79562C17.4172 2.53319 20.9391 7.25209 20.2017 12.3342C19.5112 17.0906 15.3118 20.5367 10.5124 20.2864L10.5136 20.2874Z"
+        fill="#662D91"
+      />
+    </svg>
+  );
+}
+
+type TagProps = {
+  label: string;
+  icon: ReactNode;
+  tone: "cream" | "lavender";
+  className?: string;
+};
+
+function Tag({ label, icon, tone, className = "" }: TagProps) {
+  const bg = tone === "cream" ? "bg-[#fff3da]" : "bg-[#e7cfff]";
+  return (
+    <div
+      className={`inline-flex items-center gap-2 rounded-[29px] ${bg} py-[5px] pl-[5px] pr-5 ${className}`}
+    >
+      <span className="flex size-[34px] shrink-0 items-center justify-center rounded-full bg-white">
+        {icon}
+      </span>
+      <span className="whitespace-nowrap font-inter text-[17px] font-normal uppercase leading-none tracking-[-0.01em] text-[#1b1b1b] sm:text-[20px] lg:text-[22px]">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function Statement({ className = "" }: { className?: string }) {
+  return (
+    <h2
+      className={`text-center font-serif italic tracking-[-0.01em] ${className}`}
+    >
+      <span className="font-bold text-brand-primary">
+        Receive a personalized{" "}
+      </span>
+      <span className="font-normal text-brand-accent">
+        skin assessment, skincare routine recommendations, and aesthetic
+        guidance based on your skin concerns and submitted photos.
+      </span>
+    </h2>
+  );
+}
+
+function Quote({ className = "" }: { className?: string }) {
+  return (
+    <div className={`relative ${className}`}>
+      <svg
+        viewBox="0 0 527 101"
+        fill="none"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        aria-hidden
+      >
+        <path
+          d="M2.5004 82.5307C165.172 110.623 523.57 101.305 523.57 46.3047C523.57 -13.1951 2.50037 -12.1953 2.5004 50.0024C2.50043 74.8047 78.7126 78.588 174.138 82.5307"
+          stroke="#E7CFFF"
+          strokeWidth="5"
+          strokeLinecap="round"
+        />
+      </svg>
+      <p className="relative px-8 py-6 text-center font-inter text-[17px] italic leading-tight tracking-[-0.03em] text-[#1b1b1b] sm:text-[22px] lg:whitespace-nowrap lg:px-6 lg:py-7 lg:text-[28px]">
+        &ldquo;We don&apos;t scan your skin. We read it.&rdquo;
+      </p>
+    </div>
+  );
+}
 
 export default function SkinAssessment() {
   return (
-    <section className="relative overflow-hidden bg-white px-4 py-12 sm:px-6 sm:py-20 lg:px-12 lg:py-28">
-      <div className="relative mx-auto max-w-6xl lg:min-h-[520px]">
-        <AnimatedSlideIn
-          direction="left"
-          className="mb-6 sm:-ml-10 sm:mb-8 lg:absolute lg:-ml-14 lg:top-0 lg:mb-0 lg:left-0"
-        >
-          <PillBadge icon="/svgs/skin_concern.svg" label="SKIN CONCERNS" />
-        </AnimatedSlideIn>
-
-        <div className="mx-auto flex max-w-6xl flex-col items-center text-center lg:max-w-7xl lg:px-8 lg:pt-12">
-          <h2 className="mt-4 px-1 font-serif text-[1.65rem] leading-snug sm:mt-8 sm:px-0 sm:text-5xl sm:leading-snug lg:mt-10 lg:text-[3.25rem] lg:leading-[1.35] xl:text-[3.75rem]">
-            <span className="text-brand-primary">Receive a personalized</span>{" "}
-            <span className="text-brand-light">
-              skin assessment,{" "}
-              <span className="lg:whitespace-nowrap">
-                skincare routine recommendations, aesthetic
-              </span>
-              <br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>
-              guidance based on your skin concerns and submitted photos.
-            </span>
-          </h2>
-
-          <div className="relative mt-8 flex w-full max-w-lg items-center justify-center sm:mt-12 sm:max-w-xl lg:mt-14">
-            <Image
-              src="/svgs/curve.svg"
-              alt=""
-              width={526}
-              height={91}
-              className="absolute w-full max-w-md sm:max-w-lg"
+    <section className="relative overflow-hidden bg-white">
+      {/* Mobile / tablet layout */}
+      <div className="px-5 py-14 sm:px-8 sm:py-20 lg:hidden">
+        <div className="mx-auto max-w-2xl space-y-9 sm:space-y-12">
+          <div className="flex justify-start">
+            <Tag
+              tone="cream"
+              label="Skin concerns"
+              icon={<EyeIcon />}
+              className="-rotate-3"
             />
-            <p className="relative z-10 px-4 py-3 text-lg font-light tracking-tight text-brand-gray sm:px-10 sm:py-4 sm:text-2xl">
-              &ldquo;We don&apos;t scan your skin. We read it.&rdquo;
-            </p>
+          </div>
+
+          <Statement className="mx-auto max-w-[330px] text-[24px] leading-[1.2] sm:max-w-none sm:text-[34px] sm:leading-[1.14] md:text-[42px]" />
+
+          <div className="flex justify-center">
+            <Quote className="w-full max-w-[300px] sm:max-w-[420px]" />
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:justify-between">
+            <Tag
+              tone="cream"
+              label="Skin Routine"
+              icon={<LotusIcon />}
+              className="-rotate-3"
+            />
+            <Tag
+              tone="lavender"
+              label="Analyze"
+              icon={<AnalyzeIcon />}
+              className="rotate-3"
+            />
           </div>
         </div>
+      </div>
 
-        <div className="relative z-10 mt-8 flex flex-col items-stretch gap-5 sm:mt-12 sm:flex-row sm:items-end sm:justify-between lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:mt-0">
-          <AnimatedSlideIn
-            direction="left"
-            className="sm:-ml-10 lg:-ml-14"
-          >
-            <PillBadge icon="/svgs/routine.svg" label="ROUTINE" />
-          </AnimatedSlideIn>
+      {/* Desktop layout (matches Figma 1440 x 709) */}
+      <div className="relative mx-auto hidden h-[709px] w-full max-w-[1440px] lg:block">
+        <Tag
+          tone="cream"
+          label="Skin concerns"
+          icon={<EyeIcon />}
+          className="absolute left-[3.47%] top-[9.6%] -rotate-3"
+        />
 
-          <AnimatedSlideIn
-            direction="right"
-            className="self-center translate-x-16 sm:ml-auto sm:translate-x-0 sm:self-auto"
-          >
-            <Button
-              variant="primary"
-              icon={
-                <Image
-                  src="/icons/icon.svg"
-                  alt=""
-                  width={22}
-                  height={22}
-                  className="h-[18px] w-[18px]"
-                />
-              }
-            >
-              ANALYZE
-            </Button>
-          </AnimatedSlideIn>
-        </div>
+        <Tag
+          tone="lavender"
+          label="Analyze"
+          icon={<AnalyzeIcon />}
+          className="absolute left-[82.3%] top-[64%] rotate-3"
+        />
+
+        <Tag
+          tone="cream"
+          label="Skin Routine"
+          icon={<LotusIcon />}
+          className="absolute left-[15.97%] top-[84.2%] -rotate-3"
+        />
+
+        <Statement className="absolute left-1/2 top-[41.4%] w-[1339px] max-w-[92%] -translate-x-1/2 -translate-y-1/2 text-[clamp(44px,4.6vw,72px)] leading-[1.08]" />
+
+        <Quote className="absolute left-1/2 top-[71.9%] w-[540px] -translate-x-1/2 -translate-y-1/2" />
       </div>
     </section>
   );

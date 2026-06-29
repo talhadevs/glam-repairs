@@ -1,18 +1,24 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "@/components/home/Logo";
-import SkinAssessmentCta from "@/components/home/SkinAssessmentCta";
+
+const CTA_IMAGE = "/images,svgs/cta_ginger_woman.png";
+const FOOTER_LOGO = "/svgs/GLAM REPAIR LOGO-08 2 (1).svg";
+
+const contactEmail = "hello@glamrepair.com";
+const contactPhone = "(406) 555-0120";
+const contactAddress = "2972 Westheimer Rd. Santa Ana, Illinois 85486";
+
 const pageLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Pricing", href: "/pricing" },
   { label: "Contact Us", href: "/contact" },
+  { label: "Pricing", href: "/pricing" },
 ];
 
 const resourceLinks = [
-  { label: "How It Works", href: "/" },
-  { label: "Privacy Policy", href: "#" },
+  { label: "Terms & condition", href: "#" },
+  { label: "Privacy policy", href: "#" },
 ];
 
 const socialLinks = [
@@ -20,17 +26,17 @@ const socialLinks = [
     label: "Instagram",
     href: "#",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
       </svg>
     ),
   },
   {
-    label: "TikTok",
+    label: "LinkedIn",
     href: "#",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
       </svg>
     ),
   },
@@ -38,45 +44,81 @@ const socialLinks = [
     label: "Facebook",
     href: "#",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.012 4.388 11.004 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    ),
+  },
+  {
+    label: "TikTok",
+    href: "#",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
       </svg>
     ),
   },
 ];
 
-const trustBadges = [
-  "Expert-reviewed by a certified aesthetics professional",
-  "100% private — your photos are never shared",
-  "Ingredient-first guidance — no brand bias, ever",
-  "Biweekly follow-up support on paid plans",
-];
+function CtaSection() {
+  return (
+    <section className="relative overflow-hidden px-4 pt-16 sm:px-6 sm:pt-20 lg:pt-24">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[100%]"
+        style={{
+          background:
+            "radial-gradient(140% 95% at 50% -5%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 30%, rgba(255,255,255,0.55) 55%, rgba(255,255,255,0) 85%)",
+        }}
+      />
+      <div className="relative z-10 mx-auto max-w-3xl text-center">
+        <h2 className="text-brand-primary">
+          <span className="font-serif italic text-[1.625rem] sm:text-[2.4rem] lg:text-[2.8rem]">
+            Healthy Skin
+          </span>{" "}
+          <span className="font-sans tracking-[-0.02em] text-[1.75rem] sm:text-[2.75rem] lg:text-[3.25rem]">
+            starts with
+          </span>{" "}
+          <span className="font-serif italic text-[1.75rem] sm:text-[2.75rem] lg:text-[3.25rem]">
+            understanding
+          </span>
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl font-sans tracking-[-0.01em] text-brand-ink text-base sm:mt-5 sm:text-lg lg:text-[1.375rem]">
+          Let our skincare specialists create a treatment plan{" "}
+          <span className="font-serif italic">tailored</span> to your{" "}
+          <span className="font-serif italic">needs.</span>
+        </p>
+        <Link
+          href="/onboarding"
+          className="mt-7 inline-block rounded-full bg-brand-cream px-9 py-3.5 font-sans text-sm font-medium uppercase tracking-[0.02em] text-brand-primary transition-colors hover:bg-[#ffe9b8] sm:mt-8 sm:text-[15px]"
+        >
+          Get My Skin Assessment
+        </Link>
+      </div>
 
-const contactEmail = "hello@glamrepairs.com";
-const contactPhone = "+92 300 0000000";
-
-const FOOTER_CTA_IMAGE = "/images,svgs/footer.webp";
-
-const OVAL_MASK = `url("data:image/svg+xml,${encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 749"><ellipse cx="420" cy="374.5" rx="226" ry="468.125" fill="white" transform="rotate(45 420 374.5)"/></svg>',
-)}")`;
-
-const footerImageMaskStyle = {
-  WebkitMaskImage: OVAL_MASK,
-  maskImage: OVAL_MASK,
-  WebkitMaskSize: "100% 100%",
-  maskSize: "100% 100%",
-  WebkitMaskRepeat: "no-repeat",
-  maskRepeat: "no-repeat",
-  WebkitMaskPosition: "center",
-  maskPosition: "center",
-} as const;
+      <div className="relative z-10 mx-auto -mb-px mt-6 w-full max-w-2xl sm:mt-8">
+        <Image
+          src={CTA_IMAGE}
+          alt="Woman with healthy, radiant skin"
+          width={886}
+          height={642}
+          sizes="(max-width: 1024px) 90vw, 640px"
+          className="mx-auto h-auto w-full max-w-[28rem] object-contain sm:max-w-[34rem] lg:max-w-[40rem]"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, black 78%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, black 78%, transparent 100%)",
+          }}
+          priority={false}
+        />
+      </div>
+    </section>
+  );
+}
 
 function FooterHeading({ children }: { children: ReactNode }) {
   return (
-    <h3 className="-mt-4 font-serif text-4xl tracking-normal text-brand-cream [text-shadow:0_2px_10px_rgba(0,0,0,0.22),0_1px_3px_rgba(0,0,0,0.14)] sm:-mt-6 sm:text-[2.625rem] lg:-mt-8">
-      {children}
-    </h3>
+    <h3 className="font-serif text-base italic text-brand-primary">{children}</h3>
   );
 }
 
@@ -86,12 +128,12 @@ function FooterLinkList({
   links: { label: string; href: string }[];
 }) {
   return (
-    <ul className="mt-5 space-y-3 sm:mt-6 sm:space-y-3.5">
+    <ul className="mt-4 space-y-3">
       {links.map((link) => (
         <li key={link.label}>
           <Link
             href={link.href}
-            className="text-base font-light text-white/90 transition-colors hover:text-white sm:text-lg"
+            className="font-sans text-[17px] text-[#242424] transition-colors hover:text-brand-primary"
           >
             {link.label}
           </Link>
@@ -101,171 +143,94 @@ function FooterLinkList({
   );
 }
 
-function ContactRow({
-  icon,
-  children,
-}: {
-  icon: ReactNode;
-  children: ReactNode;
-}) {
-  return (
-    <li className="flex items-start gap-3">
-      <span className="mt-0.5 shrink-0 text-white" aria-hidden>
-        {icon}
-      </span>
-      <span className="text-base font-light leading-relaxed text-white/90 sm:text-lg">
-        {children}
-      </span>
-    </li>
-  );
-}
-
-function FooterTrustBadges() {
-  return (
-    <ul className="mt-10 grid gap-3 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-3 lg:mt-12">
-      {trustBadges.map((badge) => (
-        <li
-          key={badge}
-          className="flex items-start gap-2.5 text-sm font-light leading-snug text-white/90 sm:text-base"
-        >
-          <span aria-hidden className="mt-0.5 shrink-0 text-brand-cream">
-            ✓
-          </span>
-          <span>{badge}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function FooterSocialLinks() {
-  return (
-    <ul className="mt-5 space-y-3 sm:mt-6 sm:space-y-3.5">
-      {socialLinks.map((social) => (
-        <li key={social.label}>
-          <a
-            href={social.href}
-            aria-label={social.label}
-            className="inline-flex items-center gap-2.5 text-base font-light text-white/90 transition-colors hover:text-white sm:text-lg"
-          >
-            <span className="shrink-0">{social.icon}</span>
-            <span>{social.label}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function FooterCtaSection() {
-  return (
-    <section className="overflow-hidden bg-brand-cream-light">
-      <div className="grid items-center lg:grid-cols-2">
-        <div className="relative flex min-h-[14rem] items-end justify-start overflow-visible pl-6 sm:min-h-[16rem] sm:pl-10 lg:min-h-[22rem] lg:pl-14">
-          <div className="relative aspect-[840/749] w-full max-w-[16rem] translate-x-2 sm:max-w-[18rem] sm:translate-x-4 lg:max-w-[22rem] lg:translate-x-6 xl:max-w-[26rem]">
-            <Image
-              src={FOOTER_CTA_IMAGE}
-              alt="Woman thoughtfully considering her skincare"
-              fill
-              sizes="(max-width: 1024px) 85vw, 45vw"
-              className="object-cover object-center"
-              style={footerImageMaskStyle}
-            />
-          </div>
-        </div>
-
-        <div className="flex w-full flex-col justify-center px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12 xl:px-16">
-          <h2 className="font-serif text-[2.75rem] leading-[1.05] tracking-normal text-brand-primary sm:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem]">
-            <span className="block">Ready for</span>
-            <span className="block">Healthier Skin?</span>
-          </h2>
-          <p className="mt-3 max-w-md text-base font-light leading-snug text-brand-ink sm:mt-4 sm:max-w-lg sm:text-lg lg:text-xl">
-            Let our skincare specialists create a treatment plan tailored to
-            your needs.
-          </p>
-          <SkinAssessmentCta
-            size="md"
-            className="mx-auto mt-5 block w-full max-w-xs sm:mt-6 sm:w-fit lg:mx-0 lg:max-w-none"
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default function Footer() {
   return (
-    <footer className="w-full">
-      <FooterCtaSection />
+    <footer className="w-full bg-[#f3ecfb]">
+      <CtaSection />
 
-      <div className="bg-brand-primary-dark text-white">
-        <div className="w-full px-4 pt-14 pb-8 sm:px-5 sm:pt-24 sm:pb-9 lg:px-6 lg:pt-28 lg:pb-10">
-          <div className="grid gap-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-5 lg:gap-5 xl:gap-6">
-            <div className="sm:col-span-2 lg:col-span-1 lg:-mt-10">
-              <Logo className="h-16 sm:-ml-7 sm:h-24 lg:-ml-9 lg:h-28" />
-              <p className="mt-4 max-w-[18rem] text-sm font-light leading-relaxed text-white/90 sm:mt-6 sm:text-base lg:text-lg">
-                Your skin questions, clearly answered. Private · Simple ·
-                Personalized
+      <div className="px-4 pt-12 pb-6 sm:px-8 sm:pt-14 lg:px-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-md">
+              <Image
+                src={FOOTER_LOGO}
+                alt="Glam Repairs"
+                width={121}
+                height={45}
+                className="h-12 w-auto sm:h-14"
+              />
+              <p className="mt-4 max-w-full font-sans text-sm leading-relaxed tracking-[0.01em] text-brand-primary/80 sm:max-w-[24rem]">
+                Our platform provides access to virtual primary care, virtual
+                urgent care, behavioral health counseling, healthcare advocacy,
+                specialist messaging, and healthcare discount benefits.
               </p>
             </div>
 
+            <div className="lg:text-left">
+              <p className="font-sans text-sm font-medium text-black">
+                Connect with us at
+              </p>
+              <a
+                href={`mailto:${contactEmail}`}
+                className="mt-1 block font-serif text-[1.75rem] italic tracking-[-0.02em] text-black transition-opacity hover:opacity-80 sm:text-[2.25rem] lg:text-[2.625rem]"
+              >
+                {contactEmail}
+              </a>
+              <ul className="mt-4 flex gap-3">
+                {socialLinks.map((social) => (
+                  <li key={social.label}>
+                    <a
+                      href={social.href}
+                      aria-label={social.label}
+                      className="flex size-10 items-center justify-center rounded-full bg-white text-brand-primary shadow-sm transition-colors hover:bg-brand-primary hover:text-white"
+                    >
+                      {social.icon}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:mt-16">
             <div>
               <FooterHeading>Pages</FooterHeading>
               <FooterLinkList links={pageLinks} />
             </div>
-
             <div>
               <FooterHeading>Resources</FooterHeading>
               <FooterLinkList links={resourceLinks} />
             </div>
-
             <div>
-              <FooterHeading>Contact</FooterHeading>
-              <ul className="mt-5 space-y-4 sm:mt-6 sm:space-y-4">
-                <ContactRow
-                  icon={
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
-                      <path d="M3 5.5A2.5 2.5 0 0 1 5.5 3h9A2.5 2.5 0 0 1 17 5.5v9A2.5 2.5 0 0 1 14.5 17h-9A2.5 2.5 0 0 1 3 14.5v-9ZM5.5 5c-.3 0-.5.2-.5.5v9c0 .3.2.5.5.5h9c.3 0 .5-.2.5-.5v-9c0-.3-.2-.5-.5-.5h-9Zm1.2 2.2 3.3 2.5 3.3-2.5v.8l-3.3 2.5-3.3-2.5v-.8Z" />
-                    </svg>
-                  }
-                >
+              <FooterHeading>Contact Info</FooterHeading>
+              <ul className="mt-4 space-y-3">
+                <li>
                   <a
-                    href={`mailto:${contactEmail}`}
-                    className="transition-colors hover:text-white"
-                  >
-                    {contactEmail}
-                  </a>
-                </ContactRow>
-                <ContactRow
-                  icon={
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
-                      <path d="M6.5 3h7A2.5 2.5 0 0 1 16 5.5v9A2.5 2.5 0 0 1 13.5 17h-7A2.5 2.5 0 0 1 4 14.5v-9A2.5 2.5 0 0 1 6.5 3Zm0 1.5c-.6 0-1 .4-1 1v9c0 .6.4 1 1 1h7c.6 0 1-.4 1-1v-9c0-.6-.4-1-1-1h-7Zm3.5 8.8a.75.75 0 0 0 .8 0l2.5-1.5a.75.75 0 0 0-.8-1.3l-2.1 1.3-2.1-1.3a.75.75 0 1 0-.8 1.3l2.5 1.5Z" />
-                    </svg>
-                  }
-                >
-                  <a
-                    href={`tel:${contactPhone.replace(/\s/g, "")}`}
-                    className="transition-colors hover:text-white"
+                    href={`tel:${contactPhone.replace(/[^\d+]/g, "")}`}
+                    className="font-sans text-[17px] text-[#242424] transition-colors hover:text-brand-primary"
                   >
                     {contactPhone}
                   </a>
-                </ContactRow>
+                </li>
+                <li className="font-sans text-[17px] leading-relaxed text-[#242424]">
+                  {contactAddress}
+                </li>
               </ul>
-            </div>
-
-            <div>
-              <FooterHeading>Social</FooterHeading>
-              <FooterSocialLinks />
             </div>
           </div>
 
-          <FooterTrustBadges />
-
-          <div className="mt-8 sm:mt-10">
-            <div className="-mx-4 border-t border-white/30 sm:-mx-5 lg:-mx-6" />
-            <p className="mt-3 text-center text-sm font-light text-white/90 sm:mt-3.5 sm:text-base">
-              © 2025 Glam Repairs · Lahore, Pakistan · All rights reserved.
-            </p>
+          <div className="mt-12 border-t border-brand-primary/15 pt-4 sm:mt-16">
+            <div className="flex flex-col gap-2 text-xs text-[#242424] sm:flex-row sm:items-center sm:justify-between">
+              <p>© 2025 Glam Repair, LLC. All rights reserved.</p>
+              <div className="flex gap-5">
+                <Link href="#" className="transition-colors hover:text-brand-primary">
+                  Privacy policy
+                </Link>
+                <Link href="#" className="transition-colors hover:text-brand-primary">
+                  Terms &amp; Conditions
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

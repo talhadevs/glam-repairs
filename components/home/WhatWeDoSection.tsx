@@ -40,10 +40,15 @@ export default function WhatWeDoSection() {
           className="max-w-3xl sm:-ml-3 lg:-ml-5"
         >
           <header>
-            <h2 className="font-serif text-[2rem] tracking-normal text-brand-primary sm:text-[3.25rem] lg:text-[3.5rem]">
-              WHAT WE DO
+            <h2 className="flex flex-wrap items-baseline gap-x-2 leading-none text-brand-primary">
+              <span className="font-sans font-normal text-[2.5rem] sm:text-[3.25rem] lg:text-[3.875rem]">
+                What we
+              </span>
+              <span className="font-serif italic text-[2.25rem] sm:text-[2.75rem] lg:text-[3.375rem]">
+                do
+              </span>
             </h2>
-            <p className="mt-1 text-lg font-light tracking-tight text-brand-gray sm:mt-2 sm:text-2xl lg:text-[1.75rem]">
+            <p className="mt-3 font-sans font-normal text-brand-ink text-lg sm:mt-4 sm:text-2xl lg:text-[2rem]">
               Real experts. Real photos. Real results.
             </p>
             <p className="mt-3 text-sm font-light leading-snug tracking-tighter text-brand-gray sm:mt-4 sm:text-lg lg:text-xl">
@@ -82,13 +87,13 @@ export default function WhatWeDoSection() {
                   </div>
                 )}
 
-                <p className="mt-5 font-serif text-4xl leading-none text-brand-light sm:mt-7 sm:text-6xl lg:text-7xl">
+                <p className="mt-5 font-serif italic leading-none text-brand-accent text-[1.75rem] sm:mt-7 sm:text-[1.875rem] lg:text-[2rem]">
                   {step.number}
                 </p>
-                <h3 className="mt-3 font-serif text-2xl text-brand-primary sm:text-[1.75rem] lg:text-3xl">
+                <h3 className="mt-3 font-serif italic leading-tight text-brand-primary text-[2rem] sm:text-[2.25rem] lg:text-[2.625rem]">
                   {step.title}
                 </h3>
-                <p className="mt-3 text-base font-light leading-relaxed text-brand-gray sm:text-lg">
+                <p className="mt-3 font-sans leading-normal text-brand-ink text-base sm:text-lg lg:text-[1.25rem]">
                   {step.description}
                 </p>
               </article>

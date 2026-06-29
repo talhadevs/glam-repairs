@@ -24,10 +24,10 @@ export default function ProblemCard({
       <div className="mb-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white">
         <Image src={icon} alt="" width={32} height={32} className="h-7 w-auto max-h-8" />
       </div>
-      <h3 className="font-serif text-lg leading-snug text-brand-primary sm:text-xl">
+      <h3 className="font-serif italic leading-tight text-brand-primary text-xl sm:text-2xl">
         {title}
       </h3>
-      <p className="mt-2 text-sm leading-relaxed text-brand-gray sm:text-[0.9375rem]">
+      <p className="mt-2 font-sans leading-normal tracking-[-0.01em] text-brand-ink text-[0.95rem] sm:text-base">
         {description}
       </p>
     </article>

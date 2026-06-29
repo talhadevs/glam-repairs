@@ -26,10 +26,10 @@ export default function PricingSection({
     >
       <div className="mx-auto max-w-[86rem]">
         <header className="mx-auto max-w-2xl text-center">
-          <h2 className="font-serif text-[2.75rem] italic tracking-normal text-brand-primary sm:text-5xl lg:text-[4.25rem]">
+          <h2 className="font-serif italic tracking-normal text-brand-primary text-[2.5rem] sm:text-5xl lg:text-[3.875rem]">
             {title}
           </h2>
-          <p className="mt-4 text-base font-light leading-snug text-black sm:mt-5 sm:text-lg lg:text-xl">
+          <p className="mt-4 font-sans leading-snug text-brand-ink text-base sm:mt-5 sm:text-lg lg:text-2xl">
             {subtitle}
           </p>
         </header>
