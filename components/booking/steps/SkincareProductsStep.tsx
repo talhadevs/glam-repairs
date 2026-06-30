@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type SkincareProduct =
   | "cleanser"
@@ -58,22 +58,26 @@ const productOptions: ProductOption[] = [
 ];
 
 export default function SkincareProductsStep() {
-  const [selectedProducts, setSelectedProducts] = useState<SkincareProduct[]>([]);
+  const [selectedProducts, setSelectedProducts] = useStepAnswer<SkincareProduct[]>(
+    "booking.skincareProducts",
+    [],
+  );
+  useStepGate(selectedProducts.length > 0);
 
   const toggleProduct = (value: SkincareProduct) => {
-    setSelectedProducts((current) => {
-      if (value === "none") {
-        return current.includes("none") ? [] : ["none"];
-      }
+    if (value === "none") {
+      setSelectedProducts(selectedProducts.includes("none") ? [] : ["none"]);
+      return;
+    }
 
-      const withoutNone = current.filter((item) => item !== "none");
+    const withoutNone = selectedProducts.filter((item) => item !== "none");
 
-      if (withoutNone.includes(value)) {
-        return withoutNone.filter((item) => item !== value);
-      }
+    if (withoutNone.includes(value)) {
+      setSelectedProducts(withoutNone.filter((item) => item !== value));
+      return;
+    }
 
-      return [...withoutNone, value];
-    });
+    setSelectedProducts([...withoutNone, value]);
   };
 
   return (

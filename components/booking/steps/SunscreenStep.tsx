@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type SunscreenChoice = "always" | "sometimes" | "rarely" | "never";
 
@@ -18,9 +18,11 @@ const sunscreenOptions: { value: SunscreenChoice; label: string }[] = [
 ];
 
 export default function SunscreenStep() {
-  const [selectedChoice, setSelectedChoice] = useState<SunscreenChoice | null>(
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<SunscreenChoice | null>(
+    "booking.sunscreen",
     null,
   );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

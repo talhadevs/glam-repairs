@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type AntioxidantsUsage = "yes-used" | "willing-to-try" | "unsure";
 
@@ -17,9 +17,11 @@ const antioxidantsOptions: { value: AntioxidantsUsage; label: string }[] = [
 ];
 
 export default function AntioxidantsStep() {
-  const [selectedUsage, setSelectedUsage] = useState<AntioxidantsUsage | null>(
+  const [selectedUsage, setSelectedUsage] = useStepAnswer<AntioxidantsUsage | null>(
+    "booking.antioxidants",
     null,
   );
+  useStepGate(selectedUsage !== null);
 
   return (
     <div>

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type AdditionalConcern =
   | "dryness"
@@ -64,15 +64,16 @@ const concernOptions: ConcernOption[] = [
 ];
 
 export default function AdditionalConcernsStep() {
-  const [selectedConcerns, setSelectedConcerns] = useState<AdditionalConcern[]>(
-    [],
-  );
+  const [selectedConcerns, setSelectedConcerns] = useStepAnswer<
+    AdditionalConcern[]
+  >("booking.additionalConcerns", []);
+  useStepGate(selectedConcerns.length > 0);
 
   const toggleConcern = (value: AdditionalConcern) => {
-    setSelectedConcerns((current) =>
-      current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value],
+    setSelectedConcerns(
+      selectedConcerns.includes(value)
+        ? selectedConcerns.filter((item) => item !== value)
+        : [...selectedConcerns, value],
     );
   };
 

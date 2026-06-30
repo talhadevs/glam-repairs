@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type KoreanIngredient =
   | "snail-mucin"
@@ -52,24 +52,27 @@ const ingredientOptions: IngredientOption[] = [
 ];
 
 export default function KoreanIngredientsStep() {
-  const [selectedIngredients, setSelectedIngredients] = useState<
+  const [selectedIngredients, setSelectedIngredients] = useStepAnswer<
     KoreanIngredient[]
-  >([]);
+  >("booking.koreanIngredients", []);
+  useStepGate(selectedIngredients.length > 0);
 
   const toggleIngredient = (value: KoreanIngredient) => {
-    setSelectedIngredients((current) => {
-      if (value === "none") {
-        return current.includes("none") ? [] : ["none"];
-      }
+    if (value === "none") {
+      setSelectedIngredients(
+        selectedIngredients.includes("none") ? [] : ["none"],
+      );
+      return;
+    }
 
-      const withoutNone = current.filter((item) => item !== "none");
+    const withoutNone = selectedIngredients.filter((item) => item !== "none");
 
-      if (withoutNone.includes(value)) {
-        return withoutNone.filter((item) => item !== value);
-      }
+    if (withoutNone.includes(value)) {
+      setSelectedIngredients(withoutNone.filter((item) => item !== value));
+      return;
+    }
 
-      return [...withoutNone, value];
-    });
+    setSelectedIngredients([...withoutNone, value]);
   };
 
   return (

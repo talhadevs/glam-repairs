@@ -1,18 +1,35 @@
+"use client";
+
 import Image from "next/image";
 
 import SkinMetricsPanel from "@/components/booking/SkinMetricsPanel";
 import { StepHeader } from "@/components/steps";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 
-const currentConcerns = [
-  {
-    label: "Enlarged pores",
-    icon: "/svgs/Group 2085660843.svg",
-  },
-  {
-    label: "Oiliness",
-    icon: "/svgs/Group 2085660788.svg",
-  },
-] as const;
+type Concern = { label: string; icon: string };
+
+const CONCERN_BADGES: Record<string, Concern> = {
+  dryness: { label: "Dryness", icon: "/svgs/Group (16).svg" },
+  oiliness: { label: "Oiliness", icon: "/svgs/Group 2085660788.svg" },
+  textural: { label: "Textural", icon: "/svgs/Group 2085660843.svg" },
+  "puffy-eyes": { label: "Puffy eyes", icon: "/svgs/Group 2085660844.svg" },
+  "crows-feet": { label: "Crow's feet", icon: "/svgs/Group 2085660845.svg" },
+  "double-chin": { label: "Double chin", icon: "/svgs/Group 2085660846.svg" },
+  "dark-circles": { label: "Dark circles", icon: "/svgs/Group 2085660860.svg" },
+  "sagging-skin": { label: "Sagging skin", icon: "/svgs/Group 2085660880.svg" },
+};
+
+const SKIN_TYPE_BADGES: Record<string, Concern> = {
+  dry: { label: "Dry skin", icon: "/svgs/Group (16).svg" },
+  normal: { label: "Normal skin", icon: "/svgs/Group 2085660787.svg" },
+  oily: { label: "Oiliness", icon: "/svgs/Group 2085660788.svg" },
+  combination: { label: "Combination", icon: "/svgs/Group 2085660786.svg" },
+};
+
+const fallbackConcerns: Concern[] = [
+  { label: "Enlarged pores", icon: "/svgs/Group 2085660843.svg" },
+  { label: "Oiliness", icon: "/svgs/Group 2085660788.svg" },
+];
 
 const programPoints = [
   "Based on your skin data",
@@ -46,11 +63,34 @@ function ConcernBadge({
 }
 
 export default function ProgramJourneyStep() {
+  const answers = useFunnelStore((state) => state.answers);
+
+  const selectedConcerns = Array.isArray(answers["booking.additionalConcerns"])
+    ? (answers["booking.additionalConcerns"] as string[])
+    : [];
+  const skinType =
+    typeof answers["booking.skinType"] === "string"
+      ? (answers["booking.skinType"] as string)
+      : "";
+
+  let currentConcerns: Concern[] = selectedConcerns
+    .map((value) => CONCERN_BADGES[value])
+    .filter(Boolean)
+    .slice(0, 3);
+
+  if (currentConcerns.length === 0 && SKIN_TYPE_BADGES[skinType]) {
+    currentConcerns = [SKIN_TYPE_BADGES[skinType]];
+  }
+
+  if (currentConcerns.length === 0) {
+    currentConcerns = fallbackConcerns;
+  }
+
   return (
     <div>
       <StepHeader
-        title="Do you have a special event coming up?"
-        subtitle="Having something to look forward to can be a great motivator for reaching your goal"
+        title="Your skin journey"
+        subtitle="See your current skin metrics and how your personalized program supports your goals"
       />
 
       <div className="mt-5 sm:mt-6">

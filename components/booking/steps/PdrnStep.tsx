@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 
 import ConcernPill from "@/components/home/ConcernPill";
 import {
@@ -10,6 +9,7 @@ import {
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type PdrnChoice = "yes" | "no" | "tell-me-more";
 
@@ -30,7 +30,11 @@ const choiceOptions: { value: PdrnChoice; label: string }[] = [
 ];
 
 export default function PdrnStep() {
-  const [selectedChoice, setSelectedChoice] = useState<PdrnChoice | null>(null);
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<PdrnChoice | null>(
+    "booking.pdrnHeard",
+    null,
+  );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type MoisturizedChoice = "yes" | "sometimes-tight" | "no" | "dont-know";
 
@@ -32,9 +32,11 @@ const moisturizedOptions: MoisturizedOption[] = [
 ];
 
 export default function MoisturizedStep() {
-  const [selectedChoice, setSelectedChoice] = useState<MoisturizedChoice | null>(
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<MoisturizedChoice | null>(
+    "booking.moisturized",
     null,
   );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

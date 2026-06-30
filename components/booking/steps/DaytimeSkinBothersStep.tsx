@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type DaytimeBother = "dull-skin" | "tiny-wrinkles" | "tightness" | "none";
 
@@ -36,22 +36,26 @@ const botherOptions: BotherOption[] = [
 ];
 
 export default function DaytimeSkinBothersStep() {
-  const [selectedBothers, setSelectedBothers] = useState<DaytimeBother[]>([]);
+  const [selectedBothers, setSelectedBothers] = useStepAnswer<DaytimeBother[]>(
+    "booking.daytimeBothers",
+    [],
+  );
+  useStepGate(selectedBothers.length > 0);
 
   const toggleBother = (value: DaytimeBother) => {
-    setSelectedBothers((current) => {
-      if (value === "none") {
-        return current.includes("none") ? [] : ["none"];
-      }
+    if (value === "none") {
+      setSelectedBothers(selectedBothers.includes("none") ? [] : ["none"]);
+      return;
+    }
 
-      const withoutNone = current.filter((item) => item !== "none");
+    const withoutNone = selectedBothers.filter((item) => item !== "none");
 
-      if (withoutNone.includes(value)) {
-        return withoutNone.filter((item) => item !== value);
-      }
+    if (withoutNone.includes(value)) {
+      setSelectedBothers(withoutNone.filter((item) => item !== value));
+      return;
+    }
 
-      return [...withoutNone, value];
-    });
+    setSelectedBothers([...withoutNone, value]);
   };
 
   return (

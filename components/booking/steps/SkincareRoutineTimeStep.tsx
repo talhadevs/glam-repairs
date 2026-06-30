@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type RoutineTimeChoice = "ten-minutes" | "twenty-minutes" | "one-hour" | "even-more";
 
@@ -18,9 +18,11 @@ const routineTimeOptions: { value: RoutineTimeChoice; label: string }[] = [
 ];
 
 export default function SkincareRoutineTimeStep() {
-  const [selectedChoice, setSelectedChoice] = useState<RoutineTimeChoice | null>(
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<RoutineTimeChoice | null>(
+    "booking.routineTime",
     null,
   );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

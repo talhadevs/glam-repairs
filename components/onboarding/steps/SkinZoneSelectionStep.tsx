@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceList,
   StepFilledChoiceCard,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type SkinZone =
   | "whole-face"
@@ -28,22 +28,26 @@ const skinZoneOptions: { value: SkinZone; label: string }[] = [
 ];
 
 export default function SkinZoneSelectionStep() {
-  const [selectedZones, setSelectedZones] = useState<SkinZone[]>([]);
+  const [selectedZones, setSelectedZones] = useStepAnswer<SkinZone[]>(
+    "onboarding.skinZones",
+    [],
+  );
+  useStepGate(selectedZones.length > 0);
 
   const toggleZone = (value: SkinZone) => {
-    setSelectedZones((current) => {
-      if (value === "whole-face") {
-        return current.includes("whole-face") ? [] : ["whole-face"];
-      }
+    if (value === "whole-face") {
+      setSelectedZones(selectedZones.includes("whole-face") ? [] : ["whole-face"]);
+      return;
+    }
 
-      const withoutWholeFace = current.filter((item) => item !== "whole-face");
+    const withoutWholeFace = selectedZones.filter((item) => item !== "whole-face");
 
-      if (withoutWholeFace.includes(value)) {
-        return withoutWholeFace.filter((item) => item !== value);
-      }
+    if (withoutWholeFace.includes(value)) {
+      setSelectedZones(withoutWholeFace.filter((item) => item !== value));
+      return;
+    }
 
-      return [...withoutWholeFace, value];
-    });
+    setSelectedZones([...withoutWholeFace, value]);
   };
 
   return (

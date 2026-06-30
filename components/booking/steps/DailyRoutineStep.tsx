@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type RoutineFrequency =
   | "morning-and-evening"
@@ -43,8 +43,11 @@ const routineOptions: RoutineOption[] = [
 ];
 
 export default function DailyRoutineStep() {
-  const [selectedRoutine, setSelectedRoutine] =
-    useState<RoutineFrequency>("morning-and-evening");
+  const [selectedRoutine, setSelectedRoutine] = useStepAnswer<RoutineFrequency | null>(
+    "booking.dailyRoutine",
+    null,
+  );
+  useStepGate(selectedRoutine !== null);
 
   return (
     <div>

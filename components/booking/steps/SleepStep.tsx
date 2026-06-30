@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type SleepChoice = "minimal" | "some" | "long-well" | "like-to-sleep";
 
@@ -18,7 +18,11 @@ const sleepOptions: { value: SleepChoice; label: string }[] = [
 ];
 
 export default function SleepStep() {
-  const [selectedChoice, setSelectedChoice] = useState<SleepChoice | null>(null);
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<SleepChoice | null>(
+    "booking.sleep",
+    null,
+  );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

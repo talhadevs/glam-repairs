@@ -1,10 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import OnboardingNav from "@/components/onboarding/OnboardingNav";
 import OnboardingProgress from "@/components/onboarding/OnboardingProgress";
 import { ONBOARDING_TOTAL_STEPS } from "@/components/onboarding/onboardingConfig";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 
 type OnboardingShellProps = {
   children: ReactNode;
@@ -32,8 +33,13 @@ export default function OnboardingShell({
   progressCompleted = false,
 }: OnboardingShellProps) {
   const pathname = usePathname();
+  const ensureSessionId = useFunnelStore((state) => state.ensureSessionId);
   const showProgressBar = showProgress && typeof currentStep === "number";
   const showFooter = Boolean(footer || (typeof currentStep === "number" && backHref));
+
+  useEffect(() => {
+    ensureSessionId();
+  }, [ensureSessionId]);
 
   return (
     <div className="flex min-h-[100dvh] items-center justify-center bg-gradient-to-b from-brand-purple-soft via-white to-brand-lavender/30 px-4 py-10 sm:px-6">

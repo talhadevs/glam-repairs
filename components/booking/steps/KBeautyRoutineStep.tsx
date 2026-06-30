@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 
 import ConcernPill from "@/components/home/ConcernPill";
 import {
@@ -10,6 +9,7 @@ import {
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type KBeautyChoice = "yes" | "not-now";
 
@@ -29,7 +29,11 @@ const choiceOptions: { value: KBeautyChoice; label: string }[] = [
 ];
 
 export default function KBeautyRoutineStep() {
-  const [selectedChoice, setSelectedChoice] = useState<KBeautyChoice>("yes");
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<KBeautyChoice | null>(
+    "booking.kbeautyRoutine",
+    null,
+  );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

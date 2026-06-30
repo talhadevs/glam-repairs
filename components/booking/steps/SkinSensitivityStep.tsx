@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type SensitivityChoice = "sensitive" | "non-sensitive";
 
@@ -33,9 +33,11 @@ const sensitivityOptions: {
 ];
 
 export default function SkinSensitivityStep() {
-  const [selectedChoice, setSelectedChoice] = useState<SensitivityChoice | null>(
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<SensitivityChoice | null>(
+    "booking.skinSensitivity",
     null,
   );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

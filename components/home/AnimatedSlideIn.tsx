@@ -29,26 +29,21 @@ export default function AnimatedSlideIn({
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!inView) {
-      setVisible(false);
-      return;
-    }
+    // Animate once: reveal when first in view and keep it revealed so scrolling
+    // up/down does not repeatedly re-trigger the slide-in (which feels janky).
+    if (!inView || visible) return;
 
     const timer = window.setTimeout(() => {
       requestAnimationFrame(() => setVisible(true));
     }, delay);
 
     return () => window.clearTimeout(timer);
-  }, [inView, delay]);
+  }, [inView, delay, visible]);
 
   return (
     <div ref={ref} className={className}>
       <div
-        className={`will-change-transform transform motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none ${
-          inView
-            ? "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-            : "transition-none"
-        } ${
+        className={`will-change-transform transform motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           visible
             ? "translate-x-0 translate-y-0 opacity-100"
             : getHiddenClasses(direction)

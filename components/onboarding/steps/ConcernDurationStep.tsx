@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceList,
   StepFilledChoiceCard,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 const inputClassName =
   "w-full rounded-2xl border border-brand-border-light/70 bg-white px-4 py-3.5 text-sm text-brand-ink shadow-sm outline-none transition-colors placeholder:text-brand-gray/45 focus:border-brand-light sm:py-4 sm:text-[15px]";
@@ -29,8 +29,15 @@ const durationOptions: { value: DurationOption; label: string }[] = [
 ];
 
 export default function ConcernDurationStep() {
-  const [selectedDuration, setSelectedDuration] = useState<DurationOption | null>(null);
-  const [worseningFactors, setWorseningFactors] = useState("");
+  const [selectedDuration, setSelectedDuration] = useStepAnswer<DurationOption | null>(
+    "onboarding.concernDuration",
+    null,
+  );
+  const [worseningFactors, setWorseningFactors] = useStepAnswer<string>(
+    "onboarding.worseningFactors",
+    "",
+  );
+  useStepGate(selectedDuration !== null);
 
   return (
     <div>

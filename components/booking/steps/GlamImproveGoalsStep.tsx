@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type ImproveGoal =
   | "ingredient-knowledge"
@@ -52,13 +52,17 @@ const goalOptions: GoalOption[] = [
 ];
 
 export default function GlamImproveGoalsStep() {
-  const [selectedGoals, setSelectedGoals] = useState<ImproveGoal[]>([]);
+  const [selectedGoals, setSelectedGoals] = useStepAnswer<ImproveGoal[]>(
+    "booking.improveGoals",
+    [],
+  );
+  useStepGate(selectedGoals.length > 0);
 
   const toggleGoal = (value: ImproveGoal) => {
-    setSelectedGoals((current) =>
-      current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value],
+    setSelectedGoals(
+      selectedGoals.includes(value)
+        ? selectedGoals.filter((item) => item !== value)
+        : [...selectedGoals, value],
     );
   };
 

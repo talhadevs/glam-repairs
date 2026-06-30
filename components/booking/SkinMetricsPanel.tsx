@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 
 const profileAvatar = "/images,svgs/women_porler.jpg";
 
@@ -37,13 +40,19 @@ function MetricBar({
 }
 
 export default function SkinMetricsPanel() {
+  const selfie = useFunnelStore(
+    (state) => state.answers["booking.selfie"] as string | undefined,
+  );
+  const avatar = selfie ?? profileAvatar;
+
   return (
     <div className="flex items-start gap-3 rounded-2xl border border-brand-border-light/50 bg-white p-3 shadow-sm sm:gap-4 sm:p-4">
       <div className="relative h-[5.5rem] w-[5.5rem] shrink-0 overflow-hidden rounded-xl sm:h-24 sm:w-24">
         <Image
-          src={profileAvatar}
+          src={avatar}
           alt="Your profile"
           fill
+          unoptimized
           sizes="(max-width: 640px) 88px, 96px"
           className="object-cover object-center"
         />

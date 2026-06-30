@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { StepBody, StepHeader } from "@/components/steps";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const inputClassName =
   "w-full rounded-2xl border border-brand-light/70 bg-white px-4 py-3.5 text-sm text-brand-ink shadow-sm outline-none transition-colors placeholder:text-brand-gray/45 focus:border-brand-light sm:py-4 sm:text-[0.9375rem]";
@@ -36,7 +39,14 @@ function EnvelopeIcon() {
 }
 
 export default function KeepResultsStep() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useStepAnswer<string>("booking.email", "");
+  const setContact = useFunnelStore((state) => state.setContact);
+  useStepGate(EMAIL_PATTERN.test(email.trim()));
+
+  const handleChange = (value: string) => {
+    setEmail(value);
+    setContact({ email: value });
+  };
 
   return (
     <div>
@@ -64,7 +74,7 @@ export default function KeepResultsStep() {
             autoComplete="email"
             placeholder="Enter your email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => handleChange(event.target.value)}
             className={inputClassName}
           />
 

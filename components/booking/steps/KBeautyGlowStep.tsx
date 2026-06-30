@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type KBeautyGlow = "glass" | "honey" | "cloud" | "dewy";
 
@@ -43,7 +43,11 @@ const glowOptions: {
 ];
 
 export default function KBeautyGlowStep() {
-  const [selectedGlow, setSelectedGlow] = useState<KBeautyGlow | null>(null);
+  const [selectedGlow, setSelectedGlow] = useStepAnswer<KBeautyGlow | null>(
+    "booking.kbeautyGlow",
+    null,
+  );
+  useStepGate(selectedGlow !== null);
 
   return (
     <div>

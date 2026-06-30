@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -11,8 +13,79 @@ import {
   reportPatient,
   reportPhotos,
 } from "@/components/booking/skinGuidanceReportData";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 
 const reportLogo = "/svgs/GLAM REPAIR LOGO-08 2 (1).svg";
+
+const SKIN_TYPE_LABELS: Record<string, string> = {
+  dry: "Dry skin",
+  normal: "Normal skin",
+  oily: "Oily skin",
+  combination: "Combination skin",
+};
+
+const ADDITIONAL_CONCERN_LABELS: Record<string, string> = {
+  dryness: "Dryness",
+  oiliness: "Oiliness",
+  textural: "Textural concerns",
+  "puffy-eyes": "Puffy eyes",
+  "crows-feet": "Crow's feet",
+  "double-chin": "Double chin",
+  "dark-circles": "Dark circles",
+  "sagging-skin": "Sagging skin",
+};
+
+const GENDER_LABELS: Record<string, string> = {
+  female: "Female",
+  male: "Male",
+  "prefer-not-to-say": "Prefer not to say",
+};
+
+const PLAN_LABELS: Record<string, string> = {
+  clarity: "Clarity Plan",
+  transform: "Transform Plan",
+};
+
+function formatReportDate(date: Date) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  return `${day}/${month}/${date.getFullYear()}`;
+}
+
+function useReportPatient() {
+  const answers = useFunnelStore((state) => state.answers);
+  const fullName = useFunnelStore((state) => state.fullName);
+  const selectedPlan = useFunnelStore((state) => state.selectedPlan);
+
+  const get = (key: string) =>
+    typeof answers[key] === "string" ? (answers[key] as string) : "";
+
+  const concerns = Array.isArray(answers["booking.additionalConcerns"])
+    ? (answers["booking.additionalConcerns"] as string[])
+    : [];
+  const concernLabel =
+    concerns
+      .map((value) => ADDITIONAL_CONCERN_LABELS[value])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join(", ") ||
+    SKIN_TYPE_LABELS[get("booking.skinType")] ||
+    reportPatient.concern;
+
+  const age = get("onboarding.age");
+  const gender = get("onboarding.gender");
+
+  return {
+    clientName: fullName.trim() || get("booking.name") || reportPatient.clientName,
+    gender: GENDER_LABELS[gender] ?? reportPatient.gender,
+    concern: concernLabel,
+    age: age ? `${age} years` : reportPatient.age,
+    plan: (selectedPlan && PLAN_LABELS[selectedPlan]) || reportPatient.plan,
+    duration: reportPatient.duration,
+    reportDate: formatReportDate(new Date()),
+    location: get("booking.location") || reportPatient.location,
+  };
+}
 
 function ReportSection({
   title,
@@ -115,6 +188,12 @@ function AvoidList() {
 }
 
 export default function SkinGuidanceReport() {
+  const patient = useReportPatient();
+  const selfie = useFunnelStore(
+    (state) => state.answers["booking.selfie"] as string | undefined,
+  );
+  const photos = selfie ? [selfie, reportPhotos[1]] : [...reportPhotos];
+
   return (
     <div className="min-h-[100dvh] bg-gradient-to-b from-brand-purple-soft via-white to-brand-lavender/20 px-4 py-8 sm:px-6 sm:py-10">
       <article className="mx-auto w-full max-w-[40rem] rounded-[2rem] border border-brand-lavender/60 bg-white px-5 py-7 shadow-sm sm:px-8 sm:py-9">
@@ -142,20 +221,20 @@ export default function SkinGuidanceReport() {
           </p>
 
           <div className="mt-3 grid grid-cols-2 gap-x-5 gap-y-3 sm:gap-x-8 sm:gap-y-4">
-            <InfoField label="Client Name" value={reportPatient.clientName} />
-            <InfoField label="Gender" value={reportPatient.gender} />
-            <InfoField label="Concern" value={reportPatient.concern} />
-            <InfoField label="Age" value={reportPatient.age} />
-            <InfoField label="Plan" value={reportPatient.plan} />
-            <InfoField label="Duration" value={reportPatient.duration} />
-            <InfoField label="Report Date" value={reportPatient.reportDate} />
-            <InfoField label="Location" value={reportPatient.location} />
+            <InfoField label="Client Name" value={patient.clientName} />
+            <InfoField label="Gender" value={patient.gender} />
+            <InfoField label="Concern" value={patient.concern} />
+            <InfoField label="Age" value={patient.age} />
+            <InfoField label="Plan" value={patient.plan} />
+            <InfoField label="Duration" value={patient.duration} />
+            <InfoField label="Report Date" value={patient.reportDate} />
+            <InfoField label="Location" value={patient.location} />
           </div>
 
           <div className="mt-5 flex justify-start gap-3 sm:mt-6 sm:gap-4">
-            {reportPhotos.map((photo, index) => (
+            {photos.map((photo, index) => (
               <div
-                key={photo}
+                key={index}
                 className="relative aspect-[4/5] w-[6.75rem] overflow-hidden rounded-2xl bg-brand-surface sm:w-[7.75rem]"
               >
                 <Image
@@ -174,7 +253,7 @@ export default function SkinGuidanceReport() {
         <ReportSection title="Weather climate consideration" className="mt-8 sm:mt-9">
           <div className="rounded-2xl border border-brand-lavender/50 bg-white px-4 py-4 text-center shadow-sm sm:px-5 sm:py-5">
             <p className="text-sm text-brand-ink sm:text-[0.9375rem]">
-              {reportPatient.location}
+              {patient.location}
             </p>
           </div>
 
