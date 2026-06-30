@@ -1,12 +1,14 @@
-import Image from "next/image";
-import Header from "@/components/home/Header";
-import SkinAssessmentCta from "@/components/home/SkinAssessmentCta";
+"use client";
 
-const heroBackground = "/images,svgs/hero_bg.webp";
+import Image from "next/image";
+import Link from "next/link";
+import Navbar, { onboardingHref } from "@/components/home/Navbar";
+
+const heroBackground = "/images,svgs/hero_skin.webp";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[100dvh] overflow-hidden">
+    <section className="relative min-h-[60svh] overflow-hidden bg-white lg:min-h-[100svh]">
       <Image
         src={heroBackground}
         alt=""
@@ -16,30 +18,33 @@ export default function Hero() {
         className="object-cover object-center"
       />
 
-      <Header />
+      <div className="absolute inset-0 bg-[#1b1b1b]/30" />
 
-      <div className="relative flex min-h-[100dvh] flex-col items-center justify-center px-4 pb-12 pt-44 text-center text-white sm:px-6 sm:pb-16 sm:pt-40 lg:px-8 lg:pt-32">
-        <div className="mt-8 w-full max-w-full sm:mt-16 lg:mt-20">
-          <p className="mx-auto max-w-xs text-sm font-light leading-snug sm:max-w-none sm:text-xl lg:whitespace-nowrap lg:text-2xl">
-            Real skin experts. No appointment. No waiting room. Just answers.
-          </p>
+      <Navbar />
 
-          <div className="mt-2 sm:mt-2">
-            <h1 className="mx-auto max-w-sm font-serif text-[3rem] leading-[0.95] sm:max-w-4xl sm:text-7xl lg:text-[6.5rem] lg:leading-none">
-              Everyone Deserves
-              <br />
-              Healthy Skin
-            </h1>
+      <div className="relative z-10 flex min-h-[60svh] flex-col items-center justify-center px-5 pb-12 pt-[92px] text-center sm:px-6 lg:min-h-[100svh] lg:pb-16 lg:pt-[72px]">
+        <h1 className="font-serif text-[40px] italic leading-[1.05] tracking-[-0.32px] text-white sm:text-[56px] lg:text-[72px]">
+          <span className="block">Everyone Deserves</span>
+          <span className="block">
+            <span className="font-inter font-medium not-italic">Healthy</span>{" "}
+            Skin
+          </span>
+        </h1>
 
-            <p className="mx-auto mt-4 max-w-xs text-base font-light leading-relaxed sm:mt-8 sm:max-w-3xl sm:text-2xl">
-              Share your concerns, upload photos, and receive a personalized
-              skincare routine from a certified aesthetics expert, with complete
-              privacy, delivered to you within 48 hours.
-            </p>
-          </div>
+        <p className="mt-6 max-w-[659px] font-inter text-base font-normal leading-[1.35] text-white sm:text-lg lg:mt-[54px] lg:text-[24px]">
+          Share your concerns &amp; receive a personalized skincare routine from
+          a certified{" "}
+          <span className="font-serif italic">Aesthetics Expert</span>, with
+          complete privacy, delivered to you within{" "}
+          <span className="font-serif italic">48&nbsp;hours</span>.
+        </p>
 
-          <SkinAssessmentCta variant="hero" />
-        </div>
+        <Link
+          href={onboardingHref}
+          className="mt-8 inline-flex items-center justify-center rounded-[30px] bg-white/10 px-[35px] py-[15px] font-inter text-sm font-medium uppercase leading-none tracking-[-0.54px] text-white backdrop-blur-sm transition-colors hover:bg-white/20 lg:mt-9 lg:text-[18px]"
+        >
+          Get My Skin Assessment
+        </Link>
       </div>
     </section>
   );

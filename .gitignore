@@ -72,8 +72,18 @@ Desktop.ini
 !.vscode/extensions.json
 !.vscode/settings.json
 
-# Cursor
+# Cursor / AI tooling
 .cursor/
+agent-tools/
+_shots/
+shots/
+screenshots/
+
+# Temp / scratch files
+*.tmp
+*.tmp.*
+.tmp*
+*.bak
 
 # Markdown
 *.md

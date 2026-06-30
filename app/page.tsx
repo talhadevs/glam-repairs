@@ -16,14 +16,14 @@ export default function Home() {
       <SkinAssessment />
       <ProblemSection />
       <WhatWeDoSection />
-      <TrustPrivacySection />
-      <CeoSection />
-      <WhatYouGetSection />
       <PricingSection
         title="Start free. Glow on your own terms."
         subtitle="No clinic. No commute. Just clarity."
         showTrustLine
       />
+      <TrustPrivacySection />
+      <CeoSection />
+      <WhatYouGetSection />
       <FaqSection />
       <Footer />
     </>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Footer from "@/components/home/Footer";
 import FaqSection from "@/components/home/FaqSection";
-import Header from "@/components/home/Header";
+import Navbar from "@/components/home/Navbar";
 import FeaturesComparisonSection from "@/components/pricing/FeaturesComparisonSection";
 import PricingSection from "@/components/pricing/PricingSection";
 
@@ -14,7 +14,10 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   return (
     <>
-      <Header variant="solid" />
+      <section className="relative bg-white">
+        <Navbar theme="light" />
+        <div className="h-[4.5rem] md:h-20 xl:h-24" aria-hidden />
+      </section>
       <main>
         <PricingSection />
         <FeaturesComparisonSection />

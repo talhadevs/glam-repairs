@@ -17,7 +17,6 @@ type PricingCardProps = {
 };
 
 const crownIcon = "/svgs/Group 2085660721.svg";
-const headerGlow = "/svgs/pricing-header-glow.svg";
 
 function CheckIcon() {
   return (
@@ -56,21 +55,31 @@ export default function PricingCard({
   exclusions,
   badge,
 }: PricingCardProps) {
+  const isFeatured = Boolean(badge);
+
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-[24px] border border-brand-lavender bg-[#F6EDFF]">
+    <article
+      className={`flex h-full flex-col overflow-hidden rounded-[25px] bg-[#F6EDFF] ${
+        isFeatured ? "border-2 border-[#C38EBE]" : "border border-white"
+      }`}
+    >
       <div className="p-3 sm:p-3.5">
-        <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-b from-[#F6EDFF] to-[#EDD8FA] px-5 py-5 sm:px-6 sm:py-6">
-          <Image
-            src={headerGlow}
-            alt=""
-            width={413}
-            height={230}
+        <div
+          className={`relative overflow-hidden rounded-[20px] bg-[#F6EDFF] px-5 py-5 sm:px-6 sm:py-6 ${
+            isFeatured ? "border-2 border-[#A88EC3]" : ""
+          }`}
+        >
+          <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-0 h-auto w-[115%] max-w-none -translate-x-1/2"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(130% 95% at 50% -8%, #FFFFFF 0%, #EFE2FB 42%, #F6EDFF 100%)",
+            }}
           />
           <div className="relative z-10">
             <div className="flex items-start justify-between gap-3">
-              <h3 className="rounded-full bg-[#DDD0EF]/80 px-3.5 py-1 font-serif text-sm italic text-[#A88EC3] sm:px-4 sm:text-[15px]">
+              <h3 className="rounded-full bg-[#F6EDFF] px-3.5 py-1 font-serif text-xs italic text-[#662D91] sm:px-4 sm:text-[13px]">
                 {name}
               </h3>
               {badge ? (
@@ -90,15 +99,17 @@ export default function PricingCard({
               ) : null}
             </div>
 
-            <p className="mt-4 font-serif text-[2.75rem] leading-none text-[#A88EC3] sm:text-[3rem]">
+            <p className="mt-4 font-serif not-italic leading-none tracking-[-2px] text-[#A88EC3] text-[2.5rem] sm:text-[3rem]">
               {price}
-              <span className="ml-1.5 text-2xl italic sm:text-[1.75rem]">Rs</span>
-              <span className="ml-0.5 text-lg font-normal not-italic sm:text-xl">
+              <span className="ml-1.5 font-light italic tracking-normal text-2xl sm:text-[1.75rem]">
+                Rs
+              </span>
+              <span className="ml-1 font-normal not-italic tracking-normal text-base sm:text-[1.125rem]">
                 /monthly
               </span>
             </p>
 
-            <p className="mt-4 font-serif text-lg italic leading-snug text-[#662D91] sm:text-xl">
+            <p className="mt-4 font-serif italic leading-[1.3] tracking-[-0.44px] text-[#662D91] text-lg sm:text-[22px]">
               {description}
             </p>
           </div>
@@ -109,7 +120,7 @@ export default function PricingCard({
         {features.map((feature) => (
           <li key={feature.title} className="flex items-start gap-2.5">
             <CheckIcon />
-            <span className="text-sm leading-snug text-brand-ink sm:text-[15px]">
+            <span className="font-sans leading-snug text-[#242424] text-sm sm:text-[15px] lg:text-base">
               {formatFeatureText(feature)}
             </span>
           </li>
@@ -118,14 +129,14 @@ export default function PricingCard({
 
       <div className="px-5 pb-6 pt-3 sm:px-6 sm:pb-7 sm:pt-4">
         {exclusions ? (
-          <p className="mb-3 text-center text-xs italic text-brand-gray sm:mb-4 sm:text-sm">
+          <p className="mb-3 text-center font-sans text-xs italic text-black/45 sm:mb-4 sm:text-sm">
             {exclusions}
           </p>
         ) : null}
 
         <FillButton
           variant="subscribe"
-          className="w-full !bg-[#A88EC3] py-3 text-xs tracking-[0.12em] sm:py-3.5 sm:text-sm sm:tracking-[0.15em]"
+          className="w-full !bg-[#A88EC3] py-3.5 font-sans text-sm font-medium uppercase tracking-[0.04em] sm:text-[15px]"
         >
           {cta}
         </FillButton>

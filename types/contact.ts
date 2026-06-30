@@ -1,10 +1,6 @@
 export type ContactFormPayload = {
   firstName: string;
-  lastName: string;
-  company: string;
   workEmail: string;
-  phone: string;
-  country: string;
   message: string;
 };
 
