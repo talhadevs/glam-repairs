@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Navbar, { onboardingHref } from "@/components/home/Navbar";
+import { BOOKING_START_HREF } from "@/components/booking/bookingConfig";
+import Navbar from "@/components/home/Navbar";
 
 const heroBackground = "/images,svgs/hero_skin.webp";
 
@@ -40,7 +41,7 @@ export default function Hero() {
         </p>
 
         <Link
-          href={onboardingHref}
+          href={BOOKING_START_HREF}
           className="mt-8 inline-flex items-center justify-center rounded-[30px] bg-white/10 px-[35px] py-[15px] font-inter text-sm font-medium uppercase leading-none tracking-[-0.54px] text-white backdrop-blur-sm transition-colors hover:bg-white/20 lg:mt-9 lg:text-[18px]"
         >
           Get My Skin Assessment

@@ -1,3 +1,5 @@
+export const BOOKING_START_HREF = "/booking/step/1";
+
 export const BOOKING_TOTAL_STEPS = 59;
 
 export const BOOKING_FORM_STEPS = BOOKING_TOTAL_STEPS;

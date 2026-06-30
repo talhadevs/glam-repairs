@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { ComponentProps } from "react";
 import AnimatedSlideIn from "@/components/home/AnimatedSlideIn";
 
-const onboardingHref = "/onboarding";
+import { BOOKING_START_HREF } from "@/components/booking/bookingConfig";
 
 const guidanceSizeStyles = {
   sm: "w-full px-8 py-3.5 text-xs tracking-[0.12em] sm:w-auto sm:px-12 sm:py-4 sm:text-base sm:tracking-[0.15em] lg:whitespace-nowrap",
@@ -28,7 +28,7 @@ export default function SkinAssessmentCta({
   label = "GET MY SKIN ASSESSMENT",
   size = "sm",
   className = "",
-  href = onboardingHref,
+  href = BOOKING_START_HREF,
   ...props
 }: SkinAssessmentCtaProps) {
   if (variant === "hero") {

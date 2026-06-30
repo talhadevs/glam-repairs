@@ -1,126 +1,50 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-} from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
-import styles from "./TreatmentProgramFitChart.module.css";
+// Geometry mirrors the Figma design (Frame 2 coordinate space).
+const VIEWBOX = "86 128 588 368";
 
-/** Row config: label, fill %, track width %, and fill color group */
-const chartRows = [
-  {
-    label: "Smoother skin",
-    progress: 35,
-    trackWidth: 36,
-    markerExtraShift: "3.25rem",
-    tone: "purple",
-  },
-  {
-    label: "Reversing wrinkles",
-    progress: 55,
-    trackWidth: 52,
-    markerExtraShift: "3.75rem",
-    tone: "purple",
-  },
-  {
-    label: "Your best skin",
-    progress: 72,
-    trackWidth: 74,
-    markerExtraShift: "2.5rem",
-    tone: "green",
-  },
-  {
-    label: "Long-lasting look",
-    progress: 90,
-    trackWidth: 96,
-    markerExtraShift: "0rem",
-    tone: "green",
-  },
-] as const;
+// Gap between a circle marker and the start of its label.
+const LABEL_GAP = 16;
 
-function markerLeft(trackWidth: number, progress: number, extraShift: string) {
-  const anchorPercent = (trackWidth * progress) / 100;
-  return `calc(${anchorPercent}% + var(--chart-marker-shift) + ${extraShift})`;
-}
+const BAR_X = 90;
+const BAR_H = 67;
+const BAR_R = 15;
+const BORDER = "#a88ec3";
+const PURPLE = "#662d91";
+const GREEN = "#45b87c";
+const GRID_COLOR = "#E8E8E8";
 
-type Point = {
-  x: number;
+const GRID_TOP = 157;
+const GRID_BOTTOM = 486;
+const GRID_XS = [91, 248, 402, 558];
+
+type Bar = {
   y: number;
+  trackW: number;
+  fillW: number;
+  fill: string;
+  cx: number;
+  cy: number;
+  label: string[];
 };
 
-const DIAGONAL_BOTTOM_OFFSET_X = -2;
-const DIAGONAL_EXTEND_BY = 18;
+const bars: Bar[] = [
+  { y: 157, trackW: 157, fillW: 79, fill: PURPLE, cx: 268.5, cy: 144.5, label: ["Smoother skin"] },
+  { y: 244, trackW: 246, fillW: 109, fill: PURPLE, cx: 352.5, cy: 230.5, label: ["Reversing wrinkles"] },
+  { y: 331, trackW: 311, fillW: 258, fill: GREEN, cx: 433.5, cy: 313.5, label: ["Your best", "skin"] },
+  { y: 418, trackW: 452, fillW: 377, fill: GREEN, cx: 526.5, cy: 408.5, label: ["Long-lasting", "look"] },
+];
 
-function buildTrendPolyline(
-  centers: Point[],
-  extendBy = DIAGONAL_EXTEND_BY,
-  bottomOffsetX = DIAGONAL_BOTTOM_OFFSET_X,
-): string | null {
-  if (centers.length < 2) {
-    return null;
-  }
-
-  const first = centers[0];
-  const last = centers[centers.length - 1];
-  const dx = last.x - first.x;
-  const dy = last.y - first.y;
-  const length = Math.hypot(dx, dy);
-
-  if (length === 0) {
-    return null;
-  }
-
-  const unitX = dx / length;
-  const unitY = dy / length;
-
-  const points: Point[] = [
-    { x: first.x - unitX * extendBy, y: first.y - unitY * extendBy },
-    ...centers,
-    {
-      x: last.x + unitX * extendBy + bottomOffsetX,
-      y: last.y + unitY * extendBy,
-    },
-  ];
-
-  return points.map((point) => `${point.x},${point.y}`).join(" ");
-}
+const SMOOTH_EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
 
 export default function TreatmentProgramFitChart() {
-  const chartRef = useRef<HTMLElement>(null);
-  const markerRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
-  const [polylinePoints, setPolylinePoints] = useState<string | null>(null);
-
-  const updateDiagonalLine = useCallback(() => {
-    const chart = chartRef.current;
-    const markers = markerRefs.current.filter(
-      (marker): marker is HTMLSpanElement => marker !== null,
-    );
-
-    if (!chart || markers.length < 2) {
-      return;
-    }
-
-    const chartRect = chart.getBoundingClientRect();
-    const centers = markers.map((marker) => {
-      const rect = marker.getBoundingClientRect();
-
-      return {
-        x: rect.left + rect.width / 2 - chartRect.left,
-        y: rect.top + rect.height / 2 - chartRect.top,
-      };
-    });
-
-    setPolylinePoints(buildTrendPolyline(centers));
-  }, []);
 
   useEffect(() => {
-    const element = chartRef.current;
+    const element = containerRef.current;
     if (!element) return;
 
     const observer = new IntersectionObserver(
@@ -140,112 +64,136 @@ export default function TreatmentProgramFitChart() {
     return () => observer.disconnect();
   }, []);
 
-  useLayoutEffect(() => {
-    if (!visible) {
-      setPolylinePoints(null);
-      return;
-    }
-
-    const chart = chartRef.current;
-    if (!chart) {
-      return;
-    }
-
-    const syncLine = () => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(updateDiagonalLine);
-      });
-    };
-
-    syncLine();
-
-    const settleTimer = window.setTimeout(updateDiagonalLine, 1000);
-    window.addEventListener("resize", updateDiagonalLine);
-
-    const annotations = chart.querySelectorAll(`.${styles.annotation}`);
-    annotations.forEach((annotation) => {
-      annotation.addEventListener("transitionend", updateDiagonalLine);
-    });
-
-    return () => {
-      window.clearTimeout(settleTimer);
-      window.removeEventListener("resize", updateDiagonalLine);
-      annotations.forEach((annotation) => {
-        annotation.removeEventListener("transitionend", updateDiagonalLine);
-      });
-    };
-  }, [visible, updateDiagonalLine]);
+  const fadeAfter = (delay: number): CSSProperties => ({
+    opacity: visible ? 1 : 0,
+    transition: visible ? `opacity 500ms ${SMOOTH_EASE} ${delay}ms` : "none",
+  });
 
   return (
-    <section
-      ref={chartRef}
-      className={`${styles.chart} ${visible ? styles.chartVisible : ""}`}
-      aria-label="Skin progress comparison chart"
-    >
-      {/* Background: diagonal trend line through circle centers + vertical grid */}
-      <div className={styles.backdrop} aria-hidden="true">
-        <svg className={styles.diagonalSvg}>
-          {polylinePoints ? (
-            <polyline
-              points={polylinePoints}
-              className={styles.diagonalLine}
+    <div ref={containerRef} className="mx-auto w-full">
+      <div className="aspect-[560/368] w-full">
+        <svg
+          viewBox={VIEWBOX}
+          className="h-full w-full"
+          preserveAspectRatio="xMidYMid meet"
+          role="img"
+          aria-label="Chart showing skin improvement milestones increasing over time"
+        >
+          {/* Vertical grid lines */}
+          {GRID_XS.map((x) => (
+            <line
+              key={x}
+              x1={x}
+              y1={GRID_TOP}
+              x2={x}
+              y2={GRID_BOTTOM}
+              stroke={GRID_COLOR}
+              strokeWidth="1"
+              style={fadeAfter(0)}
             />
-          ) : null}
-        </svg>
-        <div className={styles.grid}>
-          {Array.from({ length: 4 }).map((_, index) => (
-            <span key={index} className={styles.gridLine} />
           ))}
-        </div>
-      </div>
+          {/* Horizontal axis */}
+          <line
+            x1={GRID_XS[0]}
+            y1={GRID_BOTTOM}
+            x2={558}
+            y2={GRID_BOTTOM}
+            stroke={GRID_COLOR}
+            strokeWidth="1"
+            style={fadeAfter(0)}
+          />
 
-      {/* Four stacked progress rows — tracks widen toward the bottom */}
-      <ol className={styles.rows}>
-        {chartRows.map((row, index) => (
-          <li
-            key={row.label}
-            className={styles.row}
-            style={
-              {
-                "--track-width": `${row.trackWidth}%`,
-                "--progress": `${row.progress}%`,
-                "--marker-left": markerLeft(
-                  row.trackWidth,
-                  row.progress,
-                  row.markerExtraShift,
-                ),
-                "--row-delay": `${index * 120}ms`,
-              } as CSSProperties
-            }
-          >
-            <div className={styles.trackWrap}>
-              <div className={styles.track}>
-                <div
-                  className={`${styles.fill} ${
-                    row.tone === "purple" ? styles.fillPurple : styles.fillGreen
-                  }`}
-                  style={{ transitionDelay: `var(--row-delay)` }}
-                  role="presentation"
-                />
-              </div>
-            </div>
-
-            <div
-              className={styles.annotation}
-              style={{ transitionDelay: `calc(var(--row-delay) + 180ms)` }}
-            >
-              <span
-                className={styles.marker}
-                aria-hidden="true"
-                ref={(element) => {
-                  markerRefs.current[index] = element;
+          {/* Bars: white track + colored fill */}
+          {bars.map((bar, index) => (
+            <g key={bar.y}>
+              <rect
+                x={BAR_X}
+                y={bar.y}
+                width={bar.trackW}
+                height={BAR_H}
+                rx={BAR_R}
+                fill="white"
+                stroke={BORDER}
+                strokeWidth="2"
+                style={fadeAfter(index * 120)}
+              />
+              <rect
+                x={BAR_X}
+                y={bar.y}
+                width={bar.fillW}
+                height={BAR_H}
+                rx={BAR_R}
+                fill={bar.fill}
+                stroke={BORDER}
+                strokeWidth="2"
+                style={{
+                  transform: visible ? "scaleX(1)" : "scaleX(0)",
+                  transformOrigin: `${BAR_X}px ${bar.y + BAR_H / 2}px`,
+                  transition: visible
+                    ? `transform 700ms ${SMOOTH_EASE} ${index * 120}ms`
+                    : "none",
                 }}
               />
-              <span className={styles.label}>{row.label}</span>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </section>
+            </g>
+          ))}
+
+          {/* Diagonal trend line through the markers */}
+          <line
+            x1={240.5}
+            y1={115.9}
+            x2={554.5}
+            y2={437.1}
+            stroke="#e4e1e1"
+            strokeWidth="4"
+            strokeLinecap="round"
+            style={fadeAfter(360)}
+          />
+
+          {/* Circle markers */}
+          {bars.map((bar) => (
+            <circle
+              key={`dot-${bar.y}`}
+              cx={bar.cx}
+              cy={bar.cy}
+              r={8.5}
+              fill="white"
+              stroke={PURPLE}
+              strokeWidth="2"
+              style={fadeAfter(420)}
+            />
+          ))}
+
+          {/* Labels (left-aligned just right of each circle) */}
+          {bars.map((bar) => {
+            const labelX = bar.cx + 8.5 + LABEL_GAP;
+            return (
+              <text
+                key={`label-${bar.y}`}
+                x={labelX}
+                y={bar.cy}
+                textAnchor="start"
+                dominantBaseline="middle"
+                className="fill-[#1b1b1b]"
+                fontSize={20}
+                style={fadeAfter(480)}
+              >
+                {bar.label.length === 1 ? (
+                  bar.label[0]
+                ) : (
+                  <>
+                    <tspan x={labelX} dy="-0.6em">
+                      {bar.label[0]}
+                    </tspan>
+                    <tspan x={labelX} dy="1.2em">
+                      {bar.label[1]}
+                    </tspan>
+                  </>
+                )}
+              </text>
+            );
+          })}
+        </svg>
+      </div>
+    </div>
   );
 }

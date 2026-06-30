@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 
-const onboardingHref = "/onboarding";
+import { BOOKING_START_HREF } from "@/components/booking/bookingConfig";
 
 const concerns = [
   {
@@ -116,7 +116,7 @@ export default function WhatYouGetSection() {
                 Real advice. Real skin. Real results
               </p>
               <Link
-                href={onboardingHref}
+                href={BOOKING_START_HREF}
                 className="relative mt-6 inline-flex items-center justify-center rounded-full bg-white px-[35px] py-3 font-inter text-[15px] font-medium uppercase leading-none tracking-tight text-brand-accent shadow-[0_0_18px_4px_rgba(255,243,218,0.9)] transition-colors hover:bg-brand-cream lg:text-[16px]"
               >
                 Get my skin Assessment
