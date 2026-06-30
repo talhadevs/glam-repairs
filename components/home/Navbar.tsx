@@ -14,7 +14,6 @@ const navPillBase =
   "inline-flex h-[39px] items-center justify-center whitespace-nowrap rounded-[50px] px-[25px] font-inter text-[16px] uppercase leading-none transition-colors";
 
 export const navLinks = [
-  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Pricing", href: "/pricing" },
   { label: "Contact", href: "/contact" },
@@ -48,13 +47,17 @@ export default function Navbar({ className = "", theme = "dark" }: NavbarProps) 
 
   const linkPillClass = (active: boolean) => {
     if (isLight) {
-      return `${navPillBase} bg-[#ead7ff] hover:bg-[#e0c8f5] ${
-        active ? "text-brand-primary" : "text-brand-accent opacity-60"
+      return `${navPillBase} ${
+        active
+          ? "bg-[#ead7ff] text-brand-primary"
+          : "bg-transparent text-brand-primary/80 hover:text-brand-primary"
       }`;
     }
 
-    return `${navPillBase} bg-white/5 text-white hover:bg-white/15 ${
-      active ? "" : "opacity-40"
+    return `${navPillBase} text-white ${
+      active
+        ? "bg-white/5"
+        : "bg-transparent opacity-80 hover:opacity-100"
     }`;
   };
 
