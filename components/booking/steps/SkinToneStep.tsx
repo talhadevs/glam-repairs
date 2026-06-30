@@ -7,6 +7,7 @@ import {
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type SkinTone =
   | "very-fair"
@@ -43,7 +44,11 @@ const additionalSkinToneOptions: SkinToneOption[] = [
 ];
 
 export default function SkinToneStep() {
-  const [selectedTone, setSelectedTone] = useState<SkinTone | null>(null);
+  const [selectedTone, setSelectedTone] = useStepAnswer<SkinTone | null>(
+    "booking.skinTone",
+    null,
+  );
+  useStepGate(selectedTone !== null);
   const [showMore, setShowMore] = useState(false);
 
   const visibleOptions = showMore

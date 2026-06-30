@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceList,
   StepFilledChoiceCard,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 const inputClassName =
   "w-full rounded-2xl border border-brand-border-light/70 bg-white px-4 py-3.5 text-sm text-brand-ink shadow-sm outline-none transition-colors placeholder:text-brand-gray/45 focus:border-brand-light sm:py-4 sm:text-[15px]";
@@ -34,8 +34,15 @@ const routineOptions: { value: RoutineOption; label: string }[] = [
 ];
 
 export default function CurrentRoutineStep() {
-  const [selectedRoutine, setSelectedRoutine] = useState<RoutineOption | null>(null);
-  const [productsUsed, setProductsUsed] = useState("");
+  const [selectedRoutine, setSelectedRoutine] = useStepAnswer<RoutineOption | null>(
+    "onboarding.currentRoutine",
+    null,
+  );
+  const [productsUsed, setProductsUsed] = useStepAnswer<string>(
+    "onboarding.productsUsed",
+    "",
+  );
+  useStepGate(selectedRoutine !== null);
 
   return (
     <div>

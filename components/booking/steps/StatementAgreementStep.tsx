@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { StepBody, StepHeader } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 const scaleValues = [1, 2, 3, 4, 5] as const;
 
@@ -33,14 +33,24 @@ function ScaleButton({
   );
 }
 
+function statementKey(statement: string) {
+  return statement
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 40);
+}
+
 export default function StatementAgreementStep({
   statement,
 }: {
   statement: string;
 }) {
-  const [selectedRating, setSelectedRating] = useState<AgreementRating | null>(
+  const [selectedRating, setSelectedRating] = useStepAnswer<AgreementRating | null>(
+    `booking.statement.${statementKey(statement)}`,
     null,
   );
+  useStepGate(selectedRating !== null);
 
   return (
     <div>

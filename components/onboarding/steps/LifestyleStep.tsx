@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import {
   StepBody,
   StepChoiceList,
@@ -8,6 +8,7 @@ import {
   StepHeader,
   StepRadioChoiceCard,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type SleepOption = "under-5" | "5-6" | "7-8" | "over-8";
 type WaterOption = "under-4" | "4-6" | "7-8" | "over-8";
@@ -64,16 +65,27 @@ function LifestyleSection({
 }
 
 export default function LifestyleStep() {
-  const [sleep, setSleep] = useState<SleepOption | null>(null);
-  const [water, setWater] = useState<WaterOption | null>(null);
-  const [stress, setStress] = useState<StressOption | null>(null);
-  const [diet, setDiet] = useState<DietOption[]>([]);
+  const [sleep, setSleep] = useStepAnswer<SleepOption | null>(
+    "onboarding.sleep",
+    null,
+  );
+  const [water, setWater] = useStepAnswer<WaterOption | null>(
+    "onboarding.water",
+    null,
+  );
+  const [stress, setStress] = useStepAnswer<StressOption | null>(
+    "onboarding.stress",
+    null,
+  );
+  const [diet, setDiet] = useStepAnswer<DietOption[]>("onboarding.diet", []);
+
+  useStepGate(sleep !== null && water !== null && stress !== null);
 
   const toggleDiet = (value: DietOption) => {
-    setDiet((current) =>
-      current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value],
+    setDiet(
+      diet.includes(value)
+        ? diet.filter((item) => item !== value)
+        : [...diet, value],
     );
   };
 

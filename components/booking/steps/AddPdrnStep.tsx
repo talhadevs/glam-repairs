@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type AddPdrnChoice = "yes" | "maybe-later";
 
@@ -16,9 +16,11 @@ const choiceOptions: { value: AddPdrnChoice; label: string }[] = [
 ];
 
 export default function AddPdrnStep() {
-  const [selectedChoice, setSelectedChoice] = useState<AddPdrnChoice | null>(
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<AddPdrnChoice | null>(
+    "booking.addPdrn",
     null,
   );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

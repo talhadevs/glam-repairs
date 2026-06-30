@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_PROGRESS } from "@/components/onboarding/onboardingConfig";
 import { StepHeader } from "@/components/steps";
+import { useStepAnswer } from "@/lib/funnel/useStepAnswer";
 
 type ConsentContextValue = {
   privateReview: boolean;
@@ -163,8 +164,14 @@ export default function ConsentStep({
   backHref = "/onboarding/step/9",
   nextHref = "/onboarding/complete",
 }: ConsentStepProps) {
-  const [privateReview, setPrivateReview] = useState(false);
-  const [marketingConsent, setMarketingConsent] = useState(false);
+  const [privateReview, setPrivateReview] = useStepAnswer<boolean>(
+    "onboarding.consentPrivateReview",
+    false,
+  );
+  const [marketingConsent, setMarketingConsent] = useStepAnswer<boolean>(
+    "onboarding.consentMarketing",
+    false,
+  );
   const canSubmit = privateReview && marketingConsent;
 
   return (

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type RoutineLength = "minimal" | "balanced" | "full";
 
@@ -17,9 +17,11 @@ const routineLengthOptions: { value: RoutineLength; label: string }[] = [
 ];
 
 export default function KoreanRoutineStepsStep() {
-  const [selectedLength, setSelectedLength] = useState<RoutineLength | null>(
+  const [selectedLength, setSelectedLength] = useStepAnswer<RoutineLength | null>(
+    "booking.koreanRoutineLength",
     null,
   );
+  useStepGate(selectedLength !== null);
 
   return (
     <div>

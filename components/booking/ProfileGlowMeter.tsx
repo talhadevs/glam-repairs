@@ -9,8 +9,15 @@ const SEGMENTS = [
   { color: "#7AC943", flex: "1 1 0" },
 ] as const;
 
+function markerColor(position: number) {
+  if (position >= 66) return "#7AC943";
+  if (position >= 33) return "#F9D423";
+  return "#F7931E";
+}
+
 export default function ProfileGlowMeter({ position = 84 }: ProfileGlowMeterProps) {
   const clampedPosition = Math.min(100, Math.max(0, position));
+  const color = markerColor(clampedPosition);
 
   return (
     <div className="relative w-full pt-1 pb-7">
@@ -32,7 +39,10 @@ export default function ProfileGlowMeter({ position = 84 }: ProfileGlowMeterProp
         style={{ left: `${clampedPosition}%` }}
         aria-hidden
       >
-        <span className="flex h-8 w-8 items-center justify-center rounded-full border-[3px] border-[#7AC943] bg-white shadow-sm sm:h-9 sm:w-9" />
+        <span
+          className="flex h-8 w-8 items-center justify-center rounded-full border-[3px] bg-white shadow-sm sm:h-9 sm:w-9"
+          style={{ borderColor: color }}
+        />
         <span
           className="mt-1.5 h-0 w-0 border-x-[7px] border-b-0 border-t-[9px] border-x-transparent border-t-brand-primary"
         />

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type SkinType = "dry" | "normal" | "oily" | "combination";
 
@@ -43,7 +43,11 @@ const skinTypeOptions: {
 ];
 
 export default function SkinTypeStep() {
-  const [selectedType, setSelectedType] = useState<SkinType | null>(null);
+  const [selectedType, setSelectedType] = useStepAnswer<SkinType | null>(
+    "booking.skinType",
+    null,
+  );
+  useStepGate(selectedType !== null);
 
   return (
     <div>

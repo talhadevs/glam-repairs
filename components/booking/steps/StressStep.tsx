@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type StressChoice = "yes-every-day" | "often" | "rarely" | "never";
 
@@ -18,7 +18,11 @@ const stressOptions: { value: StressChoice; label: string }[] = [
 ];
 
 export default function StressStep() {
-  const [selectedChoice, setSelectedChoice] = useState<StressChoice | null>(null);
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<StressChoice | null>(
+    "booking.stress",
+    null,
+  );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

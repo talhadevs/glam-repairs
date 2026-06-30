@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type WithGlamGoal =
   | "reduce-acne-redness"
@@ -52,13 +52,17 @@ const goalOptions: GoalOption[] = [
 ];
 
 export default function WithGlamGoalsStep() {
-  const [selectedGoals, setSelectedGoals] = useState<WithGlamGoal[]>([]);
+  const [selectedGoals, setSelectedGoals] = useStepAnswer<WithGlamGoal[]>(
+    "booking.withGlamGoals",
+    [],
+  );
+  useStepGate(selectedGoals.length > 0);
 
   const toggleGoal = (value: WithGlamGoal) => {
-    setSelectedGoals((current) =>
-      current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value],
+    setSelectedGoals(
+      selectedGoals.includes(value)
+        ? selectedGoals.filter((item) => item !== value)
+        : [...selectedGoals, value],
     );
   };
 

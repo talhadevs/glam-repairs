@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type RetinolVitaminCAwareness =
   | "yes-used"
@@ -22,7 +22,11 @@ const awarenessOptions: { value: RetinolVitaminCAwareness; label: string }[] =
 
 export default function RetinolVitaminCStep() {
   const [selectedAwareness, setSelectedAwareness] =
-    useState<RetinolVitaminCAwareness | null>(null);
+    useStepAnswer<RetinolVitaminCAwareness | null>(
+      "booking.retinolVitaminC",
+      null,
+    );
+  useStepGate(selectedAwareness !== null);
 
   return (
     <div>

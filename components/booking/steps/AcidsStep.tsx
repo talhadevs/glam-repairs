@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type AcidsUsage = "yes-used" | "open-to-it" | "unsure" | "dont-want";
 
@@ -18,7 +18,11 @@ const acidsOptions: { value: AcidsUsage; label: string }[] = [
 ];
 
 export default function AcidsStep() {
-  const [selectedUsage, setSelectedUsage] = useState<AcidsUsage | null>(null);
+  const [selectedUsage, setSelectedUsage] = useStepAnswer<AcidsUsage | null>(
+    "booking.acids",
+    null,
+  );
+  useStepGate(selectedUsage !== null);
 
   return (
     <div>

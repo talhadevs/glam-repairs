@@ -316,7 +316,7 @@ export default async function BookingStepPage({ params }: StepPageProps) {
           backHref={backHref}
           nextHref={nextHref}
           nextLabel={nextLabel}
-          skipHref={stepNumber === 51 ? nextHref : undefined}
+          bookingStep={stepNumber}
         />
       }
     >

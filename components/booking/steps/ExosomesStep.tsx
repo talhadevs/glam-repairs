@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 
 import ConcernPill from "@/components/home/ConcernPill";
 import {
@@ -10,6 +9,7 @@ import {
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type ExosomesChoice = "actively-look" | "heard-of-them" | "not-really";
 
@@ -30,9 +30,11 @@ const choiceOptions: { value: ExosomesChoice; label: string }[] = [
 ];
 
 export default function ExosomesStep() {
-  const [selectedChoice, setSelectedChoice] = useState<ExosomesChoice | null>(
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<ExosomesChoice | null>(
+    "booking.exosomesAwareness",
     null,
   );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

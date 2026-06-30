@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type ImproveArea =
   | "whole-face"
@@ -61,7 +61,11 @@ const areaOptions: {
 ];
 
 export default function ImproveAreasStep() {
-  const [selectedArea, setSelectedArea] = useState<ImproveArea>("whole-face");
+  const [selectedArea, setSelectedArea] = useStepAnswer<ImproveArea | null>(
+    "booking.improveArea",
+    null,
+  );
+  useStepGate(selectedArea !== null);
 
   return (
     <div>

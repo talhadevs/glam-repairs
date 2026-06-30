@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceList,
   StepFilledChoiceCard,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 const inputClassName =
   "w-full rounded-2xl border border-brand-border-light/70 bg-white px-4 py-3.5 text-sm text-brand-ink shadow-sm outline-none transition-colors placeholder:text-brand-gray/45 focus:border-brand-light sm:py-4 sm:text-[15px]";
@@ -74,8 +74,18 @@ const primaryConcernOptions: {
 ];
 
 export default function PrimaryConcernStep() {
-  const [selectedConcern, setSelectedConcern] = useState<PrimaryConcern | null>(null);
-  const [otherDescription, setOtherDescription] = useState("");
+  const [selectedConcern, setSelectedConcern] = useStepAnswer<PrimaryConcern | null>(
+    "onboarding.primaryConcern",
+    null,
+  );
+  const [otherDescription, setOtherDescription] = useStepAnswer<string>(
+    "onboarding.primaryConcernOther",
+    "",
+  );
+  useStepGate(
+    selectedConcern !== null &&
+      (selectedConcern !== "other" || otherDescription.trim().length > 0),
+  );
 
   return (
     <div>

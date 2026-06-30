@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type WaterIntakeChoice =
   | "coffee-tea-only"
@@ -22,9 +22,11 @@ const waterIntakeOptions: { value: WaterIntakeChoice; label: string }[] = [
 ];
 
 export default function WaterIntakeStep() {
-  const [selectedChoice, setSelectedChoice] = useState<WaterIntakeChoice | null>(
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<WaterIntakeChoice | null>(
+    "booking.waterIntake",
     null,
   );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

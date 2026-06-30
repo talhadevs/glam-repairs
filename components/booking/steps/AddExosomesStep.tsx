@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type AddExosomesChoice = "yes" | "not-now";
 
@@ -16,9 +16,11 @@ const choiceOptions: { value: AddExosomesChoice; label: string }[] = [
 ];
 
 export default function AddExosomesStep() {
-  const [selectedChoice, setSelectedChoice] = useState<AddExosomesChoice | null>(
+  const [selectedChoice, setSelectedChoice] = useStepAnswer<AddExosomesChoice | null>(
+    "booking.addExosomes",
     null,
   );
+  useStepGate(selectedChoice !== null);
 
   return (
     <div>

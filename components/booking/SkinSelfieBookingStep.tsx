@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
+import { fileToCompressedDataUrl } from "@/lib/funnel/image";
 
 const selfieIllustration = "/svgs/girl_svg.svg";
 
@@ -22,32 +24,37 @@ export default function SkinSelfieBookingStep({
   totalSteps,
 }: SkinSelfieBookingStepProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (photoPreview) {
-        URL.revokeObjectURL(photoPreview);
-      }
-    };
-  }, [photoPreview]);
+  const savedSelfie = useFunnelStore(
+    (state) => state.answers["booking.selfie"] as string | undefined,
+  );
+  const setAnswer = useFunnelStore((state) => state.setAnswer);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(
+    savedSelfie ?? null,
+  );
 
   const openCamera = () => {
     inputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
+    event.target.value = "";
     if (!file) return;
 
-    setPhotoPreview((current) => {
-      if (current) {
-        URL.revokeObjectURL(current);
-      }
-      return URL.createObjectURL(file);
-    });
+    // Immediate preview, then persist a compressed copy for the report.
+    const previewUrl = URL.createObjectURL(file);
+    setPhotoPreview(previewUrl);
 
-    event.target.value = "";
+    try {
+      const dataUrl = await fileToCompressedDataUrl(file);
+      setAnswer("booking.selfie", dataUrl);
+      setPhotoPreview(dataUrl);
+      URL.revokeObjectURL(previewUrl);
+    } catch {
+      // Keep the object-URL preview if compression fails.
+    }
   };
 
   return (

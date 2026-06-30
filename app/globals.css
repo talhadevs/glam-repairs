@@ -79,10 +79,24 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+  /* Avoid horizontal jump when a scrollbar appears/disappears between routes. */
+  scrollbar-gutter: stable;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+  /* Momentum scrolling on iOS/Safari for a smoother feel. */
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 @layer base {

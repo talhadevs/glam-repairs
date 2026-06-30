@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   StepBody,
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
 } from "@/components/steps";
+import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 
 type SpecialEventChoice =
   | "vacation"
@@ -47,9 +47,11 @@ const eventOptions: EventOption[] = [
 ];
 
 export default function SpecialEventStep() {
-  const [selectedEvent, setSelectedEvent] = useState<SpecialEventChoice | null>(
+  const [selectedEvent, setSelectedEvent] = useStepAnswer<SpecialEventChoice | null>(
+    "booking.specialEvent",
     null,
   );
+  useStepGate(selectedEvent !== null);
 
   return (
     <div>
