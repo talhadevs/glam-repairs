@@ -8,11 +8,7 @@ function readString(formData: FormData, key: keyof ContactFormPayload) {
 export function buildContactFormPayload(formData: FormData): ContactFormPayload {
   return {
     firstName: readString(formData, "firstName"),
-    lastName: readString(formData, "lastName"),
-    company: readString(formData, "company"),
     workEmail: readString(formData, "workEmail"),
-    phone: readString(formData, "phone"),
-    country: readString(formData, "country"),
     message: readString(formData, "message"),
   };
 }

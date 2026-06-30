@@ -5,35 +5,37 @@ import {
   contactHero,
   contactHeroBackground,
 } from "@/components/contact/contactContent";
-import Header from "@/components/home/Header";
+import Navbar from "@/components/home/Navbar";
 
 preload(contactHeroBackground, { as: "image", fetchPriority: "high" });
 
 export default function ContactHeroSection() {
   return (
-    <section className="relative min-h-[55vh] overflow-hidden sm:min-h-[60vh] lg:min-h-[65vh]">
+    <section className="relative isolate flex min-h-[34rem] flex-col overflow-hidden sm:min-h-[42rem] md:min-h-[48rem] lg:min-h-[59.6875rem]">
       <Image
         src={contactHeroBackground}
         alt=""
         fill
         priority
         sizes="100vw"
-        className="object-cover object-center"
+        className="object-cover object-[center_28%]"
       />
 
-      <div
-        className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/15 to-black/40"
-        aria-hidden
-      />
+      <div className="absolute inset-0 bg-[#1b1b1b]/40" aria-hidden />
 
-      <Header />
+      <Navbar />
 
-      <div className="relative z-[2] flex min-h-[55vh] flex-col items-center justify-center px-4 pb-10 pt-32 text-center text-white sm:min-h-[60vh] sm:px-6 sm:pb-12 sm:pt-36 lg:min-h-[65vh] lg:pt-40">
-        <h1 className="mx-auto max-w-4xl font-serif text-[2.75rem] leading-tight tracking-normal sm:text-5xl lg:text-[4.25rem]">
+      <div className="relative z-[2] flex flex-1 flex-col items-center justify-center px-6 pb-16 pt-28 text-center text-white sm:px-8 sm:pb-20 sm:pt-32 lg:pt-36">
+        <h1 className="mx-auto max-w-4xl font-serif text-[2.75rem] italic leading-[1.05] tracking-[-0.02em] sm:text-[3.75rem] md:text-[4.5rem] lg:text-[4.5rem]">
           {contactHero.headline}
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-base font-light leading-relaxed sm:mt-5 sm:text-lg lg:text-xl lg:leading-[1.45]">
-          {contactHero.subtitle}
+        <p className="mx-auto mt-3 max-w-2xl leading-snug sm:mt-4">
+          <span className="block text-lg font-medium sm:text-xl lg:text-2xl">
+            {contactHero.subtitleLead}
+          </span>
+          <span className="block font-serif text-lg italic sm:text-xl lg:text-2xl">
+            {contactHero.subtitleAccent}
+          </span>
         </p>
       </div>
     </section>

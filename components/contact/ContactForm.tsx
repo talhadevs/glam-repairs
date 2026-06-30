@@ -3,7 +3,7 @@
 import { FormEvent, useCallback, useState } from "react";
 import {
   contactFieldIds,
-  contactGridFields,
+  contactFormFields,
   contactMessageField,
 } from "@/components/contact/contactFormFields";
 import FillButton from "@/components/ui/FillButton";
@@ -29,6 +29,10 @@ type SubmitState =
   | { type: "error"; message: string };
 
 const SUCCESS_MESSAGE = "Form submitted successfully.";
+const contactInputClassName =
+  "rounded-full border-[#d9d9d9] px-5 py-3.5 sm:px-6";
+const contactTextAreaClassName =
+  "min-h-[9.5rem] resize-y rounded-[1.5625rem] border-[#d9d9d9] px-5 py-4 sm:px-6";
 
 function focusField(field: ContactField) {
   document.getElementById(contactFieldIds[field])?.focus();
@@ -142,66 +146,71 @@ export default function ContactForm() {
         noValidate
         className="flex h-full flex-col"
       >
-      <div className="grid gap-5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-5">
-        {contactGridFields.map((field) => (
+        <h3 className="text-[1.75rem] leading-tight text-brand-primary sm:text-[2rem]">
+          <span className="font-sans font-normal">Send us a</span>{" "}
+          <span className="font-serif italic">message</span>
+        </h3>
+
+        <div className="mt-8 space-y-5 sm:mt-9">
+          {contactFormFields.map((field) => (
+            <FormField
+              key={field.name}
+              id={field.id}
+              label={field.label}
+              error={fieldErrors[field.name]}
+              required
+            >
+              <TextInput
+                id={field.id}
+                name={field.name}
+                type={field.type}
+                autoComplete={field.autoComplete}
+                hasError={Boolean(fieldErrors[field.name])}
+                required
+                className={contactInputClassName}
+                onChange={() => clearFieldError(field.name)}
+              />
+            </FormField>
+          ))}
+
           <FormField
-            key={field.name}
-            id={field.id}
-            label={field.label}
-            error={fieldErrors[field.name]}
+            id={contactMessageField.id}
+            label={contactMessageField.label}
+            error={fieldErrors.message}
             required
           >
-            <TextInput
-              id={field.id}
-              name={field.name}
-              type={field.type}
-              autoComplete={field.autoComplete}
-              hasError={Boolean(fieldErrors[field.name])}
+            <TextArea
+              id={contactMessageField.id}
+              name={contactMessageField.name}
+              rows={contactMessageField.rows}
+              hasError={Boolean(fieldErrors.message)}
               required
-              onChange={() => clearFieldError(field.name)}
+              className={contactTextAreaClassName}
+              onChange={() => clearFieldError("message")}
             />
           </FormField>
-        ))}
-      </div>
+        </div>
 
-      <FormField
-        id={contactMessageField.id}
-        label={contactMessageField.label}
-        error={fieldErrors.message}
-        required
-        className="mt-5"
-      >
-        <TextArea
-          id={contactMessageField.id}
-          name={contactMessageField.name}
-          rows={contactMessageField.rows}
-          hasError={Boolean(fieldErrors.message)}
-          required
-          className="min-h-[9rem] resize-y"
-          onChange={() => clearFieldError("message")}
-        />
-      </FormField>
+        <div className="mt-7 flex justify-start sm:mt-8">
+          <FillButton
+            type="submit"
+            variant="subscribe"
+            disabled={isSubmitting}
+            aria-disabled={isSubmitting}
+            className={`bg-brand-accent px-8 py-2.5 text-sm uppercase tracking-normal sm:px-10 sm:py-3 sm:text-base${isFormComplete && !isSubmitting ? "" : " is-incomplete"}`}
+          >
+            {isSubmitting ? "Sending..." : "Send now"}
+          </FillButton>
+        </div>
 
-      <div className="mt-5 flex justify-start pt-4 sm:pt-5">
-        <FillButton
-          type="submit"
-          variant="subscribe"
-          disabled={isSubmitting}
-          aria-disabled={isSubmitting}
-          className={`px-8 py-3.5 text-sm sm:px-10 sm:py-4 sm:text-base${isFormComplete && !isSubmitting ? "" : " is-incomplete"}`}
-        >
-          {isSubmitting ? "Sending..." : "Get in touch"}
-        </FillButton>
-      </div>
-
-      <div className="mt-3 min-h-[1.25rem] text-left">
-        {submitState.type === "error" ? (
-          <p role="alert" className="text-xs text-brand-ink sm:text-sm">
-            {submitState.message}
-          </p>
-        ) : null}
-      </div>
-    </form>
+        <div className="mt-3 min-h-[1.25rem] text-left">
+          {submitState.type === "error" ? (
+            <p role="alert" className="text-xs text-brand-ink sm:text-sm">
+              {submitState.message}
+            </p>
+          ) : null}
+        </div>
+      </form>
     </>
   );
 }

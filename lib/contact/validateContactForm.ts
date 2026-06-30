@@ -4,11 +4,7 @@ export type ContactField = keyof ContactFormPayload;
 
 export const CONTACT_FIELD_LABELS: Record<ContactField, string> = {
   firstName: "First name",
-  lastName: "Last name",
-  company: "Company",
-  workEmail: "Work email",
-  phone: "Phone",
-  country: "Country",
+  workEmail: "Email",
   message: "Message",
 };
 
@@ -22,11 +18,7 @@ export function getRequiredFieldError(field: ContactField) {
 
 export const CONTACT_REQUIRED_FIELDS: ContactField[] = [
   "firstName",
-  "lastName",
-  "company",
   "workEmail",
-  "phone",
-  "country",
   "message",
 ];
 

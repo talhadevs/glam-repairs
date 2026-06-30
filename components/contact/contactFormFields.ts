@@ -4,11 +4,11 @@ type ContactInputField = {
   name: ContactField;
   id: string;
   label: string;
-  type: "text" | "email" | "tel";
+  type: "text" | "email";
   autoComplete: string;
 };
 
-export const contactGridFields: ContactInputField[] = [
+export const contactFormFields: ContactInputField[] = [
   {
     name: "firstName",
     id: "first-name",
@@ -17,39 +17,11 @@ export const contactGridFields: ContactInputField[] = [
     autoComplete: "given-name",
   },
   {
-    name: "lastName",
-    id: "last-name",
-    label: "Last name",
-    type: "text",
-    autoComplete: "family-name",
-  },
-  {
-    name: "company",
-    id: "company",
-    label: "Company",
-    type: "text",
-    autoComplete: "organization",
-  },
-  {
     name: "workEmail",
     id: "work-email",
-    label: "Work email",
+    label: "Email",
     type: "email",
     autoComplete: "email",
-  },
-  {
-    name: "phone",
-    id: "phone",
-    label: "Phone",
-    type: "tel",
-    autoComplete: "tel",
-  },
-  {
-    name: "country",
-    id: "country",
-    label: "Country",
-    type: "text",
-    autoComplete: "country-name",
   },
 ];
 
@@ -62,10 +34,6 @@ export const contactMessageField = {
 
 export const contactFieldIds: Record<ContactField, string> = {
   firstName: "first-name",
-  lastName: "last-name",
-  company: "company",
   workEmail: "work-email",
-  phone: "phone",
-  country: "country",
   message: "message",
 };

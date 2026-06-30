@@ -13,7 +13,7 @@ export type PricingPlan = {
 
 export const pricingPlans: PricingPlan[] = [
   {
-    name: "Skin Savvy",
+    name: "Skin Starter",
     price: "0.00",
     cta: "TRY IT FREE",
     description: "Know your skin before you fix it.",

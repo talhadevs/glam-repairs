@@ -1,6 +1,6 @@
 export type ComparisonCell =
   | { type: "check" }
-  | { type: "dash" }
+  | { type: "empty" }
   | { type: "text"; value: string };
 
 export type ComparisonRow = {
@@ -8,40 +8,34 @@ export type ComparisonRow = {
   values: [ComparisonCell, ComparisonCell, ComparisonCell];
 };
 
-export const comparisonTitle = "See Features includes";
-
-export const comparisonTabLabels = [
-  "Features included",
-  "Free skin check",
-  "Core skin plan",
-  "Advanced skin guide",
+export const comparisonHeaders = [
+  "Features",
+  "Skin Starter",
+  "Skin Clarity",
+  "Skin Transform",
 ] as const;
-
-export const comparisonPlans = [
-  { name: "Skin Savvy", subtitle: "Free" },
-  { name: "Skin Clarity", subtitle: "Rs. 1,500" },
-  { name: "Skin Transform", subtitle: "Rs. 3,000" },
-] as const;
-
-export const comparisonPrices: [string, string, string] = [
-  "0.00 Rs /monthly",
-  "1500 Rs /monthly",
-  "3000 Rs /monthly",
-];
 
 export const comparisonRows: ComparisonRow[] = [
+  {
+    feature: "Price",
+    values: [
+      { type: "text", value: "Free" },
+      { type: "text", value: "Rs. 1500" },
+      { type: "text", value: "Rs. 3000" },
+    ],
+  },
   {
     feature: "Skin quiz & type assessment",
     values: [{ type: "check" }, { type: "check" }, { type: "check" }],
   },
   {
     feature: "Generic routine guide",
-    values: [{ type: "check" }, { type: "dash" }, { type: "dash" }],
+    values: [{ type: "check" }, { type: "empty" }, { type: "empty" }],
   },
   {
     feature: "Photo upload",
     values: [
-      { type: "dash" },
+      { type: "empty" },
       { type: "text", value: "Up to 3" },
       { type: "text", value: "Up to 6" },
     ],
@@ -49,61 +43,57 @@ export const comparisonRows: ComparisonRow[] = [
   {
     feature: "Expert manual review",
     values: [
-      { type: "dash" },
+      { type: "empty" },
       { type: "text", value: "48 hrs" },
-      { type: "text", value: "24 hrs priority" },
+      { type: "text", value: "24 hrs" },
     ],
   },
   {
     feature: "Written skin report",
     values: [
-      { type: "dash" },
+      { type: "empty" },
       { type: "check" },
       { type: "text", value: "Detailed" },
     ],
   },
   {
     feature: "AM + PM routine",
-    values: [{ type: "dash" }, { type: "check" }, { type: "check" }],
+    values: [{ type: "empty" }, { type: "check" }, { type: "check" }],
   },
   {
     feature: "Ingredient & product guidance",
     values: [
-      { type: "dash" },
+      { type: "empty" },
       { type: "check" },
-      { type: "text", value: "Multi-budget" },
+      { type: "text", value: "Multi Budget" },
     ],
   },
   {
     feature: "What to avoid list",
-    values: [{ type: "dash" }, { type: "check" }, { type: "check" }],
+    values: [{ type: "empty" }, { type: "check" }, { type: "check" }],
   },
   {
     feature: "Week-by-week plan",
-    values: [{ type: "dash" }, { type: "dash" }, { type: "check" }],
+    values: [{ type: "empty" }, { type: "empty" }, { type: "check" }],
   },
   {
     feature: "Vitamin & supplement guide",
-    values: [{ type: "dash" }, { type: "dash" }, { type: "check" }],
+    values: [{ type: "empty" }, { type: "empty" }, { type: "check" }],
   },
   {
-    feature: "Lifestyle & diet tips",
-    values: [{ type: "dash" }, { type: "dash" }, { type: "check" }],
+    feature: "Life style & diet tips",
+    values: [{ type: "empty" }, { type: "empty" }, { type: "check" }],
   },
   {
     feature: "Aesthetic procedure roadmap",
-    values: [{ type: "dash" }, { type: "dash" }, { type: "check" }],
-  },
-  {
-    feature: "Follow-up check-ins",
     values: [
-      { type: "dash" },
-      { type: "text", value: "1 (at 2 weeks)" },
-      { type: "text", value: "2 (biweekly, 1 month)" },
+      { type: "empty" },
+      { type: "text", value: "1 (at two weeks)" },
+      { type: "text", value: "2 (biweekly, 1 monthly)" },
     ],
   },
   {
-    feature: "Direct WhatsApp access",
-    values: [{ type: "dash" }, { type: "dash" }, { type: "check" }],
+    feature: "Follow-up check-ins",
+    values: [{ type: "empty" }, { type: "empty" }, { type: "check" }],
   },
 ];

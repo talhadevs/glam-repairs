@@ -6,25 +6,25 @@ import AnimatedSlideIn from "@/components/home/AnimatedSlideIn";
 export default function CeoSection() {
   return (
     <section className="overflow-hidden bg-[#fdf6e4]">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-end gap-8 px-4 sm:px-6 lg:grid-cols-[1.5fr_1fr] lg:gap-8 lg:px-12">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-end gap-8 pl-0 pr-4 sm:pl-2 sm:pr-6 lg:grid-cols-[1.35fr_0.95fr] lg:gap-10 lg:pl-0 lg:pr-12">
         <AnimatedSlideIn
           direction="left"
-          className="order-2 w-full lg:order-1"
+          className="order-2 w-full lg:order-1 lg:-ml-6 xl:-ml-10"
         >
           <Image
             src="/images,svgs/ceo_doctor.png"
             alt="Dr. Ayma Arif, aesthetics and dermatology expert holding a tablet"
             width={660}
             height={694}
-            sizes="(max-width: 1024px) 95vw, 55vw"
-            className="mx-auto block h-auto w-full max-w-[34rem] object-contain object-bottom sm:max-w-[42rem] lg:mx-0 lg:max-w-none"
+            sizes="(max-width: 1024px) 95vw, 68vw"
+            className="mx-auto block h-auto w-full max-w-[44rem] object-contain object-bottom sm:max-w-[52rem] lg:mx-0 lg:max-w-none lg:origin-bottom-left lg:scale-[1.1]"
             priority={false}
           />
         </AnimatedSlideIn>
 
         <AnimatedSlideIn
           direction="right"
-          className="order-1 min-w-0 pt-12 sm:pt-16 md:mx-auto md:max-w-[34rem] lg:order-2 lg:mx-0 lg:max-w-none lg:py-16 lg:pt-16"
+          className="order-1 min-w-0 pl-4 pt-12 sm:pl-6 sm:pt-16 md:pl-8 lg:order-2 lg:pl-0 lg:py-16 lg:pt-16"
         >
           <header>
             <span className="relative inline-block">
@@ -54,7 +54,7 @@ export default function CeoSection() {
             Clinic-trained)
           </p>
 
-          <p className="mt-6 max-w-xl text-justify font-sans leading-relaxed text-brand-ink text-base sm:text-lg md:max-w-none lg:max-w-2xl lg:text-xl">
+          <p className="mt-6 w-full text-justify font-sans leading-relaxed text-brand-ink text-base sm:text-lg lg:text-xl">
             <span className="font-serif italic">Dr. Ayma Arif</span>{" "}is a
             certified aesthetics professional with a Bachelor&apos;s degree in
             Cosmetology and Dermatology Science. With hands-on experience across
@@ -62,7 +62,7 @@ export default function CeoSection() {
             assessments, treatment planning, and evidence-based skincare
             routines for a wide range of concerns.
           </p>
-          <p className="mt-5 max-w-xl text-justify font-sans leading-relaxed text-brand-ink text-base sm:text-lg md:max-w-none lg:max-w-2xl lg:text-xl">
+          <p className="mt-5 w-full text-justify font-sans leading-relaxed text-brand-ink text-base sm:text-lg lg:text-xl">
             She co-founded Glam Repairs because she saw firsthand how many people
             were struggling with their skin, not from a lack of care, but from a
             lack of access to clear, personalized guidance. Glam Repairs is her
