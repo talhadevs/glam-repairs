@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { BOOKING_START_HREF } from "@/components/booking/bookingConfig";
+
 const CTA_IMAGE = "/images,svgs/cta_ginger_woman.png";
 const FOOTER_LOGO = "/svgs/GLAM REPAIR LOGO-08 2 (1).svg";
 
@@ -89,7 +91,7 @@ function CtaSection() {
           <span className="font-serif italic">needs.</span>
         </p>
         <Link
-          href="/onboarding"
+          href={BOOKING_START_HREF}
           className="mt-7 inline-block rounded-full bg-brand-cream px-9 py-3.5 font-sans text-sm font-medium uppercase tracking-[0.02em] text-brand-primary transition-colors hover:bg-[#ffe9b8] sm:mt-8 sm:text-[15px]"
         >
           Get My Skin Assessment

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import AnimatedCount from "@/components/booking/AnimatedCount";
 import SkinWellnessChart from "@/components/booking/SkinWellnessChart";
-import { StepHeader } from "@/components/steps";
+import { StepBody } from "@/components/steps";
 
 const programFeatures = [
   {
@@ -41,7 +41,7 @@ function ProgramFeatureItem({
           className="h-8 w-auto object-contain sm:h-9"
         />
       </span>
-      <p className="max-w-[4.75rem] text-[10px] leading-snug text-brand-ink sm:max-w-[5.25rem] sm:text-[11px]">
+      <p className="max-w-[5rem] text-[11px] leading-snug text-black sm:max-w-[5.5rem] sm:text-[13px]">
         {label}
       </p>
     </div>
@@ -55,23 +55,15 @@ export default function TreatmentFitStep() {
         <SkinWellnessChart />
       </div>
 
-      <StepHeader
-        className="mt-5 sm:mt-6"
-        titleSize="sm"
-        title={
-          <>
-            Your treatment program is a{" "}
-            <AnimatedCount
-              value={93}
-              className="inline-block text-brand-primary"
-              duration={1600}
-            />
-            % fit to you by knowing your skin type and concerns
-          </>
-        }
-      />
+      <StepBody className="mt-8 sm:mt-10">
+        <p className="font-serif text-[1.75rem] leading-[1.2] text-[#1b1b1b] sm:text-[2rem]">
+          Your treatment program is a{" "}
+          <AnimatedCount value={93} className="inline-block" duration={1600} />% fit
+          to you by knowing your skin type and concerns
+        </p>
+      </StepBody>
 
-      <div className="mt-6 grid grid-cols-4 gap-2 sm:mt-7 sm:gap-3">
+      <div className="mt-8 grid grid-cols-4 gap-2 sm:mt-10 sm:gap-3">
         {programFeatures.map((feature) => (
           <ProgramFeatureItem
             key={feature.label}

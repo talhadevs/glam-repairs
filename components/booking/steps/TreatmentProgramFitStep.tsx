@@ -1,6 +1,6 @@
 import AnimatedCount from "@/components/booking/AnimatedCount";
 import TreatmentProgramFitChart from "@/components/booking/TreatmentProgramFitChart";
-import { StepHeader } from "@/components/steps";
+import { StepBody } from "@/components/steps";
 
 export default function TreatmentProgramFitStep() {
   return (
@@ -9,21 +9,13 @@ export default function TreatmentProgramFitStep() {
         <TreatmentProgramFitChart />
       </div>
 
-      <StepHeader
-        className="mt-5 sm:mt-6"
-        titleSize="sm"
-        title={
-          <>
-            Your treatment program is a{" "}
-            <AnimatedCount
-              value={93}
-              className="inline-block text-brand-primary"
-              duration={1600}
-            />
-            % fit to your skin by knowing you better
-          </>
-        }
-      />
+      <StepBody className="mt-8 sm:mt-10">
+        <p className="font-serif text-[1.75rem] leading-[1.2] text-[#1b1b1b] sm:text-[2rem]">
+          Your treatment program is a{" "}
+          <AnimatedCount value={93} className="inline-block" duration={1600} />% fit
+          to your skin by knowing you better
+        </p>
+      </StepBody>
     </div>
   );
 }

@@ -2,69 +2,34 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const VIEWBOX_WIDTH = 320;
-const VIEWBOX_HEIGHT = 208;
-const CENTER_X = 168;
-const CENTER_Y = 74;
-const RADIUS = 76;
-const SKINCARE_PERCENT = 14;
-const SLICE_GAP = 3;
-const USABLE_CIRCLE = 360 - SLICE_GAP * 2;
-const SKINCARE_ANGLE = (SKINCARE_PERCENT / 100) * USABLE_CIRCLE;
-const GLAM_ANGLE = USABLE_CIRCLE - SKINCARE_ANGLE;
-const SKINCARE_START = 228;
-const SKINCARE_END = SKINCARE_START + SKINCARE_ANGLE;
-const GLAM_START = SKINCARE_END + SLICE_GAP;
-const GLAM_END = GLAM_START + GLAM_ANGLE;
+// Geometry mirrors the Figma design (Frame 2 coordinate space).
+const VIEWBOX = "74 120 492 348";
+
+const AXIS_X = 91;
+const AXIS_Y_TOP = 118;
+const AXIS_Y_BOTTOM = 447;
+const AXIS_X_RIGHT = 558;
+const AXIS_COLOR = "#D9D9D9";
+
+// Pie group offset within the Frame (Figma: x 589 - 405, y 263.649 - 121).
+const PIE_TX = 184;
+const PIE_TY = 142.649;
+
+// Exact pie paths exported from Figma (pie-local 0-281 space).
+// Purple = Glam repair circle with the bottom-right quarter removed.
+const GLAM_PATH =
+  "M275.432 137.716C275.432 108.647 266.234 80.3232 249.154 56.8008C232.074 33.2784 207.99 15.7638 180.348 6.76492C152.707 -2.23393 122.927 -2.25544 95.273 6.70346C67.6188 15.6624 43.5087 33.1422 26.3951 56.6399C9.28146 80.1376 0.0421408 108.448 0.000143723 137.517C-0.0418534 166.586 9.11562 194.923 26.1613 218.47C43.2069 242.017 67.2664 259.567 94.8946 268.605C122.523 277.644 152.303 277.709 179.97 268.79L137.716 137.716H275.432Z";
+// Red = Skincare wedge, offset so a gap shows against the purple.
+const SKINCARE_PATH =
+  "M186.022 273.337C213.525 264.207 237.447 246.634 254.384 223.119C271.32 199.604 280.406 171.345 280.35 142.366L142.634 142.634L186.022 273.337Z";
+
+const GLAM_COLOR = "#DFCAF4";
+const SKINCARE_COLOR = "#FD372A";
+
+const CENTER_X = PIE_TX + 137.716;
+const CENTER_Y = PIE_TY + 137.716;
 
 const SMOOTH_EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
-const AXIS_LEFT = 46;
-const AXIS_RIGHT = 284;
-const AXIS_TOP = 18;
-const AXIS_BOTTOM = 162;
-
-function polarToCartesian(cx: number, cy: number, radius: number, angleDeg: number) {
-  const angleRad = ((angleDeg - 90) * Math.PI) / 180;
-  return {
-    x: cx + radius * Math.cos(angleRad),
-    y: cy + radius * Math.sin(angleRad),
-  };
-}
-
-function describeSlice(
-  cx: number,
-  cy: number,
-  radius: number,
-  startAngle: number,
-  endAngle: number,
-) {
-  const start = polarToCartesian(cx, cy, radius, endAngle);
-  const end = polarToCartesian(cx, cy, radius, startAngle);
-  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-
-  return [
-    `M ${cx} ${cy}`,
-    `L ${start.x} ${start.y}`,
-    `A ${radius} ${radius} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`,
-    "Z",
-  ].join(" ");
-}
-
-function labelPosition(startAngle: number, endAngle: number, distance = 0.58) {
-  const midAngle = startAngle + (endAngle - startAngle) / 2;
-  return polarToCartesian(CENTER_X, CENTER_Y, RADIUS * distance, midAngle);
-}
-
-const skincarePath = describeSlice(
-  CENTER_X,
-  CENTER_Y,
-  RADIUS,
-  SKINCARE_START,
-  SKINCARE_END,
-);
-const glamPath = describeSlice(CENTER_X, CENTER_Y, RADIUS, GLAM_START, GLAM_END);
-const glamLabel = labelPosition(GLAM_START, GLAM_END, 0.5);
-const skincareLabel = labelPosition(SKINCARE_START, SKINCARE_END, 0.62);
 
 export default function IngredientsFitChart() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -92,21 +57,22 @@ export default function IngredientsFitChart() {
   }, []);
 
   return (
-    <div ref={containerRef} className="mx-auto w-full max-w-[21rem] sm:max-w-[23rem]">
-      <div className="aspect-[320/208] w-full">
+    <div ref={containerRef} className="mx-auto w-full">
+      <div className="aspect-[492/348] w-full">
         <svg
-          viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
+          viewBox={VIEWBOX}
           className="h-full w-full"
           preserveAspectRatio="xMidYMid meet"
           role="img"
-          aria-label="Chart showing an 86 percent Glam repair program fit and 14 percent skincare fit"
+          aria-label="Chart showing a large Glam repair program fit and a smaller skincare share"
         >
+          {/* L-shaped axis */}
           <line
-            x1={AXIS_LEFT}
-            y1={AXIS_BOTTOM}
-            x2={AXIS_RIGHT}
-            y2={AXIS_BOTTOM}
-            stroke="#E8E8E8"
+            x1={AXIS_X}
+            y1={AXIS_Y_TOP}
+            x2={AXIS_X}
+            y2={AXIS_Y_BOTTOM}
+            stroke={AXIS_COLOR}
             strokeWidth="1"
             style={{
               opacity: visible ? 1 : 0,
@@ -114,11 +80,11 @@ export default function IngredientsFitChart() {
             }}
           />
           <line
-            x1={AXIS_LEFT}
-            y1={AXIS_TOP}
-            x2={AXIS_LEFT}
-            y2={AXIS_BOTTOM}
-            stroke="#E8E8E8"
+            x1={AXIS_X}
+            y1={AXIS_Y_BOTTOM}
+            x2={AXIS_X_RIGHT}
+            y2={AXIS_Y_BOTTOM}
+            stroke={AXIS_COLOR}
             strokeWidth="1"
             style={{
               opacity: visible ? 1 : 0,
@@ -126,11 +92,15 @@ export default function IngredientsFitChart() {
             }}
           />
 
+          {/* Axis labels */}
           <text
-            x={40}
-            y={90}
-            transform="rotate(-90 40 90)"
-            className="fill-brand-gray text-[10px] sm:text-[11px]"
+            transform="rotate(-90 86 282)"
+            x={86}
+            y={282}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            className="fill-[#1b1b1b] font-serif"
+            fontSize={24}
             style={{
               opacity: visible ? 1 : 0,
               transition: visible ? `opacity 500ms ${SMOOTH_EASE} 120ms` : "none",
@@ -138,12 +108,11 @@ export default function IngredientsFitChart() {
           >
             Program fit
           </text>
-
           <text
-            x={AXIS_RIGHT}
-            y={AXIS_BOTTOM + 16}
-            textAnchor="end"
-            className="fill-brand-gray text-[10px] sm:text-[11px]"
+            x={416}
+            y={433}
+            className="fill-[#1b1b1b] font-serif"
+            fontSize={24}
             style={{
               opacity: visible ? 1 : 0,
               transition: visible ? `opacity 500ms ${SMOOTH_EASE} 120ms` : "none",
@@ -152,6 +121,7 @@ export default function IngredientsFitChart() {
             Ingredients fit
           </text>
 
+          {/* Pie */}
           <g
             style={{
               opacity: visible ? 1 : 0,
@@ -162,24 +132,28 @@ export default function IngredientsFitChart() {
                 : "none",
             }}
           >
-            <path d={glamPath} fill="#DFCAF4" />
-            <path d={skincarePath} fill="#FD372A" />
+            <g transform={`translate(${PIE_TX} ${PIE_TY})`}>
+              <path d={GLAM_PATH} fill={GLAM_COLOR} />
+              <path d={SKINCARE_PATH} fill={SKINCARE_COLOR} />
+            </g>
 
             <text
-              x={glamLabel.x}
-              y={glamLabel.y}
+              x={276.6}
+              y={241.7}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="fill-white text-[11px] font-medium sm:text-xs"
+              className="fill-white font-serif"
+              fontSize={14}
             >
               Glam repair
             </text>
             <text
-              x={skincareLabel.x}
-              y={skincareLabel.y}
+              x={398.8}
+              y={322.1}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="fill-white text-[9px] font-medium sm:text-[10px]"
+              className="fill-white font-serif"
+              fontSize={14}
             >
               Skincare
             </text>
