@@ -42,9 +42,19 @@ export default function Hero() {
 
         <Link
           href={BOOKING_START_HREF}
-          className="mt-8 inline-flex items-center justify-center rounded-[30px] bg-white/10 px-[35px] py-[15px] font-inter text-sm font-medium uppercase leading-none tracking-[-0.54px] text-white backdrop-blur-sm transition-colors hover:bg-white/20 lg:mt-9 lg:text-[18px]"
+          className="group relative mt-8 inline-flex items-center justify-center gap-2 overflow-hidden rounded-[30px] bg-white/10 px-[35px] py-[15px] font-inter text-sm font-medium uppercase leading-none tracking-[-0.54px] text-white backdrop-blur-sm transition-all duration-300 ease-out hover:scale-[1.04] hover:bg-white/20 hover:shadow-[0_10px_30px_rgba(255,255,255,0.22)] active:scale-95 lg:mt-9 lg:text-[18px]"
         >
-          Get My Skin Assessment
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+          />
+          <span className="relative">Get My Skin Assessment</span>
+          <span
+            aria-hidden
+            className="relative inline-block transition-transform duration-300 ease-out group-hover:translate-x-1"
+          >
+            →
+          </span>
         </Link>
       </div>
     </section>
