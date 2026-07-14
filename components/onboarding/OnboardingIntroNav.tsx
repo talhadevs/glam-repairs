@@ -6,7 +6,7 @@ import {
   resolveBookingNextStep,
   resolveBookingPrevStep,
 } from "@/lib/funnel/bookingFlow";
-
+import { resolveUnlockTarget } from "@/lib/funnel/funnelProgress";
 type OnboardingIntroNavProps = {
   backHref: string;
   nextHref: string;
@@ -22,6 +22,10 @@ type OnboardingIntroNavProps = {
    * branching (skip ranges) to the back/next targets based on stored answers.
    */
   bookingStep?: number;
+  /**
+   * Which funnel progress to unlock on Next. Inferred from bookingStep when set.
+   */
+  flow?: "booking" | "onboarding";
 };
 
 export default function OnboardingIntroNav({
@@ -30,9 +34,11 @@ export default function OnboardingIntroNav({
   nextLabel = "Next",
   gated = true,
   bookingStep,
+  flow = typeof bookingStep === "number" ? "booking" : "onboarding",
 }: OnboardingIntroNavProps) {
   const currentStepValid = useFunnelStore((state) => state.currentStepValid);
   const answers = useFunnelStore((state) => state.answers);
+  const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
   const canContinue = !gated || currentStepValid;
 
   let resolvedBackHref = backHref;
@@ -49,6 +55,13 @@ export default function OnboardingIntroNav({
       resolvedBackHref = `/booking/step/${branchPrev}`;
     }
   }
+
+  const unlockNext = () => {
+    const target = resolveUnlockTarget(flow, resolvedNextHref);
+    if (target !== null) {
+      unlockFlowStep(flow, target);
+    }
+  };
 
   return (
     <div className="flex items-center justify-between gap-4">
@@ -77,6 +90,7 @@ export default function OnboardingIntroNav({
       {canContinue ? (
         <Link
           href={resolvedNextHref}
+          onClick={unlockNext}
           className="subscribe-fill-btn rounded-full bg-brand-light px-10 py-3 text-xs font-normal uppercase tracking-[0.15em] text-white sm:px-12 sm:py-3.5 sm:text-sm"
         >
           {nextLabel}

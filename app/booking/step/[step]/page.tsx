@@ -293,7 +293,7 @@ export default async function BookingStepPage({ params }: StepPageProps) {
     stepNumber === 52
       ? "Let's make it 100%"
       : stepNumber === BOOKING_FORM_STEPS
-        ? "View Report"
+        ? "See My Report"
         : "Next";
 
   if (stepNumber === 53) {

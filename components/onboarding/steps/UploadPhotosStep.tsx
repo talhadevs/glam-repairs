@@ -2,9 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import CameraUploadIcon from "@/components/onboarding/CameraUploadIcon";
 import { StepHeader } from "@/components/steps";
+import { resolveUnlockTarget } from "@/lib/funnel/funnelProgress";
+import { fileToCompressedDataUrl } from "@/lib/funnel/image";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
+import { useStepAnswer } from "@/lib/funnel/useStepAnswer";
 
 const PHOTO_SLOTS = [
   {
@@ -33,6 +37,8 @@ const PHOTO_SLOTS = [
     illustration: "/svgs/ChatGPT Image Jun 22, 2026, 12_52_18 1 1.svg",
   },
 ] as const;
+
+const EMPTY_PHOTOS: (string | null)[] = Array(PHOTO_SLOTS.length).fill(null);
 
 function InfoIcon() {
   return (
@@ -74,6 +80,12 @@ type UploadPhotosFooterProps = {
 };
 
 export function UploadPhotosFooter({ backHref, nextHref }: UploadPhotosFooterProps) {
+  const photos = useFunnelStore(
+    (state) => state.answers["onboarding.photos"] as (string | null)[] | undefined,
+  );
+  const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
+  const hasFrontFace = Boolean(photos?.[0]);
+
   return (
     <div className="flex items-center justify-between gap-4">
       <Link
@@ -98,12 +110,26 @@ export function UploadPhotosFooter({ backHref, nextHref }: UploadPhotosFooterPro
         </svg>
       </Link>
 
-      <Link
-        href={nextHref}
-        className="subscribe-fill-btn flex-1 rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal uppercase tracking-[0.15em] text-white sm:py-3.5 sm:text-sm"
-      >
-        Upload Photos
-      </Link>
+      {hasFrontFace ? (
+        <Link
+          href={nextHref}
+          onClick={() => {
+            const target = resolveUnlockTarget("onboarding", nextHref);
+            if (target !== null) unlockFlowStep("onboarding", target);
+          }}
+          className="subscribe-fill-btn flex-1 rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal uppercase tracking-[0.15em] text-white sm:py-3.5 sm:text-sm"
+        >
+          Upload Photos
+        </Link>
+      ) : (
+        <button
+          type="button"
+          disabled
+          className="flex-1 cursor-not-allowed rounded-full bg-brand-light/45 px-6 py-3 text-center text-xs font-normal uppercase tracking-[0.15em] text-white/80 sm:py-3.5 sm:text-sm"
+        >
+          Upload Photos
+        </button>
+      )}
     </div>
   );
 }
@@ -111,45 +137,32 @@ export function UploadPhotosFooter({ backHref, nextHref }: UploadPhotosFooterPro
 export default function UploadPhotosStep() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [activeSlot, setActiveSlot] = useState<number | null>(null);
-  const [photos, setPhotos] = useState<(string | null)[]>(
-    Array(PHOTO_SLOTS.length).fill(null),
+  const [photos, setPhotos] = useStepAnswer<(string | null)[]>(
+    "onboarding.photos",
+    EMPTY_PHOTOS,
   );
-  const photosRef = useRef<(string | null)[]>([]);
-
-  useEffect(() => {
-    photosRef.current = photos;
-  }, [photos]);
-
-  useEffect(() => {
-    return () => {
-      for (const photoUrl of photosRef.current) {
-        if (photoUrl) {
-          URL.revokeObjectURL(photoUrl);
-        }
-      }
-    };
-  }, []);
 
   const openFilePicker = (index: number) => {
     setActiveSlot(index);
     inputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && activeSlot !== null) {
-      const previewUrl = URL.createObjectURL(file);
-      setPhotos((current) => {
-        const next = [...current];
-        if (next[activeSlot]) {
-          URL.revokeObjectURL(next[activeSlot]!);
-        }
-        next[activeSlot] = previewUrl;
-        return next;
-      });
-    }
+    const slot = activeSlot;
     event.target.value = "";
     setActiveSlot(null);
+    if (!file || slot === null) return;
+
+    try {
+      const dataUrl = await fileToCompressedDataUrl(file);
+      const next = [...photos];
+      while (next.length < PHOTO_SLOTS.length) next.push(null);
+      next[slot] = dataUrl;
+      setPhotos(next);
+    } catch {
+      // Keep existing photos if compression fails.
+    }
   };
 
   return (

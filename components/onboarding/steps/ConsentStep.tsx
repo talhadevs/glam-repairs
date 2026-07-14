@@ -5,6 +5,8 @@ import { createContext, useContext } from "react";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_PROGRESS } from "@/components/onboarding/onboardingConfig";
 import { StepHeader } from "@/components/steps";
+import { resolveUnlockTarget } from "@/lib/funnel/funnelProgress";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 import { useStepAnswer } from "@/lib/funnel/useStepAnswer";
 
 type ConsentContextValue = {
@@ -78,6 +80,7 @@ function ConsentCheckbox({
 
 function ConsentFooter({ backHref, nextHref }: { backHref: string; nextHref: string }) {
   const { canSubmit } = useConsent();
+  const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
 
   return (
     <div className="flex items-center justify-between gap-4">
@@ -106,6 +109,10 @@ function ConsentFooter({ backHref, nextHref }: { backHref: string; nextHref: str
       {canSubmit ? (
         <Link
           href={nextHref}
+          onClick={() => {
+            const target = resolveUnlockTarget("onboarding", nextHref);
+            if (target !== null) unlockFlowStep("onboarding", target);
+          }}
           className="subscribe-fill-btn flex-1 rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal tracking-[0.08em] text-white sm:py-3.5 sm:text-sm"
         >
           Agree &amp; Submit

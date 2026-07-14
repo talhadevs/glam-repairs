@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
-import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
+import { resolveUnlockTarget } from "@/lib/funnel/funnelProgress";
 import { fileToCompressedDataUrl } from "@/lib/funnel/image";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 
 const selfieIllustration = "/svgs/girl_svg.svg";
 
@@ -28,6 +29,7 @@ export default function SkinSelfieBookingStep({
     (state) => state.answers["booking.selfie"] as string | undefined,
   );
   const setAnswer = useFunnelStore((state) => state.setAnswer);
+  const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
   const [photoPreview, setPhotoPreview] = useState<string | null>(
     savedSelfie ?? null,
   );
@@ -88,6 +90,10 @@ export default function SkinSelfieBookingStep({
           {photoPreview ? (
             <Link
               href={nextHref}
+              onClick={() => {
+                const target = resolveUnlockTarget("booking", nextHref);
+                if (target !== null) unlockFlowStep("booking", target);
+              }}
               className="subscribe-fill-btn rounded-full bg-brand-light px-10 py-3 text-xs font-normal uppercase tracking-[0.15em] text-white sm:px-12 sm:py-3.5 sm:text-sm"
             >
               Next

@@ -1,11 +1,51 @@
-// Placeholder business number — update via NEXT_PUBLIC_WHATSAPP_NUMBER env var.
-// Use international format with no "+", spaces, or dashes (e.g. 923001234567).
-const FALLBACK_WHATSAPP_NUMBER = "920000000000";
+import {
+  formatBookingWhatsAppMessage,
+  type BookingWhatsAppSummaryInput,
+} from "@/lib/funnel/formatBookingSummary";
+
+// Business WhatsApp — override via NEXT_PUBLIC_WHATSAPP_NUMBER if needed.
+// International digits only (no "+", spaces, or dashes).
+const FALLBACK_WHATSAPP_NUMBER = "923081113041";
+
+/** wa.me URLs break past ~2k chars; keep summary readable and short. */
+const MAX_WHATSAPP_MESSAGE_LENGTH = 1800;
 
 export function getWhatsAppNumber() {
   return (
     process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/[^\d]/g, "") ||
     FALLBACK_WHATSAPP_NUMBER
+  );
+}
+
+/** Local-style display, e.g. 0308-1113041 */
+export function getWhatsAppDisplayNumber() {
+  const digits = getWhatsAppNumber();
+  if (digits.startsWith("92") && digits.length === 12) {
+    const local = `0${digits.slice(2)}`;
+    return `${local.slice(0, 4)}-${local.slice(4)}`;
+  }
+  return `+${digits}`;
+}
+
+export function getWhatsAppChatLink(prefilledText?: string) {
+  const base = `https://wa.me/${getWhatsAppNumber()}`;
+  if (!prefilledText) return base;
+  return `${base}?text=${encodeURIComponent(prefilledText)}`;
+}
+
+function truncateWhatsAppMessage(text: string) {
+  if (text.length <= MAX_WHATSAPP_MESSAGE_LENGTH) return text;
+  return `${text.slice(0, MAX_WHATSAPP_MESSAGE_LENGTH - 20).trimEnd()}\n…(truncated)`;
+}
+
+/**
+ * After the full booking funnel — send every selected field in one WhatsApp message.
+ */
+export function buildWhatsAppBookingSummaryLink(
+  input: BookingWhatsAppSummaryInput,
+) {
+  return getWhatsAppChatLink(
+    truncateWhatsAppMessage(formatBookingWhatsAppMessage(input)),
   );
 }
 
@@ -15,11 +55,26 @@ export type WhatsAppOrderDetails = {
   fullName?: string;
   email?: string;
   sessionId?: string;
+  /** Public URL of the uploaded selfie (from Supabase Storage once wired). */
+  imageUrl?: string | null;
 };
 
 /**
+ * Pricing page / home pricing CTA — simple subscribe intent on WhatsApp.
+ */
+export function buildWhatsAppSubscribeLink(planName: string, price?: string) {
+  const priceLabel =
+    price && price !== "0.00" && price !== "0"
+      ? ` (Rs. ${price})`
+      : "";
+  return getWhatsAppChatLink(
+    `Hi GlamRepairs! I want to subscribe to the ${planName} plan${priceLabel}.`,
+  );
+}
+
+/**
  * Build a wa.me deep link with a prefilled message so the team can identify the
- * lead and collect payment over WhatsApp.
+ * lead, open the selfie, and collect payment over WhatsApp.
  */
 export function buildWhatsAppOrderLink({
   planName,
@@ -27,14 +82,15 @@ export function buildWhatsAppOrderLink({
   fullName,
   email,
   sessionId,
+  imageUrl,
 }: WhatsAppOrderDetails) {
   const lines = [
     `Hi GlamRepairs! I'd like to subscribe to the ${planName} plan (${price}).`,
     fullName ? `Name: ${fullName}` : null,
     email ? `Email: ${email}` : null,
     sessionId ? `Ref: ${sessionId.slice(0, 8)}` : null,
+    imageUrl ? `Selfie: ${imageUrl}` : null,
   ].filter(Boolean);
 
-  const text = encodeURIComponent(lines.join("\n"));
-  return `https://wa.me/${getWhatsAppNumber()}?text=${text}`;
+  return getWhatsAppChatLink(lines.join("\n"));
 }
