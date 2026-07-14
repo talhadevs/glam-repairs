@@ -8,8 +8,6 @@ const CTA_IMAGE = "/images,svgs/cta_ginger_woman.png";
 const FOOTER_LOGO = "/svgs/GLAM REPAIR LOGO-08 2 (1).svg";
 
 const contactEmail = "hello@glamrepair.com";
-const contactPhone = "(406) 555-0120";
-const contactAddress = "2972 Westheimer Rd. Santa Ana, Illinois 85486";
 
 const pageLinks = [
   { label: "Home", href: "/" },
@@ -194,7 +192,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:mt-16">
+          <div className="mt-12 grid grid-cols-2 gap-8 lg:mt-16">
             <div>
               <FooterHeading>Pages</FooterHeading>
               <FooterLinkList links={pageLinks} />
@@ -202,22 +200,6 @@ export default function Footer() {
             <div>
               <FooterHeading>Resources</FooterHeading>
               <FooterLinkList links={resourceLinks} />
-            </div>
-            <div>
-              <FooterHeading>Contact Info</FooterHeading>
-              <ul className="mt-4 space-y-3">
-                <li>
-                  <a
-                    href={`tel:${contactPhone.replace(/[^\d+]/g, "")}`}
-                    className="font-sans text-[17px] text-[#242424] transition-colors hover:text-brand-primary"
-                  >
-                    {contactPhone}
-                  </a>
-                </li>
-                <li className="font-sans text-[17px] leading-relaxed text-[#242424]">
-                  {contactAddress}
-                </li>
-              </ul>
             </div>
           </div>
 
