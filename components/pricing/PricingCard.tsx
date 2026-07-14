@@ -1,5 +1,7 @@
 import Image from "next/image";
-import FillButton from "@/components/ui/FillButton";
+import Link from "next/link";
+import { BOOKING_START_HREF } from "@/components/booking/bookingConfig";
+import { buildWhatsAppSubscribeLink } from "@/lib/funnel/whatsapp";
 
 type PricingFeature = {
   title: string;
@@ -56,6 +58,12 @@ export default function PricingCard({
   badge,
 }: PricingCardProps) {
   const isFeatured = Boolean(badge);
+  const isFreePlan = price === "0.00" || price === "0";
+  const ctaHref = isFreePlan
+    ? BOOKING_START_HREF
+    : buildWhatsAppSubscribeLink(name, price);
+  const ctaClassName =
+    "subscribe-fill-btn flex w-full cursor-pointer items-center justify-center rounded-full bg-[#A88EC3] py-3.5 font-sans text-sm font-medium uppercase tracking-[0.04em] text-white sm:text-[15px]";
 
   return (
     <article
@@ -134,12 +142,20 @@ export default function PricingCard({
           </p>
         ) : null}
 
-        <FillButton
-          variant="subscribe"
-          className="w-full !bg-[#A88EC3] py-3.5 font-sans text-sm font-medium uppercase tracking-[0.04em] sm:text-[15px]"
-        >
-          {cta}
-        </FillButton>
+        {isFreePlan ? (
+          <Link href={ctaHref} className={ctaClassName}>
+            {cta}
+          </Link>
+        ) : (
+          <a
+            href={ctaHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={ctaClassName}
+          >
+            {cta}
+          </a>
+        )}
       </div>
     </article>
   );

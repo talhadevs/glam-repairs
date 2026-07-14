@@ -20,19 +20,17 @@ export default function ContactSection() {
 
               <div className="mt-8 flex items-center gap-4 sm:mt-10">
                 <Image
-                  src={contactReachOut.whatsappIcon}
+                  src={contactReachOut.emailIcon}
                   alt=""
                   width={41}
                   height={41}
                   className="h-10 w-10 shrink-0 object-contain"
                 />
                 <Link
-                  href={contactReachOut.phoneHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={contactReachOut.emailHref}
                   className="font-serif text-[1.75rem] italic tracking-[0.1em] text-brand-ink transition-opacity hover:opacity-80 sm:text-[2rem]"
                 >
-                  {contactReachOut.phoneDisplay}
+                  {contactReachOut.emailDisplay}
                 </Link>
               </div>
 

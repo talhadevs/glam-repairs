@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import FunnelStepGuard from "@/components/funnel/FunnelStepGuard";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_TOTAL_STEPS } from "@/components/onboarding/onboardingConfig";
 import { getOnboardingFirstName } from "@/components/onboarding/onboardingStorage";
 import { StepHeader } from "@/components/steps";
+import { ONBOARDING_COMPLETE_UNLOCK } from "@/lib/funnel/funnelProgress";
 
 const nextSteps = [
   {
@@ -98,7 +100,9 @@ export default function ThankYouStep({
   const headline = firstName ? `Thank you, ${firstName}!` : "Thank you!";
 
   return (
-    <OnboardingShell
+    <>
+      <FunnelStepGuard flow="onboarding" step={ONBOARDING_COMPLETE_UNLOCK} />
+      <OnboardingShell
       currentStep={currentStep}
       progressCompleted
       footer={
@@ -152,5 +156,6 @@ export default function ThankYouStep({
         </div>
       </div>
     </OnboardingShell>
+    </>
   );
 }

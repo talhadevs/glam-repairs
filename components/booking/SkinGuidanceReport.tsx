@@ -13,7 +13,10 @@ import {
   reportPatient,
   reportPhotos,
 } from "@/components/booking/skinGuidanceReportData";
+import FunnelStepGuard from "@/components/funnel/FunnelStepGuard";
+import { BOOKING_REPORT_UNLOCK } from "@/lib/funnel/funnelProgress";
 import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
+import { buildWhatsAppBookingSummaryLink } from "@/lib/funnel/whatsapp";
 
 const reportLogo = "/svgs/GLAM REPAIR LOGO-08 2 (1).svg";
 
@@ -189,13 +192,29 @@ function AvoidList() {
 
 export default function SkinGuidanceReport() {
   const patient = useReportPatient();
+  const answers = useFunnelStore((state) => state.answers);
+  const fullName = useFunnelStore((state) => state.fullName);
+  const email = useFunnelStore((state) => state.email);
+  const sessionId = useFunnelStore((state) => state.sessionId);
+  const selfieUrl = useFunnelStore((state) => state.selfieUrl);
   const selfie = useFunnelStore(
     (state) => state.answers["booking.selfie"] as string | undefined,
   );
   const photos = selfie ? [selfie, reportPhotos[1]] : [...reportPhotos];
 
+  const premiumWhatsAppHref = buildWhatsAppBookingSummaryLink({
+    answers,
+    fullName,
+    email,
+    sessionId,
+    selfieUrl,
+    intro:
+      "Hi GlamRepairs! I finished the free skin quiz and want to upgrade to a Premium plan (Clarity or Transform).",
+  });
+
   return (
     <div className="min-h-[100dvh] bg-gradient-to-b from-brand-purple-soft via-white to-brand-lavender/20 px-4 py-8 sm:px-6 sm:py-10">
+      <FunnelStepGuard flow="booking" step={BOOKING_REPORT_UNLOCK} />
       <article className="mx-auto w-full max-w-[40rem] rounded-[2rem] border border-brand-lavender/60 bg-white px-5 py-7 shadow-sm sm:px-8 sm:py-9">
         <header className="text-center">
           <Image
@@ -334,15 +353,19 @@ export default function SkinGuidanceReport() {
             Ready for a deeper routine?
           </h2>
           <p className="mt-2 text-xs leading-relaxed text-brand-gray sm:mt-3 sm:text-[0.8125rem]">
-            The Advanced Skin Guide maps out your next 30 days, step by step.
+            Upgrade for a manual expert review, personalized AM + PM routine, and
+            a written skin assessment — we&apos;ll send your quiz answers ahead
+            on WhatsApp.
           </p>
-          <div className="mt-4 flex justify-end sm:mt-5">
-            <Link
-              href="/pricing"
-              className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-primary transition-opacity hover:opacity-80 sm:text-xs"
+          <div className="mt-4 flex flex-col items-stretch gap-3 sm:mt-5 sm:flex-row sm:items-center sm:justify-end">
+            <a
+              href={premiumWhatsAppHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="subscribe-fill-btn inline-flex items-center justify-center rounded-full bg-brand-primary px-8 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition-opacity hover:opacity-90 sm:px-10 sm:text-sm"
             >
-              Explore Advanced Guide
-            </Link>
+              Get Premium
+            </a>
           </div>
         </section>
 

@@ -21,12 +21,19 @@ export async function submitContactForm(
       return { ok: false, reason: "validation" };
     }
 
-    // Placeholder for future backend integration.
-    if (process.env.NODE_ENV !== "production") {
-      console.info("[ContactForm] Ready payload", payload);
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = (await response.json()) as ContactSubmitResult;
+    if (!response.ok || !data.ok) {
+      return data.ok === false ? data : { ok: false, reason: "unknown" };
     }
-    return { ok: true };
+
+    return data;
   } catch {
-    return { ok: false, reason: "unknown" };
+    return { ok: false, reason: "network" };
   }
 }

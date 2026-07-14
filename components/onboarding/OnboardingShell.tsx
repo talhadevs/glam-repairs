@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
+import FunnelStepGuard from "@/components/funnel/FunnelStepGuard";
 import OnboardingNav from "@/components/onboarding/OnboardingNav";
 import OnboardingProgress from "@/components/onboarding/OnboardingProgress";
 import { ONBOARDING_TOTAL_STEPS } from "@/components/onboarding/onboardingConfig";
@@ -35,7 +36,15 @@ export default function OnboardingShell({
   const pathname = usePathname();
   const ensureSessionId = useFunnelStore((state) => state.ensureSessionId);
   const showProgressBar = showProgress && typeof currentStep === "number";
-  const showFooter = Boolean(footer || (typeof currentStep === "number" && backHref));
+  const showFooter = Boolean(
+    footer || (typeof currentStep === "number" && backHref),
+  );
+
+  const funnelFlow = pathname.startsWith("/booking")
+    ? ("booking" as const)
+    : pathname.startsWith("/onboarding/step")
+      ? ("onboarding" as const)
+      : null;
 
   useEffect(() => {
     ensureSessionId();
@@ -43,6 +52,9 @@ export default function OnboardingShell({
 
   return (
     <div className="flex min-h-[100dvh] items-center justify-center bg-gradient-to-b from-brand-purple-soft via-white to-brand-lavender/30 px-4 py-10 sm:px-6">
+      {funnelFlow && typeof currentStep === "number" ? (
+        <FunnelStepGuard flow={funnelFlow} step={currentStep} />
+      ) : null}
       <div className="onboarding-card w-full max-w-[28rem] rounded-[2rem] border border-brand-lavender/60 bg-gradient-to-b from-brand-purple-soft/80 via-white to-brand-lavender/20 px-7 pb-9 pt-8 shadow-sm sm:max-w-[32rem] sm:px-9 sm:pb-10 sm:pt-9">
         {showProgressBar && (
           <div className="mb-7 sm:mb-8">

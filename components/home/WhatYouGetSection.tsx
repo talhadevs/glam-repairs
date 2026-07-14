@@ -89,7 +89,7 @@ export default function WhatYouGetSection() {
                 sizes="(max-width: 1024px) 90vw, 434px"
                 className="rotate-180 object-cover mix-blend-color-burn"
               />
-              <p className="absolute left-6 top-1/2 z-10 -translate-y-1/2 font-serif text-[24px] leading-[1.15] lg:text-[28px]">
+              <p className="absolute left-5 top-1/2 z-10 w-[7.25rem] -translate-y-1/2 font-serif text-[24px] leading-[1.15] max-[380px]:w-[6.5rem] lg:left-6 lg:w-auto lg:text-[28px]">
                 <span className="block font-inter not-italic font-normal tracking-tight text-[#1b1b1b]">
                   Get rid of your
                 </span>

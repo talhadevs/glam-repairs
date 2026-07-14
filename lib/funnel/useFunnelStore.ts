@@ -15,6 +15,17 @@ type FunnelState = {
   fullName: string;
   /** Plan the user selected (clarity | transform), saved on pick. */
   selectedPlan: string | null;
+  /** Public selfie URL after upload (Supabase Storage); used in WhatsApp message. */
+  selfieUrl: string | null;
+  /**
+   * Farthest booking step the user may open (1–59 form, 60 = report).
+   * Advanced only when they successfully continue from an earlier card.
+   */
+  bookingUnlockedStep: number;
+  /**
+   * Farthest onboarding step the user may open (1–10 form, 11 = complete).
+   */
+  onboardingUnlockedStep: number;
   /**
    * Whether the currently mounted step has a valid answer. Ephemeral UI state,
    * not persisted. Defaults to true so informational steps are never blocked.
@@ -25,6 +36,8 @@ type FunnelState = {
   setAnswer: (key: string, value: unknown) => void;
   setContact: (contact: { email?: string; fullName?: string }) => void;
   setSelectedPlan: (plan: string | null) => void;
+  setSelfieUrl: (url: string | null) => void;
+  unlockFlowStep: (flow: FunnelFlow, step: number) => void;
   setCurrentStepValid: (valid: boolean) => void;
   reset: () => void;
 };
@@ -44,6 +57,9 @@ export const useFunnelStore = create<FunnelState>()(
       email: "",
       fullName: "",
       selectedPlan: null,
+      selfieUrl: null,
+      bookingUnlockedStep: 1,
+      onboardingUnlockedStep: 1,
       currentStepValid: true,
 
       ensureSessionId: () => {
@@ -59,12 +75,36 @@ export const useFunnelStore = create<FunnelState>()(
           fullName: contact.fullName ?? state.fullName,
         })),
       setSelectedPlan: (plan) => set({ selectedPlan: plan }),
+      setSelfieUrl: (url) => set({ selfieUrl: url }),
+      unlockFlowStep: (flow, step) =>
+        set((state) => {
+          if (flow === "booking") {
+            return {
+              bookingUnlockedStep: Math.max(state.bookingUnlockedStep, step),
+            };
+          }
+          return {
+            onboardingUnlockedStep: Math.max(
+              state.onboardingUnlockedStep,
+              step,
+            ),
+          };
+        }),
       setCurrentStepValid: (valid) => set({ currentStepValid: valid }),
       reset: () =>
-        set({ answers: {}, email: "", fullName: "", selectedPlan: null }),
+        set({
+          answers: {},
+          email: "",
+          fullName: "",
+          selectedPlan: null,
+          selfieUrl: null,
+          bookingUnlockedStep: 1,
+          onboardingUnlockedStep: 1,
+        }),
     }),
     {
       name: "glam-funnel",
+      version: 1,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         sessionId: state.sessionId,
@@ -72,7 +112,18 @@ export const useFunnelStore = create<FunnelState>()(
         email: state.email,
         fullName: state.fullName,
         selectedPlan: state.selectedPlan,
+        selfieUrl: state.selfieUrl,
+        bookingUnlockedStep: state.bookingUnlockedStep,
+        onboardingUnlockedStep: state.onboardingUnlockedStep,
       }),
+      migrate: (persisted) => {
+        const state = (persisted ?? {}) as Partial<FunnelState>;
+        return {
+          ...state,
+          bookingUnlockedStep: state.bookingUnlockedStep ?? 1,
+          onboardingUnlockedStep: state.onboardingUnlockedStep ?? 1,
+        };
+      },
     },
   ),
 );
