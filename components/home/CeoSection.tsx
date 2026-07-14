@@ -70,7 +70,7 @@ export default function CeoSection() {
           </p>
 
           <a
-            href="https://www.linkedin.com/"
+            href="https://www.linkedin.com/company/glamrepairs/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Connect with Dr. Ayma Arif on LinkedIn"
