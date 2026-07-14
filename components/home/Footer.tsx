@@ -7,7 +7,7 @@ import { BOOKING_START_HREF } from "@/components/booking/bookingConfig";
 const CTA_IMAGE = "/images,svgs/cta_ginger_woman.png";
 const FOOTER_LOGO = "/svgs/GLAM REPAIR LOGO-08 2 (1).svg";
 
-const contactEmail = "hello@glamrepair.com";
+const contactEmail = "glamrepairs@gmail.com";
 
 const pageLinks = [
   { label: "Home", href: "/" },
