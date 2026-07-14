@@ -44,7 +44,7 @@ export const comparisonRows: ComparisonRow[] = [
     feature: "Expert manual review",
     values: [
       { type: "empty" },
-      { type: "text", value: "48 hrs" },
+      { type: "text", value: "24 hrs" },
       { type: "text", value: "24 hrs" },
     ],
   },

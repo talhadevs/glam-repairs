@@ -122,7 +122,7 @@ export default function ThankYouStep({
 
         <p className="mx-auto mt-5 max-w-[20rem] text-sm leading-relaxed text-brand-gray sm:mt-6 sm:max-w-none sm:text-[0.9375rem]">
           Our certified expert will review your skin assessment and deliver your
-          personalized report within 24 or 48 hours — depending on your plan.
+          personalized report within 24 hours.
         </p>
 
         <ContactNotice />

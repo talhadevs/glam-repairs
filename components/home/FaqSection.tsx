@@ -22,7 +22,7 @@ const faqItems: FaqItem[] = [
   {
     question: "How long does it take to get my assessment?",
     answer:
-      "The Clarity plan is delivered within 48 hours. The Transform plan is delivered within 24 hours, with priority review.",
+      "The Clarity plan is delivered within 24 hours. The Transform plan is delivered within 24 hours, with priority review.",
   },
   {
     question: "Do you recommend specific brands?",

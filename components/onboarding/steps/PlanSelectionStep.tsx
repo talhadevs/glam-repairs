@@ -19,7 +19,7 @@ const plans: {
     id: "clarity",
     name: "Clarity",
     price: "Rs. 1,500",
-    highlights: "Manual expert review · Delivered in 48 hours · 1 follow-up at 2 weeks",
+    highlights: "Manual expert review · Delivered in 24 hours · 1 follow-up at 2 weeks",
   },
   {
     id: "transform",

@@ -54,7 +54,7 @@ export const pricingPlans: PricingPlan[] = [
       },
       {
         title: "Manual expert review",
-        description: "delivered within 48 hours",
+        description: "delivered within 24 hours",
       },
       {
         title: "Personalized AM + PM skincare routine",

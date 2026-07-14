@@ -37,7 +37,7 @@ export default function Hero() {
           a certified{" "}
           <span className="font-serif italic">Aesthetics Expert</span>, with
           complete privacy, delivered to you within{" "}
-          <span className="font-serif italic">48&nbsp;hours</span>.
+          <span className="font-serif italic">24&nbsp;hours</span>.
         </p>
 
         <Link
