@@ -1,7 +1,6 @@
 import AcidsStep from "@/components/booking/steps/AcidsStep";
 import AdditionalConcernsStep from "@/components/booking/steps/AdditionalConcernsStep";
 import AddExosomesStep from "@/components/booking/steps/AddExosomesStep";
-import AddPdrnStep from "@/components/booking/steps/AddPdrnStep";
 import CosmetologistsStep from "@/components/booking/steps/CosmetologistsStep";
 import AntioxidantsStep from "@/components/booking/steps/AntioxidantsStep";
 import DailyRoutineStep from "@/components/booking/steps/DailyRoutineStep";
@@ -20,8 +19,6 @@ import KoreanSkincareProductsStep from "@/components/booking/steps/KoreanSkincar
 import LocationStep from "@/components/booking/steps/LocationStep";
 import MoisturizedStep from "@/components/booking/steps/MoisturizedStep";
 import NotAloneStep from "@/components/booking/steps/NotAloneStep";
-import PdrnInfoStep from "@/components/booking/steps/PdrnInfoStep";
-import PdrnStep from "@/components/booking/steps/PdrnStep";
 import EventDateStep from "@/components/booking/steps/EventDateStep";
 import GoalPlanStep from "@/components/booking/steps/GoalPlanStep";
 import KeepResultsStep from "@/components/booking/steps/KeepResultsStep";
@@ -86,113 +83,100 @@ export default function BookingStepContent({ stepNumber }: BookingStepContentPro
     case 13:
       return <KoreanSkincareProductsStep />;
     case 14:
-      return <PdrnStep />;
-    case 15:
-      return <PdrnInfoStep />;
-    case 16:
-      return <AddPdrnStep />;
-    case 17:
       return <ExosomesStep />;
-    case 18:
+    case 15:
       return <ExosomesInfoStep />;
-    case 19:
+    case 16:
       return <AddExosomesStep />;
-    case 20:
+    case 17:
       return <SunscreenStep />;
-    case 21:
+    case 18:
       return <LocationStep />;
-    case 22:
+    case 19:
       return <SulfatesStep />;
-    case 23:
+    case 20:
       return <AntioxidantsStep />;
-    case 24:
+    case 21:
       return <AcidsStep />;
-    case 25:
+    case 22:
       return <RetinolVitaminCStep />;
-    case 26:
+    case 23:
       return <IngredientsFitStep />;
-    case 27:
+    case 24:
       return <SocialMediaStep />;
-    case 28:
+    case 25:
       return <CosmetologistsStep />;
-    case 29:
+    case 26:
       return <AdditionalConcernsStep />;
-    case 30:
+    case 27:
       return <MoisturizedStep />;
-    case 31:
+    case 28:
       return <DaytimeSkinBothersStep />;
-    case 32:
+    case 29:
       return <SkinSensitivityStep />;
-    case 33:
+    case 30:
       return <SkinImprovementStep />;
-    case 34:
+    case 31:
       return <SleepStep />;
-    case 35:
+    case 32:
       return <WaterIntakeStep />;
-    case 36:
+    case 33:
       return <StressStep />;
-    case 37:
+    case 34:
       return <SkincareRoutineTimeStep />;
-    case 38:
+    case 35:
       return <ProfileReadyStep />;
-    case 39:
+    case 36:
       return <TreatmentProgramFitStep />;
-    case 40:
+    case 37:
       return <GlamImproveGoalsStep />;
-    case 41:
+    case 38:
       return <FeelGreatSkinGoalsStep />;
-    case 42:
+    case 39:
       return <SkincareJourneyFeelStep />;
-    case 43:
+    case 40:
       return <WithGlamGoalsStep />;
-    case 44:
+    case 41:
       return (
         <StatementAgreementStep statement="Finding skincare products that suit me is challenging" />
       );
-    case 45:
+    case 42:
       return (
         <StatementAgreementStep statement="I often consider the price of skincare products" />
       );
-    case 46:
+    case 43:
       return (
         <StatementAgreementStep statement="Brand loyalty matters to me" />
       );
-    case 47:
+    case 44:
       return (
         <StatementAgreementStep statement="Occasionally, I purchase products due to the hype" />
       );
-    case 48:
+    case 45:
       return (
         <StatementAgreementStep statement="I'm not always sure if I'm applying my skincare products correctly" />
       );
-    case 49:
+    case 46:
       return <SkinConditionWorseningStep />;
-    case 50:
+    case 47:
       return <SpecialEventStep />;
-    case 51:
+    case 48:
       return <EventDateStep />;
-    case 52:
+    case 49:
       return <GoalPlanStep />;
-    case 54:
+    case 51:
       return <ProgramJourneyStep />;
-    case 55:
+    case 52:
       return <KeepResultsStep />;
-    case 56:
+    case 53:
       return <NameStep />;
-    case 57:
+    case 54:
       return <SkinElevatedStep />;
-    case 58:
+    case 55:
       return <SkinElevatedScratchStep />;
-    case 59:
+    case 56:
       return <SkinResultsTimelineStep />;
     default:
-      return (
-        <div>
-          <h1 className="font-serif text-[1.75rem] leading-tight text-brand-ink sm:text-[2rem]">
-            Step {stepNumber}
-          </h1>
-          <p className="mt-3 text-sm text-brand-gray">Coming soon.</p>
-        </div>
-      );
+      return null;
   }
 }

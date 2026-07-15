@@ -1,11 +1,11 @@
 import {
-  BOOKING_TOTAL_STEPS,
+  BOOKING_LAST_STEP,
 } from "@/components/booking/bookingConfig";
 import { ONBOARDING_FORM_STEPS } from "@/components/onboarding/onboardingConfig";
 import type { FunnelFlow } from "@/lib/funnel/useFunnelStore";
 
-/** Beyond last form step — unlocks `/booking/report`. */
-export const BOOKING_REPORT_UNLOCK = BOOKING_TOTAL_STEPS + 1;
+/** Beyond last URL step — unlocks `/booking/report`. */
+export const BOOKING_REPORT_UNLOCK = BOOKING_LAST_STEP + 1;
 
 /** Beyond last form step — unlocks `/onboarding/complete`. */
 export const ONBOARDING_COMPLETE_UNLOCK = ONBOARDING_FORM_STEPS + 1;
@@ -37,7 +37,13 @@ export function resolveUnlockTarget(
 
 export function fallbackStepPath(flow: FunnelFlow, unlockedStep: number) {
   if (flow === "booking") {
-    const step = Math.min(Math.max(unlockedStep, 1), BOOKING_TOTAL_STEPS);
+    const step = Math.min(
+      Math.max(
+        unlockedStep >= BOOKING_REPORT_UNLOCK ? BOOKING_LAST_STEP : unlockedStep,
+        1,
+      ),
+      BOOKING_LAST_STEP,
+    );
     return `/booking/step/${step}`;
   }
   const step = Math.min(Math.max(unlockedStep, 1), ONBOARDING_FORM_STEPS);

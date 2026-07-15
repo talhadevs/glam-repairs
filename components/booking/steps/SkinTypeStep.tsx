@@ -52,7 +52,7 @@ export default function SkinTypeStep() {
   return (
     <div>
       <StepHeader
-        title="What are your skin concerns?"
+        title="What is your skin type?"
         subtitle="We will create a treatment skin care program based on your answers"
       />
 

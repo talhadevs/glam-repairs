@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 import {
-  resolveBookingNextStep,
-  resolveBookingPrevStep,
+  getBookingNextStepNumber,
+  getBookingPrevStepNumber,
 } from "@/lib/funnel/bookingFlow";
+import { BOOKING_FORM_STEPS } from "@/components/booking/bookingConfig";
 import { resolveUnlockTarget } from "@/lib/funnel/funnelProgress";
+
 type OnboardingIntroNavProps = {
   backHref: string;
   nextHref: string;
@@ -45,14 +47,17 @@ export default function OnboardingIntroNav({
   let resolvedNextHref = nextHref;
 
   if (typeof bookingStep === "number") {
-    const branchNext = resolveBookingNextStep(bookingStep, answers);
-    if (branchNext !== null) {
-      resolvedNextHref = `/booking/step/${branchNext}`;
-    }
+    const nextStep = getBookingNextStepNumber(bookingStep, answers);
+    resolvedNextHref =
+      nextStep > BOOKING_FORM_STEPS
+        ? "/booking/report"
+        : `/booking/step/${nextStep}`;
 
-    const branchPrev = resolveBookingPrevStep(bookingStep, answers);
-    if (branchPrev !== null) {
-      resolvedBackHref = `/booking/step/${branchPrev}`;
+    const prevStep = getBookingPrevStepNumber(bookingStep, answers);
+    if (prevStep !== null && prevStep >= 1) {
+      resolvedBackHref = `/booking/step/${prevStep}`;
+    } else if (bookingStep === 1) {
+      resolvedBackHref = backHref;
     }
   }
 

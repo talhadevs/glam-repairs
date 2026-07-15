@@ -104,7 +104,7 @@ export const useFunnelStore = create<FunnelState>()(
     }),
     {
       name: "glam-funnel",
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         sessionId: state.sessionId,
@@ -116,11 +116,18 @@ export const useFunnelStore = create<FunnelState>()(
         bookingUnlockedStep: state.bookingUnlockedStep,
         onboardingUnlockedStep: state.onboardingUnlockedStep,
       }),
-      migrate: (persisted) => {
+      migrate: (persisted, version) => {
         const state = (persisted ?? {}) as Partial<FunnelState>;
+        let bookingUnlocked = state.bookingUnlockedStep ?? 1;
+
+        // v2: booking URLs renumbered after removing PDRN (old 17+ → −3).
+        if (version < 2 && bookingUnlocked > 16) {
+          bookingUnlocked = Math.max(1, bookingUnlocked - 3);
+        }
+
         return {
           ...state,
-          bookingUnlockedStep: state.bookingUnlockedStep ?? 1,
+          bookingUnlockedStep: bookingUnlocked,
           onboardingUnlockedStep: state.onboardingUnlockedStep ?? 1,
         };
       },
