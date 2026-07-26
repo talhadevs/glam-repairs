@@ -153,8 +153,8 @@ type PlanSelectionStepProps = {
 };
 
 export default function PlanSelectionStep({
-  backHref = "/onboarding/step/8",
-  nextHref = "/onboarding/step/10",
+  backHref = "/onboarding/step/23",
+  nextHref = "/onboarding/step/25",
 }: PlanSelectionStepProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const selectedPlan = useFunnelStore(
@@ -176,10 +176,20 @@ export default function PlanSelectionStep({
     ensureSessionId();
 
     const store = useFunnelStore.getState();
-    const selfieDataUrl =
-      typeof store.answers["booking.selfie"] === "string"
-        ? store.answers["booking.selfie"]
-        : null;
+    const photos = Array.isArray(store.answers["onboarding.photos"])
+      ? (store.answers["onboarding.photos"] as (string | null)[])
+      : [];
+    const photoDataUrls = photos.filter(
+      (item): item is string =>
+        typeof item === "string" && item.startsWith("data:"),
+    );
+    if (
+      photoDataUrls.length === 0 &&
+      typeof store.answers["booking.selfie"] === "string" &&
+      store.answers["booking.selfie"].startsWith("data:")
+    ) {
+      photoDataUrls.push(store.answers["booking.selfie"]);
+    }
 
     let imageUrl = store.selfieUrl;
 
@@ -190,13 +200,21 @@ export default function PlanSelectionStep({
       selectedPlan: store.selectedPlan,
       planName: activePlan.name,
       planPrice: activePlan.price,
-      selfieDataUrl,
+      selfieDataUrl: photoDataUrls[0] ?? null,
+      photoDataUrls,
       answers: store.answers,
     });
 
-    if (result.ok && result.imageUrl) {
-      imageUrl = result.imageUrl;
-      setSelfieUrl(result.imageUrl);
+    if (result.ok) {
+      const urls = result.imageUrls?.length
+        ? result.imageUrls
+        : result.imageUrl
+          ? [result.imageUrl]
+          : [];
+      if (urls[0]) {
+        imageUrl = urls[0];
+        setSelfieUrl(urls[0]);
+      }
     }
 
     const whatsAppLink = buildWhatsAppOrderLink({

@@ -1,13 +1,24 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { createContext, useContext, useState } from "react";
 import Link from "next/link";
-import { createContext, useContext } from "react";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_PROGRESS } from "@/components/onboarding/onboardingConfig";
 import { StepHeader } from "@/components/steps";
-import { resolveUnlockTarget } from "@/lib/funnel/funnelProgress";
+import { ONBOARDING_COMPLETE_UNLOCK } from "@/lib/funnel/funnelProgress";
 import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 import { useStepAnswer } from "@/lib/funnel/useStepAnswer";
+import { openWhatsAppWithMessage } from "@/lib/funnel/shareWhatsApp";
+import { buildWhatsAppBookingSummaryText } from "@/lib/funnel/whatsapp";
+import { submitLead } from "@/lib/leads/submitLead";
+
+type PlanId = "clarity" | "transform";
+
+const PLAN_COPY: Record<PlanId, { name: string; price: string }> = {
+  clarity: { name: "Clarity", price: "Rs. 1,500" },
+  transform: { name: "Transform", price: "Rs. 3,000" },
+};
 
 type ConsentContextValue = {
   privateReview: boolean;
@@ -15,6 +26,8 @@ type ConsentContextValue = {
   setPrivateReview: (value: boolean) => void;
   setMarketingConsent: (value: boolean) => void;
   canSubmit: boolean;
+  isSubmitting: boolean;
+  onSubmit: () => void;
 };
 
 const ConsentContext = createContext<ConsentContextValue | null>(null);
@@ -78,9 +91,8 @@ function ConsentCheckbox({
   );
 }
 
-function ConsentFooter({ backHref, nextHref }: { backHref: string; nextHref: string }) {
-  const { canSubmit } = useConsent();
-  const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
+function ConsentFooter({ backHref }: { backHref: string }) {
+  const { canSubmit, isSubmitting, onSubmit } = useConsent();
 
   return (
     <div className="flex items-center justify-between gap-4">
@@ -107,23 +119,21 @@ function ConsentFooter({ backHref, nextHref }: { backHref: string; nextHref: str
       </Link>
 
       {canSubmit ? (
-        <Link
-          href={nextHref}
-          onClick={() => {
-            const target = resolveUnlockTarget("onboarding", nextHref);
-            if (target !== null) unlockFlowStep("onboarding", target);
-          }}
-          className="subscribe-fill-btn flex-1 rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal tracking-[0.08em] text-white sm:py-3.5 sm:text-sm"
+        <button
+          type="button"
+          onClick={onSubmit}
+          disabled={isSubmitting}
+          className="subscribe-fill-btn flex-1 rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal tracking-[0.08em] text-white disabled:cursor-wait disabled:opacity-70 sm:py-3.5 sm:text-sm"
         >
-          Agree &amp; Submit
-        </Link>
+          {isSubmitting ? "Sending…" : "Agree & Send on WhatsApp"}
+        </button>
       ) : (
         <button
           type="button"
           disabled
           className="flex-1 cursor-not-allowed rounded-full bg-brand-light/45 px-6 py-3 text-center text-xs font-normal tracking-[0.08em] text-white/80 sm:py-3.5 sm:text-sm"
         >
-          Agree &amp; Submit
+          Agree &amp; Send on WhatsApp
         </button>
       )}
     </div>
@@ -158,6 +168,11 @@ function ConsentContent() {
           label="I agree that my photos will not be used for marketing or shared publicly without my separate written consent."
         />
       </div>
+
+      <p className="mt-5 text-xs leading-relaxed text-brand-gray sm:mt-6 sm:text-[0.8125rem]">
+        After you agree, we&apos;ll open WhatsApp with all your answers and selected plan
+        ready to send.
+      </p>
     </div>
   );
 }
@@ -168,9 +183,11 @@ type ConsentStepProps = {
 };
 
 export default function ConsentStep({
-  backHref = "/onboarding/step/9",
+  backHref = "/onboarding/step/24",
   nextHref = "/onboarding/complete",
 }: ConsentStepProps) {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [privateReview, setPrivateReview] = useStepAnswer<boolean>(
     "onboarding.consentPrivateReview",
     false,
@@ -181,6 +198,76 @@ export default function ConsentStep({
   );
   const canSubmit = privateReview && marketingConsent;
 
+  const ensureSessionId = useFunnelStore((state) => state.ensureSessionId);
+  const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
+  const setSelfieUrl = useFunnelStore((state) => state.setSelfieUrl);
+
+  const onSubmit = async () => {
+    if (!canSubmit || isSubmitting) return;
+
+    setIsSubmitting(true);
+    ensureSessionId();
+
+    const store = useFunnelStore.getState();
+    const planId = store.selectedPlan as PlanId | null;
+    const plan = planId ? PLAN_COPY[planId] : null;
+
+    const photos = Array.isArray(store.answers["onboarding.photos"])
+      ? (store.answers["onboarding.photos"] as (string | null)[])
+      : [];
+    const photoDataUrls = photos.filter(
+      (item): item is string =>
+        typeof item === "string" && item.startsWith("data:"),
+    );
+    if (
+      photoDataUrls.length === 0 &&
+      typeof store.answers["booking.selfie"] === "string" &&
+      store.answers["booking.selfie"].startsWith("data:")
+    ) {
+      photoDataUrls.push(store.answers["booking.selfie"]);
+    }
+
+    let photoUrls: string[] = [];
+
+    const result = await submitLead({
+      sessionId: store.sessionId,
+      fullName: store.fullName || String(store.answers["onboarding.firstName"] ?? ""),
+      email: store.email || String(store.answers["onboarding.email"] ?? ""),
+      selectedPlan: store.selectedPlan,
+      planName: plan?.name,
+      planPrice: plan?.price,
+      selfieDataUrl: photoDataUrls[0] ?? null,
+      photoDataUrls,
+      answers: store.answers,
+    });
+
+    if (result.ok) {
+      photoUrls = result.imageUrls?.length
+        ? result.imageUrls
+        : result.imageUrl
+          ? [result.imageUrl]
+          : [];
+      if (photoUrls[0]) setSelfieUrl(photoUrls[0]);
+    }
+
+    const message = buildWhatsAppBookingSummaryText({
+      answers: store.answers,
+      fullName: store.fullName || String(store.answers["onboarding.firstName"] ?? ""),
+      email: store.email || String(store.answers["onboarding.email"] ?? ""),
+      sessionId: store.sessionId,
+      selfieUrl: photoUrls[0] ?? store.selfieUrl,
+      photoUrls,
+      selectedPlan: store.selectedPlan,
+      planName: plan?.name ?? null,
+      planPrice: plan?.price ?? null,
+    });
+
+    unlockFlowStep("onboarding", ONBOARDING_COMPLETE_UNLOCK);
+    openWhatsAppWithMessage(message);
+    setIsSubmitting(false);
+    router.push(nextHref);
+  };
+
   return (
     <ConsentContext.Provider
       value={{
@@ -189,11 +276,13 @@ export default function ConsentStep({
         setPrivateReview,
         setMarketingConsent,
         canSubmit,
+        isSubmitting,
+        onSubmit,
       }}
     >
       <OnboardingShell
         currentStep={ONBOARDING_PROGRESS.consent}
-        footer={<ConsentFooter backHref={backHref} nextHref={nextHref} />}
+        footer={<ConsentFooter backHref={backHref} />}
       >
         <ConsentContent />
       </OnboardingShell>

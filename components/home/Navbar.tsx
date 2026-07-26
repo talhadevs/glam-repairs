@@ -8,7 +8,7 @@ import Logo, {
   NAVBAR_LOGO_COLOR_CLASS,
 } from "@/components/home/Logo";
 
-export const onboardingHref = "/onboarding";
+export const onboardingHref = "/onboarding/step/1";
 
 const navPillBase =
   "inline-flex h-[39px] items-center justify-center whitespace-nowrap rounded-[50px] px-[25px] font-inter text-[16px] uppercase leading-none transition-colors";

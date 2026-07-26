@@ -7,8 +7,8 @@ import {
 // International digits only (no "+", spaces, or dashes).
 const FALLBACK_WHATSAPP_NUMBER = "923081113041";
 
-/** wa.me URLs break past ~2k chars; keep summary readable and short. */
-const MAX_WHATSAPP_MESSAGE_LENGTH = 1800;
+/** wa.me URLs break past ~2k chars; leave room for photo links. */
+const MAX_WHATSAPP_MESSAGE_LENGTH = 2500;
 
 export function getWhatsAppNumber() {
   return (
@@ -33,9 +33,16 @@ export function getWhatsAppChatLink(prefilledText?: string) {
   return `${base}?text=${encodeURIComponent(prefilledText)}`;
 }
 
-function truncateWhatsAppMessage(text: string) {
+export function truncateWhatsAppMessage(text: string) {
   if (text.length <= MAX_WHATSAPP_MESSAGE_LENGTH) return text;
   return `${text.slice(0, MAX_WHATSAPP_MESSAGE_LENGTH - 20).trimEnd()}\n…(truncated)`;
+}
+
+/** Prefill text for the assessment WhatsApp message. */
+export function buildWhatsAppBookingSummaryText(
+  input: BookingWhatsAppSummaryInput,
+) {
+  return truncateWhatsAppMessage(formatBookingWhatsAppMessage(input));
 }
 
 /**
@@ -44,9 +51,7 @@ function truncateWhatsAppMessage(text: string) {
 export function buildWhatsAppBookingSummaryLink(
   input: BookingWhatsAppSummaryInput,
 ) {
-  return getWhatsAppChatLink(
-    truncateWhatsAppMessage(formatBookingWhatsAppMessage(input)),
-  );
+  return getWhatsAppChatLink(buildWhatsAppBookingSummaryText(input));
 }
 
 export type WhatsAppOrderDetails = {

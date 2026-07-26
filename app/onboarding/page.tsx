@@ -1,12 +1,6 @@
-import type { Metadata } from "next";
-import WelcomeScreen from "@/components/onboarding/WelcomeScreen";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Welcome | GlamRepairs",
-  description:
-    "Start your personalized skin guidance journey with Glam Repairs.",
-};
-
+/** Single funnel starts at step 1 (URL matches progress bar). */
 export default function OnboardingPage() {
-  return <WelcomeScreen />;
+  redirect("/onboarding/step/1");
 }

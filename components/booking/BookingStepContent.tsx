@@ -1,54 +1,30 @@
-import AcidsStep from "@/components/booking/steps/AcidsStep";
-import AdditionalConcernsStep from "@/components/booking/steps/AdditionalConcernsStep";
-import AddExosomesStep from "@/components/booking/steps/AddExosomesStep";
 import CosmetologistsStep from "@/components/booking/steps/CosmetologistsStep";
-import AntioxidantsStep from "@/components/booking/steps/AntioxidantsStep";
 import DailyRoutineStep from "@/components/booking/steps/DailyRoutineStep";
-import DaytimeSkinBothersStep from "@/components/booking/steps/DaytimeSkinBothersStep";
-import ExosomesInfoStep from "@/components/booking/steps/ExosomesInfoStep";
-import ExosomesStep from "@/components/booking/steps/ExosomesStep";
-import FeelGreatSkinGoalsStep from "@/components/booking/steps/FeelGreatSkinGoalsStep";
+import EventDateStep from "@/components/booking/steps/EventDateStep";
 import GlamImproveGoalsStep from "@/components/booking/steps/GlamImproveGoalsStep";
+import GoalPlanStep from "@/components/booking/steps/GoalPlanStep";
 import ImproveAreasStep from "@/components/booking/steps/ImproveAreasStep";
 import IngredientsFitStep from "@/components/booking/steps/IngredientsFitStep";
-import KBeautyGlowStep from "@/components/booking/steps/KBeautyGlowStep";
-import KBeautyRoutineStep from "@/components/booking/steps/KBeautyRoutineStep";
-import KoreanIngredientsStep from "@/components/booking/steps/KoreanIngredientsStep";
-import KoreanRoutineStepsStep from "@/components/booking/steps/KoreanRoutineStepsStep";
-import KoreanSkincareProductsStep from "@/components/booking/steps/KoreanSkincareProductsStep";
-import LocationStep from "@/components/booking/steps/LocationStep";
-import MoisturizedStep from "@/components/booking/steps/MoisturizedStep";
-import NotAloneStep from "@/components/booking/steps/NotAloneStep";
-import EventDateStep from "@/components/booking/steps/EventDateStep";
-import GoalPlanStep from "@/components/booking/steps/GoalPlanStep";
 import KeepResultsStep from "@/components/booking/steps/KeepResultsStep";
+import LocationStep from "@/components/booking/steps/LocationStep";
 import NameStep from "@/components/booking/steps/NameStep";
+import NotAloneStep from "@/components/booking/steps/NotAloneStep";
 import ProfileReadyStep from "@/components/booking/steps/ProfileReadyStep";
 import ProgramJourneyStep from "@/components/booking/steps/ProgramJourneyStep";
-import RetinolVitaminCStep from "@/components/booking/steps/RetinolVitaminCStep";
 import SkinConditionWorseningStep from "@/components/booking/steps/SkinConditionWorseningStep";
 import SkinElevatedScratchStep from "@/components/booking/steps/SkinElevatedScratchStep";
 import SkinElevatedStep from "@/components/booking/steps/SkinElevatedStep";
+import SkinProfileStep from "@/components/booking/steps/SkinProfileStep";
 import SkinResultsTimelineStep from "@/components/booking/steps/SkinResultsTimelineStep";
 import SkincareJourneyFeelStep from "@/components/booking/steps/SkincareJourneyFeelStep";
-import SkinImprovementStep from "@/components/booking/steps/SkinImprovementStep";
-import SkinSensitivityStep from "@/components/booking/steps/SkinSensitivityStep";
-import SleepStep from "@/components/booking/steps/SleepStep";
-import SkincareRoutineTimeStep from "@/components/booking/steps/SkincareRoutineTimeStep";
 import SkincareProductsStep from "@/components/booking/steps/SkincareProductsStep";
-import SocialMediaStep from "@/components/booking/steps/SocialMediaStep";
-import SpecialEventStep from "@/components/booking/steps/SpecialEventStep";
-import StatementAgreementStep from "@/components/booking/steps/StatementAgreementStep";
-import SkinProfileStep from "@/components/booking/steps/SkinProfileStep";
+import SkincareRoutineTimeStep from "@/components/booking/steps/SkincareRoutineTimeStep";
 import SkinToneStep from "@/components/booking/steps/SkinToneStep";
 import SkinTypeStep from "@/components/booking/steps/SkinTypeStep";
-import SunscreenStep from "@/components/booking/steps/SunscreenStep";
-import StressStep from "@/components/booking/steps/StressStep";
-import SulfatesStep from "@/components/booking/steps/SulfatesStep";
+import SpecialEventStep from "@/components/booking/steps/SpecialEventStep";
+import StatementAgreementStep from "@/components/booking/steps/StatementAgreementStep";
 import TreatmentFitStep from "@/components/booking/steps/TreatmentFitStep";
 import TreatmentProgramFitStep from "@/components/booking/steps/TreatmentProgramFitStep";
-import WaterIntakeStep from "@/components/booking/steps/WaterIntakeStep";
-import WithGlamGoalsStep from "@/components/booking/steps/WithGlamGoalsStep";
 
 type BookingStepContentProps = {
   stepNumber: number;
@@ -73,108 +49,52 @@ export default function BookingStepContent({ stepNumber }: BookingStepContentPro
     case 8:
       return <SkincareProductsStep />;
     case 9:
-      return <KBeautyRoutineStep />;
-    case 10:
-      return <KoreanRoutineStepsStep />;
-    case 11:
-      return <KBeautyGlowStep />;
-    case 12:
-      return <KoreanIngredientsStep />;
-    case 13:
-      return <KoreanSkincareProductsStep />;
-    case 14:
-      return <ExosomesStep />;
-    case 15:
-      return <ExosomesInfoStep />;
-    case 16:
-      return <AddExosomesStep />;
-    case 17:
-      return <SunscreenStep />;
-    case 18:
       return <LocationStep />;
-    case 19:
-      return <SulfatesStep />;
-    case 20:
-      return <AntioxidantsStep />;
-    case 21:
-      return <AcidsStep />;
-    case 22:
-      return <RetinolVitaminCStep />;
-    case 23:
+    case 10:
       return <IngredientsFitStep />;
-    case 24:
-      return <SocialMediaStep />;
-    case 25:
+    case 11:
       return <CosmetologistsStep />;
-    case 26:
-      return <AdditionalConcernsStep />;
-    case 27:
-      return <MoisturizedStep />;
-    case 28:
-      return <DaytimeSkinBothersStep />;
-    case 29:
-      return <SkinSensitivityStep />;
-    case 30:
-      return <SkinImprovementStep />;
-    case 31:
-      return <SleepStep />;
-    case 32:
-      return <WaterIntakeStep />;
-    case 33:
-      return <StressStep />;
-    case 34:
+    case 12:
       return <SkincareRoutineTimeStep />;
-    case 35:
+    case 13:
       return <ProfileReadyStep />;
-    case 36:
+    case 14:
       return <TreatmentProgramFitStep />;
-    case 37:
+    case 15:
       return <GlamImproveGoalsStep />;
-    case 38:
-      return <FeelGreatSkinGoalsStep />;
-    case 39:
+    case 16:
       return <SkincareJourneyFeelStep />;
-    case 40:
-      return <WithGlamGoalsStep />;
-    case 41:
-      return (
-        <StatementAgreementStep statement="Finding skincare products that suit me is challenging" />
-      );
-    case 42:
-      return (
-        <StatementAgreementStep statement="I often consider the price of skincare products" />
-      );
-    case 43:
+    case 17:
       return (
         <StatementAgreementStep statement="Brand loyalty matters to me" />
       );
-    case 44:
+    case 18:
       return (
         <StatementAgreementStep statement="Occasionally, I purchase products due to the hype" />
       );
-    case 45:
+    case 19:
       return (
         <StatementAgreementStep statement="I'm not always sure if I'm applying my skincare products correctly" />
       );
-    case 46:
+    case 20:
       return <SkinConditionWorseningStep />;
-    case 47:
+    case 21:
       return <SpecialEventStep />;
-    case 48:
+    case 22:
       return <EventDateStep />;
-    case 49:
+    case 23:
       return <GoalPlanStep />;
-    case 51:
+    case 25:
       return <ProgramJourneyStep />;
-    case 52:
+    case 26:
       return <KeepResultsStep />;
-    case 53:
+    case 27:
       return <NameStep />;
-    case 54:
+    case 28:
       return <SkinElevatedStep />;
-    case 55:
+    case 29:
       return <SkinElevatedScratchStep />;
-    case 56:
+    case 30:
       return <SkinResultsTimelineStep />;
     default:
       return null;

@@ -1,12 +1,6 @@
-import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import SkinGuidanceReport from "@/components/booking/SkinGuidanceReport";
-
-export const metadata: Metadata = {
-  title: "Skin Guidance Report | GlamRepairs",
-  description: "Your personalized skin guidance report from Glam Repairs.",
-};
-
+/** Booking report retired — single onboarding flow ends at plan/WhatsApp. */
 export default function BookingReportPage() {
-  return <SkinGuidanceReport />;
+  redirect("/onboarding/step/1");
 }

@@ -1,12 +1,5 @@
-import type { Metadata } from "next";
-import ProgramIntroScreen from "@/components/onboarding/ProgramIntroScreen";
-
-export const metadata: Metadata = {
-  title: "Your Program | GlamRepairs",
-  description:
-    "Learn what is included in your personalized skin guidance program.",
-};
+import { redirect } from "next/navigation";
 
 export default function ProgramIntroPage() {
-  return <ProgramIntroScreen />;
+  redirect("/onboarding/step/2");
 }

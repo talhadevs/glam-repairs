@@ -36,15 +36,9 @@ export function resolveUnlockTarget(
 }
 
 export function fallbackStepPath(flow: FunnelFlow, unlockedStep: number) {
+  // Booking funnel merged into onboarding — always recover into the single flow.
   if (flow === "booking") {
-    const step = Math.min(
-      Math.max(
-        unlockedStep >= BOOKING_REPORT_UNLOCK ? BOOKING_LAST_STEP : unlockedStep,
-        1,
-      ),
-      BOOKING_LAST_STEP,
-    );
-    return `/booking/step/${step}`;
+    return "/onboarding/step/1";
   }
   const step = Math.min(Math.max(unlockedStep, 1), ONBOARDING_FORM_STEPS);
   return `/onboarding/step/${step}`;

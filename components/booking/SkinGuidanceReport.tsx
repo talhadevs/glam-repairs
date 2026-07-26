@@ -209,7 +209,7 @@ export default function SkinGuidanceReport() {
     sessionId,
     selfieUrl,
     intro:
-      "Hi GlamRepairs! I finished the free skin quiz and want to upgrade to a Premium plan (Clarity or Transform).",
+      "Hi Glam Repair! I finished the free skin quiz and want to upgrade to a Premium plan.",
   });
 
   return (

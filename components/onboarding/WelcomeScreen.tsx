@@ -1,12 +1,17 @@
 import Link from "next/link";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
+import {
+  ONBOARDING_PROGRESS,
+  ONBOARDING_TOTAL_STEPS,
+} from "@/components/onboarding/onboardingConfig";
 import WelcomeHeroImage from "@/components/onboarding/WelcomeHeroImage";
 import { StepHeader } from "@/components/steps";
 
 export default function WelcomeScreen() {
   return (
     <OnboardingShell
-      showProgress={false}
+      currentStep={ONBOARDING_PROGRESS.welcome}
+      totalSteps={ONBOARDING_TOTAL_STEPS}
       footer={
         <Link
           href="/onboarding/program"

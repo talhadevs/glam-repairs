@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { insertLead } from "@/lib/leads/insertLead";
+import { uploadAssessmentPhotos } from "@/lib/leads/uploadAssessmentPhotos";
 import type { LeadSubmitPayload, LeadSubmitResult } from "@/types/lead";
 
 function isConfigured() {
@@ -15,14 +17,36 @@ function validatePayload(body: unknown): body is LeadSubmitPayload {
   return typeof payload.sessionId === "string" && payload.sessionId.length > 0;
 }
 
+function collectPhotoDataUrls(payload: LeadSubmitPayload): string[] {
+  const fromList = Array.isArray(payload.photoDataUrls)
+    ? payload.photoDataUrls.filter(
+        (item): item is string =>
+          typeof item === "string" && item.startsWith("data:"),
+      )
+    : [];
+
+  if (fromList.length > 0) return fromList;
+
+  if (
+    typeof payload.selfieDataUrl === "string" &&
+    payload.selfieDataUrl.startsWith("data:")
+  ) {
+    return [payload.selfieDataUrl];
+  }
+
+  const answers = payload.answers;
+  if (answers && Array.isArray(answers["onboarding.photos"])) {
+    return (answers["onboarding.photos"] as unknown[]).filter(
+      (item): item is string =>
+        typeof item === "string" && item.startsWith("data:"),
+    );
+  }
+
+  return [];
+}
+
 /**
- * Persist a funnel lead + selfie.
- *
- * Supabase wiring (do later):
- * 1. Create a private/public Storage bucket, e.g. `selfies`
- * 2. Create a `leads` table with columns for session_id, name, email, plan, image_url, answers (jsonb)
- * 3. Decode `selfieDataUrl`, upload to Storage, get public URL
- * 4. Insert the lead row and return `{ ok: true, leadId, imageUrl }`
+ * Persist funnel lead forever + assessment photos (auto-deleted after 30 days).
  */
 export async function POST(request: Request) {
   let body: unknown;
@@ -47,6 +71,8 @@ export async function POST(request: Request) {
     );
   }
 
+  const photoDataUrls = collectPhotoDataUrls(body);
+
   if (!isConfigured()) {
     if (process.env.NODE_ENV !== "production") {
       console.info("[api/leads] Payload ready for Supabase", {
@@ -55,30 +81,34 @@ export async function POST(request: Request) {
         email: body.email,
         selectedPlan: body.selectedPlan,
         planName: body.planName,
-        hasSelfie: Boolean(body.selfieDataUrl),
+        photoCount: photoDataUrls.length,
         answerKeys: body.answers ? Object.keys(body.answers) : [],
       });
     }
 
-    // App keeps working before Supabase is connected; WhatsApp opens without image URL.
     return NextResponse.json<LeadSubmitResult>({
       ok: true,
       leadId: `local_${body.sessionId.slice(0, 8)}`,
       imageUrl: null,
+      imageUrls: [],
     });
   }
 
-  // TODO: Replace with Supabase Storage upload + leads insert.
-  // Example shape once wired:
-  // const imageUrl = await uploadSelfie(body.sessionId, body.selfieDataUrl);
-  // const lead = await insertLead({ ...body, imageUrl });
-  return NextResponse.json<LeadSubmitResult>(
-    {
-      ok: false,
-      reason: "not_configured",
-      message:
-        "Supabase env vars are set, but upload/insert is not implemented yet.",
-    },
-    { status: 501 },
+  const { imageUrls, photoPaths } = await uploadAssessmentPhotos(
+    body.sessionId,
+    photoDataUrls,
   );
+
+  const lead = await insertLead({
+    ...body,
+    imageUrls,
+    photoPaths,
+  });
+
+  return NextResponse.json<LeadSubmitResult>({
+    ok: true,
+    leadId: lead?.leadId ?? body.sessionId,
+    imageUrl: imageUrls[0] ?? null,
+    imageUrls,
+  });
 }

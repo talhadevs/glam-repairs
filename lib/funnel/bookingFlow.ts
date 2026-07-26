@@ -1,8 +1,7 @@
 /**
  * Conditional branching rules for the booking funnel.
  *
- * Example: on step 9 (K-Beauty routine), if the user picks "not-now" we jump
- * straight to step 14 (Exosomes) and skip the Korean-routine steps (10–13).
+ * A branch lets the funnel skip a range of steps based on a stored answer.
  */
 export type BookingBranch = {
   fromStep: number;
@@ -11,14 +10,7 @@ export type BookingBranch = {
   toStep: number;
 };
 
-export const BOOKING_BRANCHES: BookingBranch[] = [
-  {
-    fromStep: 9,
-    answerKey: "booking.kbeautyRoutine",
-    whenValue: "not-now",
-    toStep: 14,
-  },
-];
+export const BOOKING_BRANCHES: BookingBranch[] = [];
 
 function answerMatches(
   branch: BookingBranch,
@@ -28,7 +20,7 @@ function answerMatches(
 }
 
 /**
- * Resolve the next booking step number (honors K-Beauty skip).
+ * Resolve the next booking step number (honors branches).
  */
 export function getBookingNextStepNumber(
   stepNumber: number,
@@ -42,7 +34,7 @@ export function getBookingNextStepNumber(
 }
 
 /**
- * Resolve the previous booking step number (honors K-Beauty skip).
+ * Resolve the previous booking step number (honors branches).
  */
 export function getBookingPrevStepNumber(
   stepNumber: number,

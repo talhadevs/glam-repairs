@@ -1,119 +1,103 @@
-/** Human-readable labels for booking funnel answers in WhatsApp summary. */
+/**
+ * Natural first-person WhatsApp summary for the current onboarding flow only.
+ */
+
+/** Labels kept for reference / any non-message use. */
 export const BOOKING_ANSWER_LABELS: Record<string, string> = {
-  "booking.name": "Name",
-  "booking.email": "Email",
   "booking.skinType": "Skin type",
   "booking.improveArea": "Improve area",
   "booking.skinTone": "Skin tone",
   "booking.dailyRoutine": "Daily routine",
   "booking.skincareProducts": "Skincare products",
-  "booking.kbeautyRoutine": "K-Beauty routine",
-  "booking.koreanRoutineLength": "Korean routine length",
-  "booking.kbeautyGlow": "K-Beauty glow",
-  "booking.koreanIngredients": "Korean ingredients",
-  "booking.koreanProducts": "Korean products",
-  "booking.exosomesAwareness": "Heard of exosomes",
-  "booking.addExosomes": "Add exosomes",
-  "booking.sunscreen": "Sunscreen",
   "booking.location": "Location",
-  "booking.sulfates": "Sulfates",
-  "booking.antioxidants": "Antioxidants",
-  "booking.acids": "Acids",
-  "booking.retinolVitaminC": "Retinol / Vitamin C",
-  "booking.socialMedia": "Social media",
-  "booking.additionalConcerns": "Additional concerns",
-  "booking.moisturized": "Moisturized",
-  "booking.daytimeBothers": "Daytime bothers",
-  "booking.skinSensitivity": "Skin sensitivity",
-  "booking.sleep": "Sleep",
-  "booking.waterIntake": "Water intake",
-  "booking.stress": "Stress",
-  "booking.routineTime": "Routine time",
   "booking.improveGoals": "Improve goals",
-  "booking.feelGreatGoals": "Feel-great goals",
   "booking.journeyFeel": "Journey feel",
-  "booking.withGlamGoals": "With Glam goals",
   "booking.specialEvent": "Special event",
   "booking.eventDate": "Event date",
-  "booking.selfie": "Selfie",
+  "onboarding.firstName": "Name",
+  "onboarding.email": "Email",
+  "onboarding.age": "Age",
+  "onboarding.gender": "Gender",
+  "onboarding.city": "City",
+  "onboarding.primaryConcern": "Primary concern",
+  "onboarding.primaryConcernOther": "Primary concern (other)",
+  "onboarding.concernDuration": "Concern duration",
+  "onboarding.worseningFactors": "Worsening factors",
+  "onboarding.sleep": "Sleep",
+  "onboarding.water": "Water intake",
+  "onboarding.stress": "Stress",
+  "onboarding.diet": "Diet",
+  "onboarding.photos": "Photos",
+  "onboarding.consentPrivateReview": "Private review consent",
+  "onboarding.consentMarketing": "Marketing consent",
 };
 
-const SKIP_KEYS = new Set([
-  "booking.locationLat",
-  "booking.locationLon",
-  "booking.name",
-  "booking.email",
-]);
+/** Friendlier wording for common slug values in sentences. */
+const VALUE_PHRASES: Record<string, string> = {
+  dry: "dry",
+  normal: "normal",
+  oily: "oily",
+  combination: "combination",
+  "whole-face": "my whole face",
+  forehead: "my forehead",
+  eyes: "my eyes / under-eye area",
+  cheeks: "my cheeks",
+  "nose-tzone": "my nose & T-zone",
+  "chin-jawline": "my chin & jawline",
+  neck: "my neck",
+  "acne-breakouts": "acne & breakouts",
+  "dark-spots": "dark spots & pigmentation",
+  dryness: "dryness & flakiness",
+  oiliness: "oiliness & large pores",
+  "uneven-tone": "uneven skin tone",
+  "acne-scars": "acne scars & marks",
+  sensitivity: "sensitivity & redness",
+  "fine-lines": "fine lines & dullness",
+  "under-1-month": "under 1 month",
+  "1-6-months": "1–6 months",
+  "about-a-year": "about a year",
+  "several-years": "several years",
+  "most-of-life": "most of my life",
+  "morning-and-evening": "a morning and evening routine",
+  "morning-only": "only a morning routine",
+  "evening-only": "only an evening routine",
+  none: "no regular skincare routine",
+  low: "low",
+  moderate: "moderate",
+  high: "high",
+  "very-high": "very high",
+  dairy: "a lot of dairy",
+  "sugar-fried": "a lot of sugar / fried food",
+  "tea-coffee": "tea or coffee daily",
+  "home-cooked": "mostly home-cooked food",
+  "skip-meals": "skipping meals regularly",
+  "ingredient-knowledge": "knowledge of skincare ingredients",
+  "skincare-consistency": "skincare consistency",
+  "skincare-health": "skincare health",
+  "self-care-routine": "a better self-care routine",
+  "self-confidence": "more self confidence",
+  "better-choices": "make better skincare choices",
+  "relaxed-stress-free": "feel relaxed and stress-free",
+  "control-skincare": "feel in control of my skincare",
+  "confident-in-skin": "feel confident in my skin",
+  "radiant-glowing": "have radiant, glowing skin",
+  vacation: "a vacation",
+  wedding: "a wedding",
+  holiday: "a holiday",
+  "sporting-event": "a sporting event",
+  reunion: "a reunion",
+  "family-occasion": "a family occasion",
+  other: "something else",
+  cleanser: "cleanser",
+  "makeup-remover": "makeup remover",
+  toner: "toner",
+  moisturizer: "moisturizer",
+  "treatment-eye": "eye treatment",
+  "treatment-face": "face treatment",
+  spf: "SPF",
+  exfoliator: "exfoliator",
+};
 
-/** Ordered sections so the WhatsApp message reads like a clean intake form. */
-const MESSAGE_SECTIONS: {
-  title: string;
-  keys: string[];
-}[] = [
-  {
-    title: "Skin profile",
-    keys: [
-      "booking.skinType",
-      "booking.improveArea",
-      "booking.skinTone",
-      "booking.additionalConcerns",
-      "booking.skinSensitivity",
-      "booking.moisturized",
-      "booking.daytimeBothers",
-      "booking.location",
-    ],
-  },
-  {
-    title: "Routine & products",
-    keys: [
-      "booking.dailyRoutine",
-      "booking.skincareProducts",
-      "booking.sunscreen",
-      "booking.routineTime",
-      "booking.sulfates",
-      "booking.antioxidants",
-      "booking.acids",
-      "booking.retinolVitaminC",
-      "booking.kbeautyRoutine",
-      "booking.koreanRoutineLength",
-      "booking.kbeautyGlow",
-      "booking.koreanIngredients",
-      "booking.koreanProducts",
-      "booking.exosomesAwareness",
-      "booking.addExosomes",
-    ],
-  },
-  {
-    title: "Lifestyle",
-    keys: [
-      "booking.sleep",
-      "booking.waterIntake",
-      "booking.stress",
-      "booking.socialMedia",
-    ],
-  },
-  {
-    title: "Goals & event",
-    keys: [
-      "booking.improveGoals",
-      "booking.feelGreatGoals",
-      "booking.journeyFeel",
-      "booking.withGlamGoals",
-      "booking.specialEvent",
-      "booking.eventDate",
-    ],
-  },
-];
-
-function labelForKey(key: string) {
-  if (BOOKING_ANSWER_LABELS[key]) return BOOKING_ANSWER_LABELS[key];
-  if (key.startsWith("booking.statement.")) {
-    return humanizeSlug(key.replace("booking.statement.", ""));
-  }
-  return humanizeSlug(key.replace(/^booking\./, ""));
-}
-
-/** Convert slug / camelCase values like "dark-circles" → "Dark circles". */
 function humanizeSlug(value: string) {
   return value
     .replace(/([a-z])([A-Z])/g, "$1 $2")
@@ -123,46 +107,66 @@ function humanizeSlug(value: string) {
     .replace(/^./, (char) => char.toUpperCase());
 }
 
-function formatValue(value: unknown): string | null {
-  if (value === null || value === undefined || value === "") return null;
-
-  if (typeof value === "string") {
-    if (value.startsWith("data:")) return "Uploaded";
-    // Keep free-text location / dates / emails readable as-is when they contain spaces or @
-    if (value.includes(" ") || value.includes("@") || /^\d{4}-\d{2}-\d{2}/.test(value)) {
-      return value;
-    }
-    return humanizeSlug(value);
-  }
-
-  if (typeof value === "number" || typeof value === "boolean") {
-    return String(value);
-  }
-
-  if (Array.isArray(value)) {
-    const parts = value
-      .map((item) => formatValue(item))
-      .filter((item): item is string => Boolean(item));
-    return parts.length ? parts.join(", ") : null;
-  }
-
-  try {
-    return JSON.stringify(value);
-  } catch {
-    return null;
-  }
+function phrase(value: string) {
+  if (VALUE_PHRASES[value]) return VALUE_PHRASES[value];
+  return humanizeSlug(value).toLowerCase();
 }
 
-function pushField(
-  lines: string[],
-  key: string,
-  answers: Record<string, unknown>,
-) {
-  const formatted = formatValue(answers[key]);
-  if (!formatted) return false;
-  lines.push(`• ${labelForKey(key)}: ${formatted}`);
-  return true;
+const SLEEP_PHRASES: Record<string, string> = {
+  "under-5": "less than 5 hours",
+  "5-6": "5–6 hours",
+  "7-8": "7–8 hours",
+  "over-8": "more than 8 hours",
+};
+
+const WATER_PHRASES: Record<string, string> = {
+  "under-4": "less than 4 glasses",
+  "4-6": "4–6 glasses",
+  "7-8": "7–8 glasses",
+  "over-8": "more than 8 glasses",
+};
+
+function asString(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.startsWith("data:")) return null;
+  return trimmed;
 }
+
+function asList(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item): item is string => typeof item === "string" && item.length > 0)
+    .map((item) => phrase(item));
+}
+
+function joinNatural(parts: string[]) {
+  if (parts.length === 0) return null;
+  if (parts.length === 1) return parts[0];
+  if (parts.length === 2) return `${parts[0]} and ${parts[1]}`;
+  return `${parts.slice(0, -1).join(", ")}, and ${parts[parts.length - 1]}`;
+}
+
+function formatEventDate(iso: string) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
+  if (!match) return iso;
+  const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  if (Number.isNaN(date.getTime())) return iso;
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+const PHOTO_SLOT_LABELS = [
+  "Front face",
+  "Left/concern",
+  "Right/concern",
+  "3/4 left",
+  "3/4 right",
+  "From below",
+] as const;
 
 export type BookingWhatsAppSummaryInput = {
   answers: Record<string, unknown>;
@@ -170,13 +174,17 @@ export type BookingWhatsAppSummaryInput = {
   email?: string;
   sessionId?: string;
   selfieUrl?: string | null;
-  /** Defaults to free-report completion copy; use for Get Premium upsell. */
+  /** Public URLs for assessment photos (preferred over selfieUrl alone). */
+  photoUrls?: string[] | null;
+  selectedPlan?: string | null;
+  planName?: string | null;
+  planPrice?: string | null;
+  /** Optional first line; defaults to a friendly greeting. */
   intro?: string;
 };
 
 /**
- * Build an organized WhatsApp message with booking answers grouped by section.
- * Omits raw selfie data URLs (uses public selfieUrl when available).
+ * Conversational WhatsApp message from current-flow answers only.
  */
 export function formatBookingWhatsAppMessage({
   answers,
@@ -184,80 +192,190 @@ export function formatBookingWhatsAppMessage({
   email,
   sessionId,
   selfieUrl,
-  intro = "Hi GlamRepairs! I've completed my skin booking assessment.",
+  photoUrls,
+  selectedPlan,
+  planName,
+  planPrice,
+  intro = "Hi Glam Repair!",
 }: BookingWhatsAppSummaryInput) {
-  const lines: string[] = [intro, ""];
-
   const name =
     fullName?.trim() ||
-    (typeof answers["booking.name"] === "string"
-      ? answers["booking.name"]
-      : "");
+    asString(answers["onboarding.firstName"]) ||
+    "";
+  const age = asString(answers["onboarding.age"]);
+  const gender = asString(answers["onboarding.gender"]);
+  const city =
+    asString(answers["onboarding.city"]) ||
+    asString(answers["booking.location"]);
   const mail =
-    email?.trim() ||
-    (typeof answers["booking.email"] === "string"
-      ? answers["booking.email"]
-      : "");
+    email?.trim() || asString(answers["onboarding.email"]) || "";
 
-  lines.push("*Contact*");
-  if (name) lines.push(`• Name: ${name}`);
-  if (mail) lines.push(`• Email: ${mail}`);
-  if (sessionId) lines.push(`• Ref: ${sessionId.slice(0, 8)}`);
-  if (!name && !mail && !sessionId) {
-    lines.push("• (not provided)");
+  const skinType = asString(answers["booking.skinType"]);
+  const skinTone = asString(answers["booking.skinTone"]);
+  const improveArea = asString(answers["booking.improveArea"]);
+  const primaryConcern = asString(answers["onboarding.primaryConcern"]);
+  const concernOther = asString(answers["onboarding.primaryConcernOther"]);
+  const duration = asString(answers["onboarding.concernDuration"]);
+  const worsening = asString(answers["onboarding.worseningFactors"]);
+  const routine = asString(answers["booking.dailyRoutine"]);
+  const products = asList(answers["booking.skincareProducts"]).filter(
+    (item) => item !== "none",
+  );
+  const sleep = asString(answers["onboarding.sleep"]);
+  const water = asString(answers["onboarding.water"]);
+  const stress = asString(answers["onboarding.stress"]);
+  const diet = asList(answers["onboarding.diet"]);
+  const goals = asList(answers["booking.improveGoals"]);
+  const journeyFeel = asList(answers["booking.journeyFeel"]);
+  const specialEvent = asString(answers["booking.specialEvent"]);
+  const eventDate = asString(answers["booking.eventDate"]);
+
+  const paragraphs: string[] = [intro];
+
+  // Who I am
+  const who: string[] = [];
+  if (name) who.push(`My name is ${name}.`);
+  const ageBits: string[] = [];
+  if (age) ageBits.push(`${age} years old`);
+  if (gender) ageBits.push(phrase(gender));
+  if (ageBits.length) {
+    who.push(`I am ${joinNatural(ageBits)}.`);
+  }
+  if (city) who.push(`I live in ${city}.`);
+  if (who.length) paragraphs.push(who.join(" "));
+
+  // Skin issues
+  const issueParts: string[] = [];
+  if (skinType) {
+    let skin = `I have ${phrase(skinType)} skin`;
+    if (skinTone) skin += ` (${phrase(skinTone)} tone)`;
+    skin += ".";
+    issueParts.push(skin);
+  } else if (skinTone) {
+    issueParts.push(`My skin tone is ${phrase(skinTone)}.`);
   }
 
-  const listedKeys = new Set(MESSAGE_SECTIONS.flatMap((section) => section.keys));
+  if (primaryConcern === "other" && concernOther) {
+    issueParts.push(`I have an issue with ${concernOther}.`);
+  } else if (primaryConcern) {
+    let concern = `I have an issue with ${phrase(primaryConcern)}`;
+    if (improveArea) concern += ` on ${phrase(improveArea)}`;
+    concern += ".";
+    issueParts.push(concern);
+  } else if (improveArea) {
+    issueParts.push(`I want to improve ${phrase(improveArea)}.`);
+  }
 
-  for (const section of MESSAGE_SECTIONS) {
-    const sectionLines: string[] = [];
-    for (const key of section.keys) {
-      const before = sectionLines.length;
-      pushField(sectionLines, key, answers);
-      if (sectionLines.length > before) {
-        listedKeys.add(key);
+  if (duration) {
+    issueParts.push(`I've been dealing with this for ${phrase(duration)}.`);
+  }
+  if (worsening) {
+    issueParts.push(`It gets worse with: ${worsening}.`);
+  }
+  if (issueParts.length) paragraphs.push(issueParts.join(" "));
+
+  // What I want
+  const wantParts: string[] = [];
+  if (goals.length) {
+    wantParts.push(`I want to improve ${joinNatural(goals)}.`);
+  }
+  if (journeyFeel.length) {
+    wantParts.push(`I also want to ${joinNatural(journeyFeel)}.`);
+  }
+  if (specialEvent && specialEvent !== "none") {
+    let eventLine = `I have ${phrase(specialEvent)} coming up`;
+    if (eventDate) eventLine += ` on ${formatEventDate(eventDate)}`;
+    eventLine += ".";
+    wantParts.push(eventLine);
+  } else if (specialEvent === "none") {
+    wantParts.push("I don't have a special event — I just want to look and feel my best.");
+  }
+  if (wantParts.length) paragraphs.push(wantParts.join(" "));
+
+  // Routine
+  const routineParts: string[] = [];
+  if (routine) {
+    if (routine === "none") {
+      routineParts.push("I don't have any skincare routine right now.");
+    } else {
+      routineParts.push(`I currently have ${phrase(routine)}.`);
+    }
+  }
+  if (products.length) {
+    routineParts.push(`Products I use: ${joinNatural(products)}.`);
+  }
+  if (routineParts.length) paragraphs.push(routineParts.join(" "));
+
+  // Lifestyle
+  const lifeBits: string[] = [];
+  if (sleep) {
+    lifeBits.push(`sleep ${SLEEP_PHRASES[sleep] ?? phrase(sleep)}`);
+  }
+  if (water) {
+    lifeBits.push(`drink ${WATER_PHRASES[water] ?? phrase(water)} of water`);
+  }
+  if (stress) lifeBits.push(`${phrase(stress)} stress`);
+  if (lifeBits.length || diet.length) {
+    let life = "";
+    if (lifeBits.length) {
+      life = `My lifestyle: ${joinNatural(lifeBits)}.`;
+    }
+    if (diet.length) {
+      life += life
+        ? ` Diet-wise, I have ${joinNatural(diet)}.`
+        : `Diet-wise, I have ${joinNatural(diet)}.`;
+    }
+    paragraphs.push(life);
+  }
+
+  // Plan
+  if (planName || selectedPlan || planPrice) {
+    const planLabel = planName || selectedPlan;
+    let planLine = planLabel
+      ? `I want the ${planLabel} plan`
+      : "I want to continue with a plan";
+    if (planPrice) planLine += ` (${planPrice})`;
+    planLine += ".";
+    paragraphs.push(planLine);
+  }
+
+  paragraphs.push("Please guide me with the next steps.");
+
+  // Team extras (short)
+  const extras: string[] = [];
+  if (mail) extras.push(`Email: ${mail}`);
+  if (sessionId) extras.push(`Ref: ${sessionId.slice(0, 8)}`);
+
+  const links = [
+    ...(Array.isArray(photoUrls) ? photoUrls : []),
+    ...(selfieUrl && !(photoUrls && photoUrls.includes(selfieUrl))
+      ? [selfieUrl]
+      : []),
+  ].filter((url): url is string => typeof url === "string" && url.length > 0);
+
+  if (links.length > 0) {
+    extras.push("My photos:");
+    links.forEach((url, index) => {
+      const label = PHOTO_SLOT_LABELS[index] ?? `Photo ${index + 1}`;
+      extras.push(`${index + 1}. ${label}: ${url}`);
+    });
+  } else {
+    const photos = answers["onboarding.photos"];
+    if (Array.isArray(photos)) {
+      const count = photos.filter(
+        (item) => typeof item === "string" && item.length > 0,
+      ).length;
+      if (count > 0) {
+        extras.push(
+          `Photos attached with this chat (${count}). If you don't see them, ask me to resend.`,
+        );
       }
     }
-    if (sectionLines.length === 0) continue;
-    lines.push("", `*${section.title}*`, ...sectionLines);
   }
 
-  // Statement agreement ratings (agreement steps)
-  const statementKeys = Object.keys(answers)
-    .filter((key) => key.startsWith("booking.statement."))
-    .sort();
-  if (statementKeys.length > 0) {
-    const statementLines: string[] = [];
-    for (const key of statementKeys) {
-      pushField(statementLines, key, answers);
-    }
-    if (statementLines.length > 0) {
-      lines.push("", "*Preferences*", ...statementLines);
-    }
+  if (extras.length) {
+    paragraphs.push(extras.join("\n"));
   }
 
-  // Any remaining booking.* keys not covered above
-  const extraLines: string[] = [];
-  for (const key of Object.keys(answers).sort()) {
-    if (!key.startsWith("booking.")) continue;
-    if (SKIP_KEYS.has(key)) continue;
-    if (key === "booking.selfie") continue;
-    if (key.startsWith("booking.statement.")) continue;
-    if (listedKeys.has(key)) continue;
-    pushField(extraLines, key, answers);
-  }
-  if (extraLines.length > 0) {
-    lines.push("", "*Other*", ...extraLines);
-  }
-
-  lines.push("", "*Photos*");
-  if (selfieUrl) {
-    lines.push(`• Selfie: ${selfieUrl}`);
-  } else if (answers["booking.selfie"]) {
-    lines.push("• Selfie: Uploaded");
-  } else {
-    lines.push("• Selfie: Not uploaded");
-  }
-
-  return lines.join("\n");
+  return paragraphs.join("\n\n");
 }

@@ -10,6 +10,7 @@ import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 
 type OnboardingShellProps = {
   children: ReactNode;
+  /** Progress-bar index — same as URL `/onboarding/step/N`. */
   currentStep?: number;
   totalSteps?: number;
   backHref?: string;
@@ -46,14 +47,16 @@ export default function OnboardingShell({
       ? ("onboarding" as const)
       : null;
 
+  const guardStep = currentStep;
+
   useEffect(() => {
     ensureSessionId();
   }, [ensureSessionId]);
 
   return (
     <div className="flex min-h-[100dvh] items-center justify-center bg-gradient-to-b from-brand-purple-soft via-white to-brand-lavender/30 px-4 py-10 sm:px-6">
-      {funnelFlow && typeof currentStep === "number" ? (
-        <FunnelStepGuard flow={funnelFlow} step={currentStep} />
+      {funnelFlow && typeof guardStep === "number" && guardStep >= 1 ? (
+        <FunnelStepGuard flow={funnelFlow} step={guardStep} />
       ) : null}
       <div className="onboarding-card w-full max-w-[28rem] rounded-[2rem] border border-brand-lavender/60 bg-gradient-to-b from-brand-purple-soft/80 via-white to-brand-lavender/20 px-7 pb-9 pt-8 shadow-sm sm:max-w-[32rem] sm:px-9 sm:pb-10 sm:pt-9">
         {showProgressBar && (
