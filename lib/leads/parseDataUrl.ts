@@ -3,7 +3,7 @@ export function parseDataUrl(dataUrl: string): {
   contentType: string;
   bytes: Buffer;
 } | null {
-  const match = /^data:([^;]+);base64,(.+)$/s.exec(dataUrl.trim());
+  const match = /^data:([^;]+);base64,([\s\S]+)$/.exec(dataUrl.trim());
   if (!match) return null;
 
   try {
