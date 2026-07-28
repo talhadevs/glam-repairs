@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 
 import { insertLead } from "@/lib/leads/insertLead";
+import {
+  getPublicAppUrl,
+  toShortPhotoUrls,
+} from "@/lib/leads/photoShortLink";
 import { uploadAssessmentPhotos } from "@/lib/leads/uploadAssessmentPhotos";
 import type { LeadSubmitPayload, LeadSubmitResult } from "@/types/lead";
 
@@ -94,10 +98,16 @@ export async function POST(request: Request) {
     });
   }
 
-  const { imageUrls, photoPaths } = await uploadAssessmentPhotos(
+  const { packId, photoPaths } = await uploadAssessmentPhotos(
     body.sessionId,
     photoDataUrls,
   );
+
+  const appBase = getPublicAppUrl(request);
+  const imageUrls =
+    packId && photoPaths.length > 0
+      ? toShortPhotoUrls(appBase, packId, photoPaths)
+      : [];
 
   const lead = await insertLead({
     ...body,

@@ -1,4 +1,5 @@
 import { parseDataUrl } from "@/lib/leads/parseDataUrl";
+import { createPhotoPackId } from "@/lib/leads/photoShortLink";
 
 const DEFAULT_BUCKET = "assessment-photos";
 
@@ -7,12 +8,14 @@ export function getPhotosBucket() {
 }
 
 export type UploadedAssessmentPhotos = {
+  packId: string | null;
   imageUrls: string[];
   photoPaths: string[];
 };
 
 /**
  * Upload assessment photo data-URLs to Supabase Storage (public bucket).
+ * Paths: leads/{packId}/01.jpg — shared via short /p/{packId}/01.jpg links.
  */
 export async function uploadAssessmentPhotos(
   sessionId: string,
@@ -23,9 +26,10 @@ export async function uploadAssessmentPhotos(
   const bucket = getPhotosBucket();
 
   if (!base || !key || photoDataUrls.length === 0) {
-    return { imageUrls: [], photoPaths: [] };
+    return { packId: null, imageUrls: [], photoPaths: [] };
   }
 
+  const packId = createPhotoPackId();
   const imageUrls: string[] = [];
   const photoPaths: string[] = [];
 
@@ -34,7 +38,8 @@ export async function uploadAssessmentPhotos(
     if (!parsed) continue;
 
     const ext = parsed.contentType.includes("png") ? "png" : "jpg";
-    const path = `${sessionId}/photo-${index + 1}.${ext}`;
+    const slot = String(index + 1).padStart(2, "0");
+    const path = `leads/${packId}/${slot}.${ext}`;
     const endpoint = `${base}/storage/v1/object/${bucket}/${path}`;
 
     try {
@@ -60,11 +65,15 @@ export async function uploadAssessmentPhotos(
       }
 
       photoPaths.push(path);
+      // Long Storage URL as fallback; API route rewrites to short /p/... links.
       imageUrls.push(`${base}/storage/v1/object/public/${bucket}/${path}`);
     } catch (error) {
       console.error(`[uploadAssessmentPhotos] Error photo ${index + 1}:`, error);
     }
   }
 
-  return { imageUrls, photoPaths };
+  // Pack id names the Storage folder; session stays on the lead row.
+  void sessionId;
+
+  return { packId: photoPaths.length > 0 ? packId : null, imageUrls, photoPaths };
 }
