@@ -25,15 +25,15 @@ export default function ContactHeroSection() {
 
       <Navbar />
 
-      <div className="relative z-[2] flex flex-1 flex-col items-center justify-center px-6 pb-16 pt-28 text-center text-white sm:px-8 sm:pb-20 sm:pt-32 lg:pt-36">
-        <h1 className="mx-auto max-w-4xl font-serif text-[2.75rem] italic leading-[1.05] tracking-[-0.02em] sm:text-[3.75rem] md:text-[4.5rem] lg:text-[4.5rem]">
+      <div className="relative z-[2] flex flex-1 flex-col items-center justify-center px-4 pb-16 pt-28 text-center text-white sm:px-8 sm:pb-20 sm:pt-32 lg:pt-36">
+        <h1 className="mx-auto max-w-4xl font-serif text-[2.25rem] italic leading-[1.05] tracking-[-0.02em] sm:text-[3.75rem] md:text-[4.5rem] lg:text-[4.5rem]">
           {contactHero.headline}
         </h1>
-        <p className="mx-auto mt-3 max-w-2xl leading-snug sm:mt-4">
-          <span className="block text-lg font-medium sm:text-xl lg:text-2xl">
+        <p className="mx-auto mt-3 max-w-2xl px-1 leading-snug sm:mt-4">
+          <span className="block text-base font-medium sm:text-xl lg:text-2xl">
             {contactHero.subtitleLead}
           </span>
-          <span className="block font-serif text-lg italic sm:text-xl lg:text-2xl">
+          <span className="block font-serif text-base italic sm:text-xl lg:text-2xl">
             {contactHero.subtitleAccent}
           </span>
         </p>

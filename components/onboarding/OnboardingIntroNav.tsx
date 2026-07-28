@@ -96,7 +96,7 @@ export default function OnboardingIntroNav({
         <Link
           href={resolvedNextHref}
           onClick={unlockNext}
-          className="subscribe-fill-btn rounded-full bg-brand-light px-10 py-3 text-xs font-normal uppercase tracking-[0.15em] text-white sm:px-12 sm:py-3.5 sm:text-sm"
+          className="subscribe-fill-btn inline-flex min-w-0 flex-1 items-center justify-center whitespace-nowrap rounded-full bg-brand-light px-4 py-3 text-[11px] font-normal uppercase tracking-[0.08em] text-white sm:px-12 sm:py-3.5 sm:text-sm sm:tracking-[0.15em]"
         >
           {nextLabel}
         </Link>
@@ -105,7 +105,7 @@ export default function OnboardingIntroNav({
           type="button"
           disabled
           aria-disabled
-          className="cursor-not-allowed rounded-full bg-brand-light/40 px-10 py-3 text-xs font-normal uppercase tracking-[0.15em] text-white/80 sm:px-12 sm:py-3.5 sm:text-sm"
+          className="inline-flex min-w-0 flex-1 cursor-not-allowed items-center justify-center whitespace-nowrap rounded-full bg-brand-light/40 px-4 py-3 text-[11px] font-normal uppercase tracking-[0.08em] text-white/80 sm:px-12 sm:py-3.5 sm:text-sm sm:tracking-[0.15em]"
         >
           {nextLabel}
         </button>

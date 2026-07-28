@@ -9,7 +9,7 @@ export const contactHero = {
 export const contactReachOut = {
   title: "Reach out to us",
   description: "Email us — we typically respond within a few hours.",
-  emailIcon: "/svgs/gmail-icon.svg",
+  emailIcon: "/svgs/gmail-mail-icon.png",
   emailDisplay: "glamrepairs@gmail.com",
   emailHref: "mailto:glamrepairs@gmail.com",
   qrCode: "/images,svgs/contact-whatsapp-qr.png",

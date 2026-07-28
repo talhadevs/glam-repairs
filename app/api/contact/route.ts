@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 
+import { insertContactMessage } from "@/lib/contact/insertContactMessage";
+import {
+  isResendConfigured,
+  sendContactEmail,
+} from "@/lib/contact/sendContactEmail";
 import type { ContactFormPayload, ContactSubmitResult } from "@/types/contact";
 
-function isConfigured() {
+function isSupabaseConfigured() {
   return Boolean(
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
       process.env.SUPABASE_SERVICE_ROLE_KEY,
@@ -27,8 +32,8 @@ function readPayload(body: unknown): ContactFormPayload | null {
 }
 
 /**
- * Persist a contact form submission.
- * Wire Supabase `contact_messages` (or similar) insert here later.
+ * Save contact form submissions to Supabase.
+ * Resend email is optional (after domain verify).
  */
 export async function POST(request: Request) {
   let body: unknown;
@@ -55,16 +60,36 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!isConfigured()) {
+  if (!isSupabaseConfigured()) {
     if (process.env.NODE_ENV !== "production") {
       console.info("[api/contact] Payload ready for Supabase", payload);
+      return NextResponse.json<ContactSubmitResult>({ ok: true });
     }
-    return NextResponse.json<ContactSubmitResult>({ ok: true });
+
+    return NextResponse.json<ContactSubmitResult>(
+      { ok: false, reason: "unknown" },
+      { status: 503 },
+    );
   }
 
-  // TODO: Insert into Supabase contact table.
-  return NextResponse.json<ContactSubmitResult>(
-    { ok: false, reason: "unknown" },
-    { status: 501 },
-  );
+  const saved = await insertContactMessage(payload);
+  if (!saved) {
+    return NextResponse.json<ContactSubmitResult>(
+      { ok: false, reason: "unknown" },
+      { status: 502 },
+    );
+  }
+
+  // Optional: only sends when Resend + verified from-domain are configured.
+  if (isResendConfigured()) {
+    const emailResult = await sendContactEmail(payload);
+    if (!emailResult.ok) {
+      console.error(
+        "[api/contact] Saved to Supabase but email failed:",
+        emailResult.message,
+      );
+    }
+  }
+
+  return NextResponse.json<ContactSubmitResult>({ ok: true });
 }

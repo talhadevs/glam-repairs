@@ -167,7 +167,7 @@ export default async function OnboardingStepPage({ params }: StepPageProps) {
     stepNumber === 11 || stepNumber === 13 || stepNumber === 18
       ? "Let's make it 100%"
       : stepNumber === ONBOARDING_FORM.welcome
-        ? "Get My Skin Guidance →"
+        ? "Get My Skin Assessment →"
         : stepNumber === ONBOARDING_FORM_STEPS
           ? "Finish"
           : "Next";

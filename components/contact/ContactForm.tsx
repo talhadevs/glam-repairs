@@ -146,7 +146,7 @@ export default function ContactForm() {
         noValidate
         className="flex h-full flex-col"
       >
-        <h3 className="text-[1.75rem] leading-tight text-brand-primary sm:text-[2rem]">
+        <h3 className="text-[1.5rem] leading-tight text-brand-primary sm:text-[2rem]">
           <span className="font-sans font-normal">Send us a</span>{" "}
           <span className="font-serif italic">message</span>
         </h3>
@@ -191,13 +191,13 @@ export default function ContactForm() {
           </FormField>
         </div>
 
-        <div className="mt-7 flex justify-start sm:mt-8">
+        <div className="mt-7 flex w-full justify-stretch sm:mt-8 sm:justify-start">
           <FillButton
             type="submit"
             variant="subscribe"
             disabled={isSubmitting}
             aria-disabled={isSubmitting}
-            className={`bg-brand-accent px-8 py-2.5 text-sm uppercase tracking-normal sm:px-10 sm:py-3 sm:text-base${isFormComplete && !isSubmitting ? "" : " is-incomplete"}`}
+            className={`w-full bg-brand-accent px-8 py-2.5 text-sm uppercase tracking-normal sm:w-auto sm:px-10 sm:py-3 sm:text-base${isFormComplete && !isSubmitting ? "" : " is-incomplete"}`}
           >
             {isSubmitting ? "Sending..." : "Send now"}
           </FillButton>
