@@ -5,7 +5,7 @@ import {
 
 // Business WhatsApp — override via NEXT_PUBLIC_WHATSAPP_NUMBER if needed.
 // International digits only (no "+", spaces, or dashes).
-const FALLBACK_WHATSAPP_NUMBER = "923081113041";
+const FALLBACK_WHATSAPP_NUMBER = "923355880333";
 
 /** wa.me URLs break past ~2k chars; leave room for photo links. */
 const MAX_WHATSAPP_MESSAGE_LENGTH = 2500;
@@ -17,7 +17,7 @@ export function getWhatsAppNumber() {
   );
 }
 
-/** Local-style display, e.g. 0308-1113041 */
+/** Local-style display, e.g. 0335-5880333 */
 export function getWhatsAppDisplayNumber() {
   const digits = getWhatsAppNumber();
   if (digits.startsWith("92") && digits.length === 12) {
