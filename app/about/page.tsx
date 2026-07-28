@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import AboutHeroSection from "@/components/about/AboutHeroSection";
 import OurStorySection from "@/components/about/OurStorySection";
-import CeoSection from "@/components/home/CeoSection";
 import FaqSection from "@/components/home/FaqSection";
 import Footer from "@/components/home/Footer";
 
@@ -17,7 +16,6 @@ export default function AboutPage() {
       <main>
         <AboutHeroSection />
         <OurStorySection />
-        <CeoSection />
         <FaqSection />
       </main>
       <Footer />

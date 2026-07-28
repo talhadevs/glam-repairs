@@ -1,4 +1,3 @@
-import CeoSection from "@/components/home/CeoSection";
 import FaqSection from "@/components/home/FaqSection";
 import Footer from "@/components/home/Footer";
 import Hero from "@/components/home/Hero";
@@ -22,7 +21,6 @@ export default function Home() {
         showTrustLine
       />
       <TrustPrivacySection />
-      <CeoSection />
       <WhatYouGetSection />
       <FaqSection />
       <Footer />
