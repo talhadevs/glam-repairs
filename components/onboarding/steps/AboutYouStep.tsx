@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { saveOnboardingFirstName } from "@/components/onboarding/onboardingStorage";
+import FieldError from "@/components/ui/FieldError";
+import { getFieldErrorId } from "@/components/ui/FormField";
 import { StepHeader } from "@/components/steps";
 import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
 import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
@@ -8,17 +11,25 @@ import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
 const inputClassName =
   "w-full rounded-2xl border border-brand-border-light/70 bg-white px-4 py-3.5 text-sm text-brand-ink shadow-sm outline-none transition-colors placeholder:text-brand-gray/45 focus:border-brand-light sm:py-4 sm:text-[15px]";
 
+const inputErrorClassName =
+  "border-brand-error focus:border-brand-error";
+
 const labelClassName = "mb-2 block text-sm text-brand-ink sm:text-[0.9375rem]";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type GenderOption = "female" | "male" | "prefer-not-to-say";
+type AboutField = "firstName" | "email" | "age" | "gender" | "city";
 
 const genderOptions: { value: GenderOption; label: string }[] = [
   { value: "female", label: "Female" },
   { value: "male", label: "Male" },
   { value: "prefer-not-to-say", label: "Prefer not to say" },
 ];
+
+function getInputClassName(hasError: boolean) {
+  return `${inputClassName}${hasError ? ` ${inputErrorClassName}` : ""}`;
+}
 
 function GenderOption({
   label,
@@ -55,6 +66,52 @@ function GenderOption({
   );
 }
 
+function getFieldErrors({
+  firstName,
+  email,
+  age,
+  gender,
+  city,
+}: {
+  firstName: string;
+  email: string;
+  age: string;
+  gender: GenderOption | null;
+  city: string;
+}): Partial<Record<AboutField, string>> {
+  const errors: Partial<Record<AboutField, string>> = {};
+  const trimmedEmail = email.trim();
+
+  if (!firstName.trim()) {
+    errors.firstName = "Name is required.";
+  }
+
+  if (!trimmedEmail) {
+    errors.email = "Email is required.";
+  } else if (!EMAIL_PATTERN.test(trimmedEmail)) {
+    errors.email = "Email is not valid.";
+  }
+
+  if (!age.trim()) {
+    errors.age = "Age is required.";
+  } else {
+    const ageNumber = Number(age);
+    if (!Number.isFinite(ageNumber) || ageNumber < 1 || ageNumber > 120) {
+      errors.age = "Please enter a valid age.";
+    }
+  }
+
+  if (gender === null) {
+    errors.gender = "Gender is required.";
+  }
+
+  if (!city.trim()) {
+    errors.city = "City is required.";
+  }
+
+  return errors;
+}
+
 export default function AboutYouStep() {
   const [firstName, setFirstName] = useStepAnswer<string>(
     "onboarding.firstName",
@@ -68,16 +125,44 @@ export default function AboutYouStep() {
   );
   const [city, setCity] = useStepAnswer<string>("onboarding.city", "");
   const setContact = useFunnelStore((state) => state.setContact);
-
-  const emailValid = EMAIL_PATTERN.test(email.trim());
-
-  useStepGate(
-    firstName.trim().length > 0 &&
-      emailValid &&
-      age.trim().length > 0 &&
-      gender !== null &&
-      city.trim().length > 0,
+  const validationAttempted = useFunnelStore(
+    (state) => state.stepValidationAttempted,
   );
+  const [touched, setTouched] = useState<Partial<Record<AboutField, boolean>>>(
+    {},
+  );
+
+  const fieldErrors = getFieldErrors({
+    firstName,
+    email,
+    age,
+    gender,
+    city,
+  });
+  const isValid = Object.keys(fieldErrors).length === 0;
+
+  useStepGate(isValid);
+
+  const markTouched = (field: AboutField) => {
+    setTouched((current) =>
+      current[field] ? current : { ...current, [field]: true },
+    );
+  };
+
+  const shouldShowError = (field: AboutField) =>
+    Boolean(
+      fieldErrors[field] && (validationAttempted || touched[field]),
+    );
+
+  const firstNameError = shouldShowError("firstName")
+    ? fieldErrors.firstName
+    : undefined;
+  const emailError = shouldShowError("email") ? fieldErrors.email : undefined;
+  const ageError = shouldShowError("age") ? fieldErrors.age : undefined;
+  const genderError = shouldShowError("gender")
+    ? fieldErrors.gender
+    : undefined;
+  const cityError = shouldShowError("city") ? fieldErrors.city : undefined;
 
   return (
     <div>
@@ -95,6 +180,10 @@ export default function AboutYouStep() {
             placeholder="Enter name"
             autoComplete="name"
             required
+            aria-invalid={firstNameError ? true : undefined}
+            aria-describedby={
+              firstNameError ? getFieldErrorId("first-name") : undefined
+            }
             value={firstName}
             onChange={(event) => {
               const value = event.target.value;
@@ -102,8 +191,10 @@ export default function AboutYouStep() {
               saveOnboardingFirstName(value);
               setContact({ fullName: value.trim() });
             }}
-            className={inputClassName}
+            onBlur={() => markTouched("firstName")}
+            className={getInputClassName(Boolean(firstNameError))}
           />
+          <FieldError id={getFieldErrorId("first-name")} message={firstNameError} />
         </div>
 
         <div>
@@ -118,14 +209,20 @@ export default function AboutYouStep() {
             autoComplete="email"
             inputMode="email"
             required
+            aria-invalid={emailError ? true : undefined}
+            aria-describedby={
+              emailError ? getFieldErrorId("about-email") : undefined
+            }
             value={email}
             onChange={(event) => {
               const value = event.target.value;
               setEmail(value);
               setContact({ email: value.trim() });
             }}
-            className={inputClassName}
+            onBlur={() => markTouched("email")}
+            className={getInputClassName(Boolean(emailError))}
           />
+          <FieldError id={getFieldErrorId("about-email")} message={emailError} />
         </div>
 
         <div>
@@ -141,25 +238,43 @@ export default function AboutYouStep() {
             max={120}
             inputMode="numeric"
             required
+            aria-invalid={ageError ? true : undefined}
+            aria-describedby={ageError ? getFieldErrorId("age") : undefined}
             value={age}
             onChange={(event) => setAge(event.target.value)}
-            className={inputClassName}
+            onBlur={() => markTouched("age")}
+            className={getInputClassName(Boolean(ageError))}
           />
+          <FieldError id={getFieldErrorId("age")} message={ageError} />
         </div>
 
         <div>
-          <p className={labelClassName}>Gender</p>
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 sm:gap-x-6">
+          <p className={labelClassName} id="gender-label">
+            Gender
+          </p>
+          <div
+            role="group"
+            aria-labelledby="gender-label"
+            aria-invalid={genderError ? true : undefined}
+            aria-describedby={
+              genderError ? getFieldErrorId("gender") : undefined
+            }
+            className="flex flex-wrap items-center gap-x-5 gap-y-3 sm:gap-x-6"
+          >
             {genderOptions.map((option) => (
               <GenderOption
                 key={option.value}
                 label={option.label}
                 value={option.value}
                 selected={gender === option.value}
-                onSelect={setGender}
+                onSelect={(value) => {
+                  setGender(value);
+                  markTouched("gender");
+                }}
               />
             ))}
           </div>
+          <FieldError id={getFieldErrorId("gender")} message={genderError} />
         </div>
 
         <div>
@@ -173,10 +288,14 @@ export default function AboutYouStep() {
             placeholder="Enter city"
             autoComplete="address-level2"
             required
+            aria-invalid={cityError ? true : undefined}
+            aria-describedby={cityError ? getFieldErrorId("city") : undefined}
             value={city}
             onChange={(event) => setCity(event.target.value)}
-            className={inputClassName}
+            onBlur={() => markTouched("city")}
+            className={getInputClassName(Boolean(cityError))}
           />
+          <FieldError id={getFieldErrorId("city")} message={cityError} />
         </div>
       </div>
 

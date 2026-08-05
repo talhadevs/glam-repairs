@@ -5,17 +5,21 @@ import { createContext, useContext, useState } from "react";
 import Link from "next/link";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_PROGRESS } from "@/components/onboarding/onboardingConfig";
-import { StepHeader } from "@/components/steps";
+import { StepHeader, StepRequiredError } from "@/components/steps";
 import { ONBOARDING_COMPLETE_UNLOCK } from "@/lib/funnel/funnelProgress";
 import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
-import { useStepAnswer } from "@/lib/funnel/useStepAnswer";
+import {
+  useStepAnswer,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 import { openWhatsAppWithMessage } from "@/lib/funnel/shareWhatsApp";
 import { buildWhatsAppBookingSummaryText } from "@/lib/funnel/whatsapp";
 import { submitLead } from "@/lib/leads/submitLead";
 
-type PlanId = "clarity" | "transform";
+type PlanId = "free" | "clarity" | "transform";
 
 const PLAN_COPY: Record<PlanId, { name: string; price: string }> = {
+  free: { name: "Free", price: "Rs. 0" },
   clarity: { name: "Clarity", price: "Rs. 1,500" },
   transform: { name: "Transform", price: "Rs. 3,000" },
 };
@@ -93,6 +97,9 @@ function ConsentCheckbox({
 
 function ConsentFooter({ backHref }: { backHref: string }) {
   const { canSubmit, isSubmitting, onSubmit } = useConsent();
+  const requestStepValidation = useFunnelStore(
+    (state) => state.requestStepValidation,
+  );
 
   return (
     <div className="flex items-center justify-between gap-4">
@@ -130,8 +137,8 @@ function ConsentFooter({ backHref }: { backHref: string }) {
       ) : (
         <button
           type="button"
-          disabled
-          className="flex-1 cursor-not-allowed rounded-full bg-brand-light/45 px-6 py-3 text-center text-xs font-normal tracking-[0.08em] text-white/80 sm:py-3.5 sm:text-sm"
+          onClick={requestStepValidation}
+          className="subscribe-fill-btn flex-1 rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal tracking-[0.08em] text-white sm:py-3.5 sm:text-sm"
         >
           Agree &amp; Send on WhatsApp
         </button>
@@ -147,6 +154,14 @@ function ConsentContent() {
     setPrivateReview,
     setMarketingConsent,
   } = useConsent();
+  const privateReviewError = useStepRequiredError(
+    !privateReview,
+    "This consent is required.",
+  );
+  const marketingConsentError = useStepRequiredError(
+    !marketingConsent,
+    "This consent is required.",
+  );
 
   return (
     <div>
@@ -157,16 +172,28 @@ function ConsentContent() {
       />
 
       <div className="mt-6 space-y-3 sm:mt-7 sm:space-y-3.5">
-        <ConsentCheckbox
-          checked={privateReview}
-          onChange={setPrivateReview}
-          label="I understand that my photos and information will be reviewed privately by our certified aesthetics expert."
-        />
-        <ConsentCheckbox
-          checked={marketingConsent}
-          onChange={setMarketingConsent}
-          label="I agree that my photos will not be used for marketing or shared publicly without my separate written consent."
-        />
+        <div>
+          <ConsentCheckbox
+            checked={privateReview}
+            onChange={setPrivateReview}
+            label="I understand that my photos and information will be reviewed privately by our certified aesthetics expert."
+          />
+          <StepRequiredError
+            id="consent-private-review-error"
+            message={privateReviewError}
+          />
+        </div>
+        <div>
+          <ConsentCheckbox
+            checked={marketingConsent}
+            onChange={setMarketingConsent}
+            label="I agree that my photos will not be used for marketing or shared publicly without my separate written consent."
+          />
+          <StepRequiredError
+            id="consent-marketing-error"
+            message={marketingConsentError}
+          />
+        </div>
       </div>
 
       <p className="mt-5 text-xs leading-relaxed text-brand-gray sm:mt-6 sm:text-[0.8125rem]">

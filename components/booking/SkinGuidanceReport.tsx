@@ -45,6 +45,7 @@ const GENDER_LABELS: Record<string, string> = {
 };
 
 const PLAN_LABELS: Record<string, string> = {
+  free: "Free Plan",
   clarity: "Clarity Plan",
   transform: "Transform Plan",
 };

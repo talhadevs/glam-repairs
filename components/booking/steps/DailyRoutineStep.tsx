@@ -5,8 +5,13 @@ import {
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
+  StepRequiredError,
 } from "@/components/steps";
-import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+import {
+  useStepAnswer,
+  useStepGate,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 
 type RoutineFrequency =
   | "morning-and-evening"
@@ -48,6 +53,10 @@ export default function DailyRoutineStep() {
     null,
   );
   useStepGate(selectedRoutine !== null);
+  const error = useStepRequiredError(
+    selectedRoutine === null,
+    "Please select your daily routine.",
+  );
 
   return (
     <div>
@@ -68,6 +77,7 @@ export default function DailyRoutineStep() {
             />
           ))}
         </StepChoiceList>
+        <StepRequiredError message={error} />
       </StepBody>
     </div>
   );

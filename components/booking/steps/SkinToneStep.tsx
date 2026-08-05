@@ -6,8 +6,13 @@ import {
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
+  StepRequiredError,
 } from "@/components/steps";
-import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+import {
+  useStepAnswer,
+  useStepGate,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 
 type SkinTone =
   | "very-fair"
@@ -49,6 +54,10 @@ export default function SkinToneStep() {
     null,
   );
   useStepGate(selectedTone !== null);
+  const error = useStepRequiredError(
+    selectedTone === null,
+    "Skin tone is required.",
+  );
   const [showMore, setShowMore] = useState(false);
 
   const visibleOptions = showMore
@@ -85,6 +94,7 @@ export default function SkinToneStep() {
             </button>
           ) : null}
         </StepChoiceList>
+        <StepRequiredError message={error} />
       </StepBody>
     </div>
   );

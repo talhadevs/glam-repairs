@@ -5,8 +5,13 @@ import {
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
+  StepRequiredError,
 } from "@/components/steps";
-import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+import {
+  useStepAnswer,
+  useStepGate,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 
 type ImproveGoal =
   | "ingredient-knowledge"
@@ -57,6 +62,10 @@ export default function GlamImproveGoalsStep() {
     [],
   );
   useStepGate(selectedGoals.length > 0);
+  const error = useStepRequiredError(
+    selectedGoals.length === 0,
+    "Please select at least 1 option.",
+  );
 
   const toggleGoal = (value: ImproveGoal) => {
     setSelectedGoals(
@@ -88,6 +97,7 @@ export default function GlamImproveGoalsStep() {
             />
           ))}
         </StepChoiceList>
+        <StepRequiredError message={error} />
       </StepBody>
     </div>
   );

@@ -9,4 +9,5 @@ export {
   StepRadioChoiceCard,
 } from "@/components/steps/StepFilledChoiceCard";
 export { default as StepHeader } from "@/components/steps/StepHeader";
+export { default as StepRequiredError } from "@/components/steps/StepRequiredError";
 export * from "@/components/steps/stepStyles";

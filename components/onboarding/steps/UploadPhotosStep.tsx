@@ -2,13 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import CameraUploadIcon from "@/components/onboarding/CameraUploadIcon";
-import { StepHeader } from "@/components/steps";
+import { StepHeader, StepRequiredError } from "@/components/steps";
 import { resolveUnlockTarget } from "@/lib/funnel/funnelProgress";
 import { fileToCompressedDataUrl } from "@/lib/funnel/image";
 import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
-import { useStepAnswer } from "@/lib/funnel/useStepAnswer";
+import {
+  useStepAnswer,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
+
+type PlanId = "free" | "clarity" | "transform";
 
 const PHOTO_SLOTS = [
   {
@@ -38,7 +43,31 @@ const PHOTO_SLOTS = [
   },
 ] as const;
 
+const PLAN_PHOTO_LIMITS: Record<PlanId, number> = {
+  free: 1,
+  clarity: 3,
+  transform: 6,
+};
+
 const EMPTY_PHOTOS: (string | null)[] = Array(PHOTO_SLOTS.length).fill(null);
+
+function getPhotoLimit(plan: string | null): number {
+  if (plan === "clarity" || plan === "transform" || plan === "free") {
+    return PLAN_PHOTO_LIMITS[plan];
+  }
+  return PLAN_PHOTO_LIMITS.free;
+}
+
+function areAllPhotosUploaded(
+  photos: (string | null)[] | undefined,
+  photoLimit: number,
+) {
+  if (!Array.isArray(photos)) return false;
+  for (let index = 0; index < photoLimit; index += 1) {
+    if (!photos[index]) return false;
+  }
+  return true;
+}
 
 function InfoIcon() {
   return (
@@ -83,8 +112,16 @@ export function UploadPhotosFooter({ backHref, nextHref }: UploadPhotosFooterPro
   const photos = useFunnelStore(
     (state) => state.answers["onboarding.photos"] as (string | null)[] | undefined,
   );
+  const selectedPlan = useFunnelStore((state) => state.selectedPlan);
+  const photoLimit = getPhotoLimit(selectedPlan);
   const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
-  const hasFrontFace = Boolean(photos?.[0]);
+  const requestStepValidation = useFunnelStore(
+    (state) => state.requestStepValidation,
+  );
+  const clearStepValidationAttempt = useFunnelStore(
+    (state) => state.clearStepValidationAttempt,
+  );
+  const allPhotosUploaded = areAllPhotosUploaded(photos, photoLimit);
 
   return (
     <div className="flex items-center justify-between gap-4">
@@ -110,10 +147,11 @@ export function UploadPhotosFooter({ backHref, nextHref }: UploadPhotosFooterPro
         </svg>
       </Link>
 
-      {hasFrontFace ? (
+      {allPhotosUploaded ? (
         <Link
           href={nextHref}
           onClick={() => {
+            clearStepValidationAttempt();
             const target = resolveUnlockTarget("onboarding", nextHref);
             if (target !== null) unlockFlowStep("onboarding", target);
           }}
@@ -124,8 +162,8 @@ export function UploadPhotosFooter({ backHref, nextHref }: UploadPhotosFooterPro
       ) : (
         <button
           type="button"
-          disabled
-          className="flex-1 cursor-not-allowed rounded-full bg-brand-light/45 px-6 py-3 text-center text-xs font-normal uppercase tracking-[0.15em] text-white/80 sm:py-3.5 sm:text-sm"
+          onClick={requestStepValidation}
+          className="subscribe-fill-btn flex-1 rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal uppercase tracking-[0.15em] text-white sm:py-3.5 sm:text-sm"
         >
           Upload Photos
         </button>
@@ -137,12 +175,45 @@ export function UploadPhotosFooter({ backHref, nextHref }: UploadPhotosFooterPro
 export default function UploadPhotosStep() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [activeSlot, setActiveSlot] = useState<number | null>(null);
+  const selectedPlan = useFunnelStore((state) => state.selectedPlan);
+  const photoLimit = getPhotoLimit(selectedPlan);
+  const visibleSlots = useMemo(
+    () => PHOTO_SLOTS.slice(0, photoLimit),
+    [photoLimit],
+  );
   const [photos, setPhotos] = useStepAnswer<(string | null)[]>(
     "onboarding.photos",
     EMPTY_PHOTOS,
   );
+  const clearStepValidationAttempt = useFunnelStore(
+    (state) => state.clearStepValidationAttempt,
+  );
+  const allPhotosUploaded = areAllPhotosUploaded(photos, photoLimit);
+  const error = useStepRequiredError(
+    !allPhotosUploaded,
+    photoLimit === 1
+      ? "Front face photo is required."
+      : `All ${photoLimit} photos are required.`,
+  );
+
+  useEffect(() => {
+    if (allPhotosUploaded) {
+      clearStepValidationAttempt();
+    }
+  }, [allPhotosUploaded, clearStepValidationAttempt]);
+
+  // Drop photos beyond the current plan limit if the user changed plans.
+  useEffect(() => {
+    if (!Array.isArray(photos)) return;
+    if (photos.length <= photoLimit) return;
+
+    const trimmed = photos.slice(0, photoLimit);
+    while (trimmed.length < photoLimit) trimmed.push(null);
+    setPhotos(trimmed);
+  }, [photoLimit, photos, setPhotos]);
 
   const openFilePicker = (index: number) => {
+    if (index >= photoLimit) return;
     setActiveSlot(index);
     inputRef.current?.click();
   };
@@ -152,24 +223,29 @@ export default function UploadPhotosStep() {
     const slot = activeSlot;
     event.target.value = "";
     setActiveSlot(null);
-    if (!file || slot === null) return;
+    if (!file || slot === null || slot >= photoLimit) return;
 
     try {
       const dataUrl = await fileToCompressedDataUrl(file);
       const next = [...photos];
-      while (next.length < PHOTO_SLOTS.length) next.push(null);
+      while (next.length < photoLimit) next.push(null);
       next[slot] = dataUrl;
-      setPhotos(next);
+      setPhotos(next.slice(0, photoLimit));
     } catch {
       // Keep existing photos if compression fails.
     }
   };
 
+  const subtitle =
+    photoLimit === 1
+      ? "Upload a clear front-face photo in natural light. No filters."
+      : `Upload up to ${photoLimit} photos. Front face + concern areas. Clear, natural light. No filters.`;
+
   return (
     <div>
       <StepHeader
         title="Upload your photos"
-        subtitle="Front face + concern areas. Clear, natural light. No filters."
+        subtitle={subtitle}
         subtitleClassName="mt-2 text-sm leading-relaxed text-brand-gray sm:mt-2.5 sm:text-[0.9375rem]"
       />
 
@@ -181,14 +257,24 @@ export default function UploadPhotosStep() {
         onChange={handleFileChange}
       />
 
-      <div className="mt-6 grid grid-cols-3 gap-2.5 sm:mt-7 sm:gap-3">
-        {PHOTO_SLOTS.map((slot, index) => (
+      <div
+        className={`mt-6 grid gap-2.5 sm:mt-7 sm:gap-3 ${
+          photoLimit === 1
+            ? "mx-auto max-w-[10.5rem] grid-cols-1"
+            : "grid-cols-3"
+        }`}
+      >
+        {visibleSlots.map((slot, index) => (
           <div key={slot.label} className="flex flex-col gap-1.5">
             <button
               type="button"
               onClick={() => openFilePicker(index)}
               aria-label={`Upload ${slot.label} photo`}
-              className="relative aspect-[3/4] overflow-hidden rounded-[1.1rem] border border-brand-border-light/50 bg-white shadow-sm transition-opacity hover:opacity-95"
+              className={`relative aspect-[3/4] overflow-hidden rounded-[1.1rem] border bg-white shadow-sm transition-opacity hover:opacity-95 ${
+                error && !photos[index]
+                  ? "border-brand-error"
+                  : "border-brand-border-light/50"
+              }`}
             >
               {photos[index] ? (
                 <Image
@@ -231,6 +317,7 @@ export default function UploadPhotosStep() {
           </div>
         ))}
       </div>
+      <StepRequiredError message={error} />
 
       <div className="mt-5 flex items-center justify-center gap-2 rounded-2xl border border-brand-border-light/50 bg-white px-3 py-2.5 shadow-sm sm:mt-6 sm:gap-2.5 sm:px-4 sm:py-3">
         <PrivacyShieldIcon />

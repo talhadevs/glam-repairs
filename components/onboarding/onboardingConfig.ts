@@ -12,7 +12,7 @@ export const ONBOARDING_PROGRESS = {
   welcome: 1,
   program: 2,
   notAlone: 10,
-  planSelection: 24,
+  planSelection: 21,
   consent: 25,
 } as const;
 
@@ -22,8 +22,8 @@ export const ONBOARDING_FORM = {
   program: 2,
   notAlone: 10,
   treatmentFit: 11,
-  uploadPhotos: 22,
-  planSelection: 24,
+  planSelection: 21,
+  uploadPhotos: 23,
   consent: 25,
 } as const;
 

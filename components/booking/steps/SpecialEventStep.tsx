@@ -5,8 +5,13 @@ import {
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
+  StepRequiredError,
 } from "@/components/steps";
-import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+import {
+  useStepAnswer,
+  useStepGate,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 
 type SpecialEventChoice =
   | "vacation"
@@ -52,6 +57,10 @@ export default function SpecialEventStep() {
     null,
   );
   useStepGate(selectedEvent !== null);
+  const error = useStepRequiredError(
+    selectedEvent === null,
+    "Please select an option.",
+  );
 
   return (
     <div>
@@ -75,6 +84,7 @@ export default function SpecialEventStep() {
             />
           ))}
         </StepChoiceList>
+        <StepRequiredError message={error} />
       </StepBody>
     </div>
   );

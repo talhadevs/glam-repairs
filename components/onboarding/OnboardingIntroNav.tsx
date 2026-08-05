@@ -41,6 +41,9 @@ export default function OnboardingIntroNav({
   const currentStepValid = useFunnelStore((state) => state.currentStepValid);
   const answers = useFunnelStore((state) => state.answers);
   const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
+  const requestStepValidation = useFunnelStore(
+    (state) => state.requestStepValidation,
+  );
   const canContinue = !gated || currentStepValid;
 
   let resolvedBackHref = backHref;
@@ -103,9 +106,8 @@ export default function OnboardingIntroNav({
       ) : (
         <button
           type="button"
-          disabled
-          aria-disabled
-          className="inline-flex min-w-0 flex-1 cursor-not-allowed items-center justify-center whitespace-nowrap rounded-full bg-brand-light/40 px-4 py-3 text-[11px] font-normal uppercase tracking-[0.08em] text-white/80 sm:px-12 sm:py-3.5 sm:text-sm sm:tracking-[0.15em]"
+          onClick={requestStepValidation}
+          className="subscribe-fill-btn inline-flex min-w-0 flex-1 items-center justify-center whitespace-nowrap rounded-full bg-brand-light px-4 py-3 text-[11px] font-normal uppercase tracking-[0.08em] text-white sm:px-12 sm:py-3.5 sm:text-sm sm:tracking-[0.15em]"
         >
           {nextLabel}
         </button>

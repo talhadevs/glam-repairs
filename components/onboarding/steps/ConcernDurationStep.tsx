@@ -5,8 +5,13 @@ import {
   StepChoiceList,
   StepFilledChoiceCard,
   StepHeader,
+  StepRequiredError,
 } from "@/components/steps";
-import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+import {
+  useStepAnswer,
+  useStepGate,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 
 const inputClassName =
   "w-full rounded-2xl border border-brand-border-light/70 bg-white px-4 py-3.5 text-sm text-brand-ink shadow-sm outline-none transition-colors placeholder:text-brand-gray/45 focus:border-brand-light sm:py-4 sm:text-[15px]";
@@ -38,6 +43,10 @@ export default function ConcernDurationStep() {
     "",
   );
   useStepGate(selectedDuration !== null);
+  const error = useStepRequiredError(
+    selectedDuration === null,
+    "Please select how long you have been dealing with this.",
+  );
 
   return (
     <div>
@@ -57,6 +66,7 @@ export default function ConcernDurationStep() {
             />
           ))}
         </StepChoiceList>
+        <StepRequiredError message={error} />
 
         <div className="mt-6 sm:mt-7">
           <label htmlFor="worsening-factors" className={labelClassName}>

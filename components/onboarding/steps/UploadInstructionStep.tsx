@@ -2,7 +2,7 @@ import Image from "next/image";
 import { StepHeader } from "@/components/steps";
 
 const wrongPhoto = "/onboarding/photo-guide-wrong.jpg";
-const correctPhoto = "/onboarding/photo-guide-correct.jpg";
+const correctPhoto = "/onboarding/photo-guide-correct.png";
 
 const photoTips = [
   {

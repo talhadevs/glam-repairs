@@ -212,8 +212,21 @@ export function formatBookingWhatsAppMessage({
 
   const skinType = asString(answers["booking.skinType"]);
   const skinTone = asString(answers["booking.skinTone"]);
-  const improveArea = asString(answers["booking.improveArea"]);
-  const primaryConcern = asString(answers["onboarding.primaryConcern"]);
+  const improveAreas = (() => {
+    const raw = answers["booking.improveArea"];
+    if (typeof raw === "string" && raw.trim()) return [phrase(raw.trim())];
+    return asList(raw);
+  })();
+  const primaryConcernRaw = answers["onboarding.primaryConcern"];
+  const primaryConcerns = (() => {
+    if (typeof primaryConcernRaw === "string" && primaryConcernRaw.trim()) {
+      return [primaryConcernRaw.trim()];
+    }
+    if (!Array.isArray(primaryConcernRaw)) return [];
+    return primaryConcernRaw.filter(
+      (item): item is string => typeof item === "string" && item.length > 0,
+    );
+  })();
   const concernOther = asString(answers["onboarding.primaryConcernOther"]);
   const duration = asString(answers["onboarding.concernDuration"]);
   const worsening = asString(answers["onboarding.worseningFactors"]);
@@ -255,15 +268,17 @@ export function formatBookingWhatsAppMessage({
     issueParts.push(`My skin tone is ${phrase(skinTone)}.`);
   }
 
-  if (primaryConcern === "other" && concernOther) {
-    issueParts.push(`I have an issue with ${concernOther}.`);
-  } else if (primaryConcern) {
-    let concern = `I have an issue with ${phrase(primaryConcern)}`;
-    if (improveArea) concern += ` on ${phrase(improveArea)}`;
+  if (primaryConcerns.length) {
+    const concernLabels = primaryConcerns.map((item) =>
+      item === "other" && concernOther ? concernOther : phrase(item),
+    );
+    let concern = `I have an issue with ${joinNatural(concernLabels)}`;
+    const areas = joinNatural(improveAreas);
+    if (areas) concern += ` on ${areas}`;
     concern += ".";
     issueParts.push(concern);
-  } else if (improveArea) {
-    issueParts.push(`I want to improve ${phrase(improveArea)}.`);
+  } else if (improveAreas.length) {
+    issueParts.push(`I want to improve ${joinNatural(improveAreas)}.`);
   }
 
   if (duration) {

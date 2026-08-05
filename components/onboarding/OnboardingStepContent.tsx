@@ -101,11 +101,11 @@ export default function OnboardingStepContent({ stepNumber }: StepContentProps) 
       return <SpecialEventStep />;
     case 20:
       return <EventDateStep />;
-    case 21:
-      return <UploadInstructionStep />;
     case 22:
-      return <UploadPhotosStep />;
+      return <UploadInstructionStep />;
     case 23:
+      return <UploadPhotosStep />;
+    case 24:
       return <SkinResultsTimelineStep />;
     default:
       return <StepPlaceholder stepNumber={stepNumber} />;

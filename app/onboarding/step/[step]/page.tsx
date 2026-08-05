@@ -99,20 +99,20 @@ const STEP_METADATA: Record<number, Metadata> = {
     description: "Tell us when your special event is.",
   },
   21: {
+    title: "Plan Selection | GlamRepairs",
+    description: "Choose your Clarity or Transform plan to continue.",
+  },
+  22: {
     title: "Photo Guide | GlamRepairs",
     description: "Learn how to take clear photos for an accurate skin assessment.",
   },
-  22: {
+  23: {
     title: "Photo Upload | GlamRepairs",
     description: "Upload front face and concern area photos in clear, natural light.",
   },
-  23: {
+  24: {
     title: "Skin Results Timeline | GlamRepairs",
     description: "See when most users notice skin improvements.",
-  },
-  24: {
-    title: "Plan Selection | GlamRepairs",
-    description: "Choose your Clarity or Transform plan to continue.",
   },
   25: {
     title: "Consent and Trust | GlamRepairs",

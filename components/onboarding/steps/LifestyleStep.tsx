@@ -8,12 +8,19 @@ import {
   StepHeader,
   StepRadioChoiceCard,
 } from "@/components/steps";
-import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+import FieldError from "@/components/ui/FieldError";
+import { getFieldErrorId } from "@/components/ui/FormField";
+import {
+  useStepAnswer,
+  useStepGate,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 
 type SleepOption = "under-5" | "5-6" | "7-8" | "over-8";
 type WaterOption = "under-4" | "4-6" | "7-8" | "over-8";
 type StressOption = "low" | "moderate" | "high" | "very-high";
 type DietOption = "dairy" | "sugar-fried" | "tea-coffee" | "home-cooked" | "skip-meals";
+type LifestyleField = "sleep" | "water" | "stress" | "diet";
 
 const sleepOptions: { value: SleepOption; label: string }[] = [
   { value: "under-5", label: "Less than 5 hours" },
@@ -47,19 +54,36 @@ const dietOptions: { value: DietOption; label: string }[] = [
 const sectionLabelClassName =
   "text-sm font-medium text-brand-ink sm:text-[0.9375rem]";
 
+const FIELD_ERRORS: Record<LifestyleField, string> = {
+  sleep: "Sleep is required.",
+  water: "Water intake is required.",
+  stress: "Stress level is required.",
+  diet: "Diet is required.",
+};
+
 function LifestyleSection({
   title,
+  fieldId,
+  error,
   children,
 }: {
   title: string;
+  fieldId?: string;
+  error?: string;
   children: ReactNode;
 }) {
+  const errorId = fieldId ? getFieldErrorId(fieldId) : "";
+
   return (
-    <section>
+    <section
+      aria-invalid={error ? true : undefined}
+      aria-describedby={error && errorId ? errorId : undefined}
+    >
       <h2 className={sectionLabelClassName}>{title}</h2>
       <StepChoiceList spacing="compact" className="mt-3">
         {children}
       </StepChoiceList>
+      {fieldId ? <FieldError id={errorId} message={error} /> : null}
     </section>
   );
 }
@@ -79,7 +103,17 @@ export default function LifestyleStep() {
   );
   const [diet, setDiet] = useStepAnswer<DietOption[]>("onboarding.diet", []);
 
-  useStepGate(sleep !== null && water !== null && stress !== null);
+  const isValid =
+    sleep !== null && water !== null && stress !== null && diet.length > 0;
+  useStepGate(isValid);
+
+  const sleepError = useStepRequiredError(sleep === null, FIELD_ERRORS.sleep);
+  const waterError = useStepRequiredError(water === null, FIELD_ERRORS.water);
+  const stressError = useStepRequiredError(
+    stress === null,
+    FIELD_ERRORS.stress,
+  );
+  const dietError = useStepRequiredError(diet.length === 0, FIELD_ERRORS.diet);
 
   const toggleDiet = (value: DietOption) => {
     setDiet(
@@ -97,7 +131,11 @@ export default function LifestyleStep() {
       />
 
       <StepBody className="space-y-6 sm:space-y-7">
-        <LifestyleSection title="Sleep (per night on average):">
+        <LifestyleSection
+          title="Sleep (per night on average):"
+          fieldId="lifestyle-sleep"
+          error={sleepError}
+        >
           {sleepOptions.map((option) => (
             <StepRadioChoiceCard
               key={option.value}
@@ -108,7 +146,11 @@ export default function LifestyleStep() {
           ))}
         </LifestyleSection>
 
-        <LifestyleSection title="Water intake (per day):">
+        <LifestyleSection
+          title="Water intake (per day):"
+          fieldId="lifestyle-water"
+          error={waterError}
+        >
           {waterOptions.map((option) => (
             <StepRadioChoiceCard
               key={option.value}
@@ -119,7 +161,11 @@ export default function LifestyleStep() {
           ))}
         </LifestyleSection>
 
-        <LifestyleSection title="Stress level:">
+        <LifestyleSection
+          title="Stress level:"
+          fieldId="lifestyle-stress"
+          error={stressError}
+        >
           {stressOptions.map((option) => (
             <StepRadioChoiceCard
               key={option.value}
@@ -130,7 +176,11 @@ export default function LifestyleStep() {
           ))}
         </LifestyleSection>
 
-        <LifestyleSection title="Diet (select all that apply):">
+        <LifestyleSection
+          title="Diet (select all that apply):"
+          fieldId="lifestyle-diet"
+          error={dietError}
+        >
           {dietOptions.map((option) => (
             <StepFilledCheckboxCard
               key={option.value}

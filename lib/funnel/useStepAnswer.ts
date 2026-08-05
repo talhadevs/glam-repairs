@@ -31,11 +31,34 @@ export function useStepGate(isValid: boolean) {
   const setCurrentStepValid = useFunnelStore(
     (state) => state.setCurrentStepValid,
   );
+  const clearStepValidationAttempt = useFunnelStore(
+    (state) => state.clearStepValidationAttempt,
+  );
 
   useEffect(() => {
     setCurrentStepValid(isValid);
-    return () => setCurrentStepValid(true);
-  }, [isValid, setCurrentStepValid]);
+    if (isValid) {
+      clearStepValidationAttempt();
+    }
+    return () => {
+      setCurrentStepValid(true);
+      clearStepValidationAttempt();
+    };
+  }, [isValid, setCurrentStepValid, clearStepValidationAttempt]);
+}
+
+/**
+ * Returns an error message when the user tried to continue and the field/step
+ * is still missing a required selection.
+ */
+export function useStepRequiredError(
+  isMissing: boolean,
+  message = "Please select an option.",
+) {
+  const validationAttempted = useFunnelStore(
+    (state) => state.stepValidationAttempted,
+  );
+  return validationAttempted && isMissing ? message : undefined;
 }
 
 /**

@@ -5,8 +5,13 @@ import {
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
+  StepRequiredError,
 } from "@/components/steps";
-import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+import {
+  useStepAnswer,
+  useStepGate,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 
 type SkincareProduct =
   | "cleanser"
@@ -63,6 +68,10 @@ export default function SkincareProductsStep() {
     [],
   );
   useStepGate(selectedProducts.length > 0);
+  const error = useStepRequiredError(
+    selectedProducts.length === 0,
+    "Please select at least 1 product.",
+  );
 
   const toggleProduct = (value: SkincareProduct) => {
     if (value === "none") {
@@ -98,6 +107,7 @@ export default function SkincareProductsStep() {
             />
           ))}
         </StepChoiceList>
+        <StepRequiredError message={error} />
       </StepBody>
     </div>
   );

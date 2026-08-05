@@ -1,16 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_PROGRESS } from "@/components/onboarding/onboardingConfig";
-import { StepHeader } from "@/components/steps";
-import { submitLead } from "@/lib/leads/submitLead";
+import { StepHeader, StepRequiredError } from "@/components/steps";
 import { resolveUnlockTarget } from "@/lib/funnel/funnelProgress";
 import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
-import { buildWhatsAppOrderLink } from "@/lib/funnel/whatsapp";
+import { useStepRequiredError } from "@/lib/funnel/useStepAnswer";
 
-type PlanId = "clarity" | "transform";
+type PlanId = "free" | "clarity" | "transform";
 
 const plans: {
   id: PlanId;
@@ -18,6 +16,13 @@ const plans: {
   price: string;
   highlights: string;
 }[] = [
+  {
+    id: "free",
+    name: "Free",
+    price: "Rs. 0",
+    highlights:
+      "Skin concern quiz · Instant skin type result · Generic routine guide · Skin tips access",
+  },
   {
     id: "clarity",
     name: "Clarity",
@@ -98,6 +103,12 @@ function PlanSelectionFooter({
   canContinue: boolean;
 }) {
   const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
+  const requestStepValidation = useFunnelStore(
+    (state) => state.requestStepValidation,
+  );
+  const clearStepValidationAttempt = useFunnelStore(
+    (state) => state.clearStepValidationAttempt,
+  );
 
   return (
     <div className="flex items-center justify-between gap-4">
@@ -127,6 +138,7 @@ function PlanSelectionFooter({
         <Link
           href={nextHref}
           onClick={() => {
+            clearStepValidationAttempt();
             const target = resolveUnlockTarget("onboarding", nextHref);
             if (target !== null) unlockFlowStep("onboarding", target);
           }}
@@ -137,8 +149,8 @@ function PlanSelectionFooter({
       ) : (
         <button
           type="button"
-          disabled
-          className="flex-1 cursor-not-allowed rounded-full bg-brand-light/45 px-6 py-3 text-center text-xs font-normal uppercase tracking-[0.15em] text-white/80 sm:py-3.5 sm:text-sm"
+          onClick={requestStepValidation}
+          className="subscribe-fill-btn flex-1 rounded-full bg-brand-light px-6 py-3 text-center text-xs font-normal uppercase tracking-[0.15em] text-white sm:py-3.5 sm:text-sm"
         >
           Continue
         </button>
@@ -153,82 +165,20 @@ type PlanSelectionStepProps = {
 };
 
 export default function PlanSelectionStep({
-  backHref = "/onboarding/step/23",
-  nextHref = "/onboarding/step/25",
+  backHref = "/onboarding/step/20",
+  nextHref = "/onboarding/step/22",
 }: PlanSelectionStepProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const selectedPlan = useFunnelStore(
     (state) => state.selectedPlan,
   ) as PlanId | null;
   const setSelectedPlan = useFunnelStore((state) => state.setSelectedPlan);
-  const fullName = useFunnelStore((state) => state.fullName);
-  const email = useFunnelStore((state) => state.email);
-  const sessionId = useFunnelStore((state) => state.sessionId);
-  const setSelfieUrl = useFunnelStore((state) => state.setSelfieUrl);
-  const ensureSessionId = useFunnelStore((state) => state.ensureSessionId);
-
-  const activePlan = plans.find((plan) => plan.id === selectedPlan) ?? null;
-
-  const openWhatsAppCheckout = async () => {
-    if (!activePlan || isSubmitting) return;
-
-    setIsSubmitting(true);
-    ensureSessionId();
-
-    const store = useFunnelStore.getState();
-    const photos = Array.isArray(store.answers["onboarding.photos"])
-      ? (store.answers["onboarding.photos"] as (string | null)[])
-      : [];
-    const photoDataUrls = photos.filter(
-      (item): item is string =>
-        typeof item === "string" && item.startsWith("data:"),
-    );
-    if (
-      photoDataUrls.length === 0 &&
-      typeof store.answers["booking.selfie"] === "string" &&
-      store.answers["booking.selfie"].startsWith("data:")
-    ) {
-      photoDataUrls.push(store.answers["booking.selfie"]);
-    }
-
-    let imageUrl = store.selfieUrl;
-
-    const result = await submitLead({
-      sessionId: store.sessionId || sessionId,
-      fullName: store.fullName || fullName,
-      email: store.email || email,
-      selectedPlan: store.selectedPlan,
-      planName: activePlan.name,
-      planPrice: activePlan.price,
-      selfieDataUrl: photoDataUrls[0] ?? null,
-      photoDataUrls,
-      answers: store.answers,
-    });
-
-    if (result.ok) {
-      const urls = result.imageUrls?.length
-        ? result.imageUrls
-        : result.imageUrl
-          ? [result.imageUrl]
-          : [];
-      if (urls[0]) {
-        imageUrl = urls[0];
-        setSelfieUrl(urls[0]);
-      }
-    }
-
-    const whatsAppLink = buildWhatsAppOrderLink({
-      planName: activePlan.name,
-      price: activePlan.price,
-      fullName: store.fullName || fullName,
-      email: store.email || email,
-      sessionId: store.sessionId || sessionId,
-      imageUrl,
-    });
-
-    setIsSubmitting(false);
-    window.open(whatsAppLink, "_blank", "noopener,noreferrer");
-  };
+  const clearStepValidationAttempt = useFunnelStore(
+    (state) => state.clearStepValidationAttempt,
+  );
+  const planError = useStepRequiredError(
+    selectedPlan === null,
+    "Please select a plan.",
+  );
 
   return (
     <OnboardingShell
@@ -255,41 +205,14 @@ export default function PlanSelectionStep({
               price={plan.price}
               highlights={plan.highlights}
               selected={selectedPlan === plan.id}
-              onSelect={() => setSelectedPlan(plan.id)}
+              onSelect={() => {
+                setSelectedPlan(plan.id);
+                clearStepValidationAttempt();
+              }}
             />
           ))}
         </div>
-
-        <div className="mt-6 rounded-[1.25rem] border border-brand-lavender bg-brand-purple-soft/30 px-4 py-5 text-center sm:mt-7 sm:px-5 sm:py-6">
-          {activePlan ? (
-            <>
-              <button
-                type="button"
-                onClick={openWhatsAppCheckout}
-                disabled={isSubmitting}
-                className="flex w-full items-center justify-center gap-2.5 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-70 sm:py-4"
-              >
-                <svg
-                  aria-hidden
-                  viewBox="0 0 24 24"
-                  className="h-5 w-5"
-                  fill="currentColor"
-                >
-                  <path d="M17.47 14.38c-.3-.15-1.74-.86-2-.95-.27-.1-.46-.15-.65.15-.2.3-.75.94-.92 1.13-.17.2-.34.22-.63.08-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.34.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.65-1.58-.9-2.16-.24-.57-.48-.49-.65-.5h-.56c-.2 0-.5.07-.77.37-.27.3-1.02 1-1.02 2.42 0 1.43 1.04 2.8 1.19 3 .15.2 2.05 3.12 4.95 4.38.69.3 1.23.48 1.65.6.7.22 1.33.2 1.83.12.56-.08 1.74-.71 1.98-1.4.25-.68.25-1.27.17-1.4-.07-.13-.27-.2-.57-.35zM12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.39c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.9-4.45 9.9-9.9C21.94 6.45 17.5 2 12.04 2z" />
-                </svg>
-                {isSubmitting ? "Preparing…" : "Pay on WhatsApp"}
-              </button>
-              <p className="mt-3 text-[0.6875rem] leading-relaxed text-brand-gray sm:text-xs">
-                You&apos;ll be redirected to WhatsApp to complete payment for the{" "}
-                {activePlan.name} plan ({activePlan.price}).
-              </p>
-            </>
-          ) : (
-            <p className="text-sm text-brand-gray sm:text-[0.9375rem]">
-              Select a plan above to continue to payment.
-            </p>
-          )}
-        </div>
+        <StepRequiredError message={planError} />
       </div>
     </OnboardingShell>
   );

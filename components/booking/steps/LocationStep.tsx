@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { StepBody, StepHeader } from "@/components/steps";
-import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+import { StepBody, StepHeader, StepRequiredError } from "@/components/steps";
+import {
+  useStepAnswer,
+  useStepGate,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 import {
   fetchEnvironment,
   formatCityLabel,
@@ -87,6 +91,10 @@ export default function LocationStep() {
   const [lat, setLat] = useStepAnswer<number | null>("booking.locationLat", null);
   const [lon, setLon] = useStepAnswer<number | null>("booking.locationLon", null);
   useStepGate(location.trim().length > 0);
+  const error = useStepRequiredError(
+    location.trim().length === 0,
+    "Location is required.",
+  );
 
   const [query, setQuery] = useState(location);
   const [results, setResults] = useState<CityResult[]>([]);
@@ -218,6 +226,7 @@ export default function LocationStep() {
             </ul>
           )}
         </div>
+        <StepRequiredError message={error} />
 
         {showStats && (
           <div className="mt-5 flex items-start justify-between gap-3 rounded-2xl border border-brand-border-light/50 bg-white px-4 py-4 shadow-sm sm:mt-6 sm:gap-4 sm:px-5 sm:py-5">

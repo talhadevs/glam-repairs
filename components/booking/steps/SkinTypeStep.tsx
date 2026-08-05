@@ -5,8 +5,13 @@ import {
   StepChoiceCard,
   StepChoiceList,
   StepHeader,
+  StepRequiredError,
 } from "@/components/steps";
-import { useStepAnswer, useStepGate } from "@/lib/funnel/useStepAnswer";
+import {
+  useStepAnswer,
+  useStepGate,
+  useStepRequiredError,
+} from "@/lib/funnel/useStepAnswer";
 
 type SkinType = "dry" | "normal" | "oily" | "combination";
 
@@ -48,6 +53,10 @@ export default function SkinTypeStep() {
     null,
   );
   useStepGate(selectedType !== null);
+  const error = useStepRequiredError(
+    selectedType === null,
+    "Skin type is required.",
+  );
 
   return (
     <div>
@@ -70,6 +79,7 @@ export default function SkinTypeStep() {
             />
           ))}
         </StepChoiceList>
+        <StepRequiredError message={error} />
       </StepBody>
     </div>
   );

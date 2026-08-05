@@ -13,7 +13,7 @@ type FunnelState = {
   /** Captured contact details (filled in near the end of the funnel). */
   email: string;
   fullName: string;
-  /** Plan the user selected (clarity | transform), saved on pick. */
+  /** Plan the user selected (free | clarity | transform), saved on pick. */
   selectedPlan: string | null;
   /** Public selfie URL after upload (Supabase Storage); used in WhatsApp message. */
   selfieUrl: string | null;
@@ -31,6 +31,11 @@ type FunnelState = {
    * not persisted. Defaults to true so informational steps are never blocked.
    */
   currentStepValid: boolean;
+  /**
+   * Set when the user tries to continue on an invalid gated step.
+   * Ephemeral UI state used to reveal field-level errors.
+   */
+  stepValidationAttempted: boolean;
 
   ensureSessionId: () => void;
   setAnswer: (key: string, value: unknown) => void;
@@ -39,6 +44,8 @@ type FunnelState = {
   setSelfieUrl: (url: string | null) => void;
   unlockFlowStep: (flow: FunnelFlow, step: number) => void;
   setCurrentStepValid: (valid: boolean) => void;
+  requestStepValidation: () => void;
+  clearStepValidationAttempt: () => void;
   reset: () => void;
 };
 
@@ -61,6 +68,7 @@ export const useFunnelStore = create<FunnelState>()(
       bookingUnlockedStep: 1,
       onboardingUnlockedStep: 1,
       currentStepValid: true,
+      stepValidationAttempted: false,
 
       ensureSessionId: () => {
         if (!get().sessionId) {
@@ -91,6 +99,8 @@ export const useFunnelStore = create<FunnelState>()(
           };
         }),
       setCurrentStepValid: (valid) => set({ currentStepValid: valid }),
+      requestStepValidation: () => set({ stepValidationAttempted: true }),
+      clearStepValidationAttempt: () => set({ stepValidationAttempted: false }),
       reset: () =>
         set({
           answers: {},
@@ -100,6 +110,7 @@ export const useFunnelStore = create<FunnelState>()(
           selfieUrl: null,
           bookingUnlockedStep: 1,
           onboardingUnlockedStep: 1,
+          stepValidationAttempted: false,
         }),
     }),
     {
