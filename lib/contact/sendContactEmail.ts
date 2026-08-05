@@ -7,32 +7,54 @@ import type { ContactFormPayload } from "@/types/contact";
 
 export { isContactResendConfigured as isResendConfigured };
 
+export type ContactEmailResult =
+  | {
+      ok: true;
+      companyEmailId: string | null;
+      userEmailId: string | null;
+    }
+  | { ok: false; message: string };
+
 /**
- * Send contact-form emails via Resend:
- * 1) notify the company inbox
- * 2) thank the visitor (message received, reply soon)
- *
- * Each send is independent so one failure does not block the other.
+ * Contact form emails:
+ * - Company notification → CONTACT_TO_EMAIL (GlamRepairs inbox)
+ * - Thank-you message → visitor email from the form (payload.workEmail)
  */
 export async function sendContactEmail(
   payload: ContactFormPayload,
-): Promise<{ ok: true } | { ok: false; message: string }> {
+): Promise<ContactEmailResult> {
   const config = getResendConfig();
   if (!config?.companyTo) {
     return { ok: false, message: "Resend is not configured." };
   }
 
   const { resend, from, companyTo } = config;
+
+  // Always the form visitor — never the company inbox.
+  const userEmail = payload.workEmail.trim();
+  if (!userEmail.includes("@")) {
+    return { ok: false, message: "Visitor email is missing." };
+  }
+
   const safeName = escapeHtml(payload.firstName);
-  const safeEmail = escapeHtml(payload.workEmail);
+  const safeEmail = escapeHtml(userEmail);
   const safeMessage = escapeHtml(payload.message).replaceAll("\n", "<br />");
 
-  const errors: string[] = [];
+  console.info("[sendContactEmail] destinations", {
+    from,
+    companyNotificationTo: companyTo,
+    userThankYouTo: userEmail,
+  });
 
+  const errors: string[] = [];
+  let companyEmailId: string | null = null;
+  let userEmailId: string | null = null;
+
+  // 1) Company gets the contact message
   const companyResult = await resend.emails.send({
     from,
     to: [companyTo],
-    replyTo: payload.workEmail,
+    replyTo: userEmail,
     subject: `Contact form: ${payload.firstName}`,
     html: `
       <h2>New contact message</h2>
@@ -45,7 +67,7 @@ export async function sendContactEmail(
       "New contact message",
       "",
       `Name: ${payload.firstName}`,
-      `Email: ${payload.workEmail}`,
+      `Email: ${userEmail}`,
       "",
       "Message:",
       payload.message,
@@ -53,13 +75,21 @@ export async function sendContactEmail(
   });
 
   if (companyResult.error) {
-    console.error("[sendContactEmail] company", companyResult.error);
+    console.error("[sendContactEmail] company FAILED", companyResult.error);
     errors.push(`company: ${companyResult.error.message}`);
+  } else {
+    companyEmailId = companyResult.data?.id ?? null;
+    console.info(
+      "[sendContactEmail] company notification sent to",
+      companyTo,
+      companyEmailId,
+    );
   }
 
+  // 2) User gets the thank-you (must be form email, not company)
   const userResult = await resend.emails.send({
     from,
-    to: [payload.workEmail],
+    to: [userEmail],
     subject: "Thanks — we received your message | GlamRepairs",
     html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #2b2b2b;">
@@ -80,13 +110,20 @@ export async function sendContactEmail(
   });
 
   if (userResult.error) {
-    console.error("[sendContactEmail] user thank-you", userResult.error);
+    console.error("[sendContactEmail] user thank-you FAILED", userResult.error);
     errors.push(`user: ${userResult.error.message}`);
+  } else {
+    userEmailId = userResult.data?.id ?? null;
+    console.info(
+      "[sendContactEmail] thank-you sent to USER",
+      userEmail,
+      userEmailId,
+    );
   }
 
   if (errors.length > 0) {
     return { ok: false, message: errors.join(" | ") };
   }
 
-  return { ok: true };
+  return { ok: true, companyEmailId, userEmailId };
 }

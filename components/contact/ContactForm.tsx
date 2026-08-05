@@ -28,7 +28,8 @@ type SubmitState =
   | { type: "idle" }
   | { type: "error"; message: string };
 
-const SUCCESS_MESSAGE = "Form submitted successfully.";
+const SUCCESS_MESSAGE =
+  "Message sent. A thank-you email was sent to the address you entered.";
 const contactInputClassName =
   "rounded-full border-[#d9d9d9] px-5 py-3.5 sm:px-6";
 const contactTextAreaClassName =
