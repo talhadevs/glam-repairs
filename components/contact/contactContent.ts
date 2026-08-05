@@ -12,5 +12,4 @@ export const contactReachOut = {
   emailIcon: "/svgs/gmail-mail-icon.png",
   emailDisplay: "glamrepairs@gmail.com",
   emailHref: "mailto:glamrepairs@gmail.com",
-  qrCode: "/images,svgs/contact-whatsapp-qr.png",
 };

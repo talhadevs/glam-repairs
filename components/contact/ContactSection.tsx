@@ -33,16 +33,6 @@ export default function ContactSection() {
                   {contactReachOut.emailDisplay}
                 </Link>
               </div>
-
-              <div className="mt-8 inline-flex rounded-[10px] bg-white p-3 sm:mt-10">
-                <Image
-                  src={contactReachOut.qrCode}
-                  alt="WhatsApp QR code"
-                  width={135}
-                  height={135}
-                  className="h-[7.5rem] w-[7.5rem] object-contain sm:h-[8.4375rem] sm:w-[8.4375rem]"
-                />
-              </div>
             </div>
 
             <div className="min-w-0 w-full rounded-[10px] bg-white px-4 py-6 sm:bg-[#fefaf2] sm:px-8 sm:py-9 lg:px-9 lg:py-10">
