@@ -3,6 +3,10 @@ import {
   getResendConfig,
   isContactResendConfigured,
 } from "@/lib/email/resendClient";
+import {
+  getWhatsAppChatLink,
+  getWhatsAppDisplayNumber,
+} from "@/lib/funnel/whatsapp";
 import type { ContactFormPayload } from "@/types/contact";
 
 export { isContactResendConfigured as isResendConfigured };
@@ -87,6 +91,11 @@ export async function sendContactEmail(
     );
   }
 
+  const whatsappDisplay = getWhatsAppDisplayNumber();
+  const whatsappLink = getWhatsAppChatLink();
+  const safeWhatsappDisplay = escapeHtml(whatsappDisplay);
+  const safeWhatsappLink = escapeHtml(whatsappLink);
+
   // 2) User gets the thank-you (must be form email, not company)
   const userResult = await resend.emails.send({
     from,
@@ -100,8 +109,13 @@ export async function sendContactEmail(
           We have received your message and our team is reviewing it.
         </p>
         <p style="margin: 0 0 12px;">
-          You can expect a reply from us shortly. If your query is urgent,
-          feel free to follow up on WhatsApp as well.
+          You can expect a reply from us shortly.
+        </p>
+        <p style="margin: 0 0 12px; padding: 12px 14px; background: #f6edff; border-radius: 10px;">
+          Need help sooner? Message us on WhatsApp:<br />
+          <a href="${safeWhatsappLink}" style="color: #662d91; font-weight: 600; text-decoration: none;">
+            ${safeWhatsappDisplay}
+          </a>
         </p>
         <p style="margin: 24px 0 0; color: #4a4a4a;">
           Warm regards,<br />
@@ -115,7 +129,10 @@ export async function sendContactEmail(
       "Thank you for reaching out to GlamRepairs.",
       "We have received your message and our team is reviewing it.",
       "",
-      "You can expect a reply from us shortly. If your query is urgent, feel free to follow up on WhatsApp as well.",
+      "You can expect a reply from us shortly.",
+      "",
+      `Need help sooner? Message us on WhatsApp: ${whatsappDisplay}`,
+      whatsappLink,
       "",
       "Warm regards,",
       "The GlamRepairs Team",

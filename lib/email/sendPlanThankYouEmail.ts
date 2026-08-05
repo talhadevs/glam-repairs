@@ -1,4 +1,8 @@
 import { escapeHtml, getResendConfig } from "@/lib/email/resendClient";
+import {
+  getWhatsAppChatLink,
+  getWhatsAppDisplayNumber,
+} from "@/lib/funnel/whatsapp";
 
 export type PlanThankYouPayload = {
   fullName?: string | null;
@@ -42,6 +46,11 @@ export async function sendPlanThankYouEmail(
     ? `${planName} (${planPrice})`
     : planName;
 
+  const whatsappDisplay = getWhatsAppDisplayNumber();
+  const whatsappLink = getWhatsAppChatLink();
+  const safeWhatsappDisplay = escapeHtml(whatsappDisplay);
+  const safeWhatsappLink = escapeHtml(whatsappLink);
+
   const { resend, from } = config;
 
   const { error } = await resend.emails.send({
@@ -64,6 +73,12 @@ export async function sendPlanThankYouEmail(
         <p style="margin: 0 0 12px;">
           We will be in touch with you soon with the next steps.
         </p>
+        <p style="margin: 0 0 12px; padding: 12px 14px; background: #f6edff; border-radius: 10px;">
+          Need help? Message us on WhatsApp:<br />
+          <a href="${safeWhatsappLink}" style="color: #662d91; font-weight: 600; text-decoration: none;">
+            ${safeWhatsappDisplay}
+          </a>
+        </p>
         <p style="margin: 24px 0 0; color: #4a4a4a;">
           Warm regards,<br />
           <strong style="color: #662d91;">The GlamRepairs Team</strong>
@@ -79,6 +94,9 @@ export async function sendPlanThankYouEmail(
       "",
       "Our experts will carefully review your answers and photos, then share personalized guidance for your skin journey.",
       "We will be in touch with you soon with the next steps.",
+      "",
+      `Need help? Message us on WhatsApp: ${whatsappDisplay}`,
+      whatsappLink,
       "",
       "Warm regards,",
       "The GlamRepairs Team",
