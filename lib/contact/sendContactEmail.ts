@@ -1,47 +1,37 @@
-import { Resend } from "resend";
-
+import {
+  escapeHtml,
+  getResendConfig,
+  isContactResendConfigured,
+} from "@/lib/email/resendClient";
 import type { ContactFormPayload } from "@/types/contact";
 
-function escapeHtml(value: string) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-export function isResendConfigured() {
-  return Boolean(
-    process.env.RESEND_API_KEY?.trim() &&
-      process.env.CONTACT_FROM_EMAIL?.trim() &&
-      process.env.CONTACT_TO_EMAIL?.trim(),
-  );
-}
+export { isContactResendConfigured as isResendConfigured };
 
 /**
- * Send a contact-form notification to the team inbox via Resend.
- * Reply-To is the visitor email so you can reply directly.
+ * Send contact-form emails via Resend:
+ * 1) notify the company inbox
+ * 2) thank the visitor (message received, reply soon)
+ *
+ * Each send is independent so one failure does not block the other.
  */
 export async function sendContactEmail(
   payload: ContactFormPayload,
 ): Promise<{ ok: true } | { ok: false; message: string }> {
-  const apiKey = process.env.RESEND_API_KEY?.trim();
-  const from = process.env.CONTACT_FROM_EMAIL?.trim();
-  const to = process.env.CONTACT_TO_EMAIL?.trim();
-
-  if (!apiKey || !from || !to) {
+  const config = getResendConfig();
+  if (!config?.companyTo) {
     return { ok: false, message: "Resend is not configured." };
   }
 
-  const resend = new Resend(apiKey);
+  const { resend, from, companyTo } = config;
   const safeName = escapeHtml(payload.firstName);
   const safeEmail = escapeHtml(payload.workEmail);
   const safeMessage = escapeHtml(payload.message).replaceAll("\n", "<br />");
 
-  const { error } = await resend.emails.send({
+  const errors: string[] = [];
+
+  const companyResult = await resend.emails.send({
     from,
-    to: [to],
+    to: [companyTo],
     replyTo: payload.workEmail,
     subject: `Contact form: ${payload.firstName}`,
     html: `
@@ -62,9 +52,40 @@ export async function sendContactEmail(
     ].join("\n"),
   });
 
-  if (error) {
-    console.error("[sendContactEmail]", error);
-    return { ok: false, message: error.message };
+  if (companyResult.error) {
+    console.error("[sendContactEmail] company", companyResult.error);
+    errors.push(`company: ${companyResult.error.message}`);
+  }
+
+  const userResult = await resend.emails.send({
+    from,
+    to: [payload.workEmail],
+    subject: "Thanks — we received your message | GlamRepairs",
+    html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #2b2b2b;">
+        <h2 style="color: #662d91; margin-bottom: 8px;">Thank you, ${safeName}!</h2>
+        <p>Your message has been received.</p>
+        <p><strong>Bohat jald reply aayega.</strong> Our team will get back to you soon.</p>
+        <p style="margin-top: 20px; color: #4a4a4a;">— GlamRepairs</p>
+      </div>
+    `,
+    text: [
+      `Thank you, ${payload.firstName}!`,
+      "",
+      "Your message has been received.",
+      "Bohat jald reply aayega. Our team will get back to you soon.",
+      "",
+      "— GlamRepairs",
+    ].join("\n"),
+  });
+
+  if (userResult.error) {
+    console.error("[sendContactEmail] user thank-you", userResult.error);
+    errors.push(`user: ${userResult.error.message}`);
+  }
+
+  if (errors.length > 0) {
+    return { ok: false, message: errors.join(" | ") };
   }
 
   return { ok: true };

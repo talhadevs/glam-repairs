@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { insertContactMessage } from "@/lib/contact/insertContactMessage";
-import {
-  isResendConfigured,
-  sendContactEmail,
-} from "@/lib/contact/sendContactEmail";
+import { sendContactEmail } from "@/lib/contact/sendContactEmail";
+import { isContactResendConfigured } from "@/lib/email/resendClient";
 import type { ContactFormPayload, ContactSubmitResult } from "@/types/contact";
 
 function isSupabaseConfigured() {
@@ -63,6 +61,15 @@ export async function POST(request: Request) {
   if (!isSupabaseConfigured()) {
     if (process.env.NODE_ENV !== "production") {
       console.info("[api/contact] Payload ready for Supabase", payload);
+      if (isContactResendConfigured()) {
+        const emailResult = await sendContactEmail(payload);
+        if (!emailResult.ok) {
+          console.error(
+            "[api/contact] Local contact email failed:",
+            emailResult.message,
+          );
+        }
+      }
       return NextResponse.json<ContactSubmitResult>({ ok: true });
     }
 
@@ -80,8 +87,8 @@ export async function POST(request: Request) {
     );
   }
 
-  // Optional: only sends when Resend + verified from-domain are configured.
-  if (isResendConfigured()) {
+  // Company inbox + user thank-you (requires Resend env vars).
+  if (isContactResendConfigured()) {
     const emailResult = await sendContactEmail(payload);
     if (!emailResult.ok) {
       console.error(

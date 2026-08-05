@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { isResendConfigured } from "@/lib/email/resendClient";
+import { sendPlanThankYouEmail } from "@/lib/email/sendPlanThankYouEmail";
 import { insertLead } from "@/lib/leads/insertLead";
 import {
   getPublicAppUrl,
@@ -90,6 +92,22 @@ export async function POST(request: Request) {
       });
     }
 
+    if (isResendConfigured()) {
+      const emailResult = await sendPlanThankYouEmail({
+        fullName: body.fullName,
+        email: body.email,
+        planName: body.planName,
+        planPrice: body.planPrice,
+        selectedPlan: body.selectedPlan,
+      });
+      if (!emailResult.ok) {
+        console.error(
+          "[api/leads] Local lead thank-you email failed:",
+          emailResult.message,
+        );
+      }
+    }
+
     return NextResponse.json<LeadSubmitResult>({
       ok: true,
       leadId: `local_${body.sessionId.slice(0, 8)}`,
@@ -114,6 +132,22 @@ export async function POST(request: Request) {
     imageUrls,
     photoPaths,
   });
+
+  if (isResendConfigured()) {
+    const emailResult = await sendPlanThankYouEmail({
+      fullName: body.fullName,
+      email: body.email,
+      planName: body.planName,
+      planPrice: body.planPrice,
+      selectedPlan: body.selectedPlan,
+    });
+    if (!emailResult.ok) {
+      console.error(
+        "[api/leads] Lead saved but thank-you email failed:",
+        emailResult.message,
+      );
+    }
+  }
 
   return NextResponse.json<LeadSubmitResult>({
     ok: true,
