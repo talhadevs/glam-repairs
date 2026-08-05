@@ -3,9 +3,6 @@ import ProgramIntroHero from "@/components/onboarding/ProgramIntroHero";
 const programFeatures = [
   "Extensive product recommendation",
   "Dozens of facelifting techniques",
-  "Personalized AM + PM skincare routine",
-  "Expert photo review and skin assessment",
-  "Lifestyle and diet tips for your skin",
 ] as const;
 
 function ProgramFeatureItem({ label }: { label: string }) {

@@ -6,24 +6,15 @@ import {
   ONBOARDING_FORM_STEPS,
 } from "@/components/onboarding/onboardingConfig";
 import type { FunnelFlow } from "@/lib/funnel/useFunnelStore";
-import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
-
-/** Plan was chosen on pricing — skip in-funnel plan selection (step 21). */
-export function shouldSkipPlanSelectionStep() {
-  const { planPreselected, selectedPlan } = useFunnelStore.getState();
-  return Boolean(planPreselected && selectedPlan);
-}
 
 /**
- * When the plan is already chosen from pricing, jump over step 21
- * (20 → 22, and 22 back → 20).
+ * When plan is already chosen from pricing, jump over step 21
+ * (20 → 22, and 22 back → 20). Caller must gate on planPreselected.
  */
 export function adjustOnboardingHrefForPlanSkip(
   href: string,
   direction: "next" | "back",
 ): string {
-  if (!shouldSkipPlanSelectionStep()) return href;
-
   const match = href.match(/^\/onboarding\/step\/(\d+)/);
   if (!match) return href;
 
