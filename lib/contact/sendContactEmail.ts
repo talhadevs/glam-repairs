@@ -44,6 +44,7 @@ export async function sendContactEmail(
     from,
     companyNotificationTo: companyTo,
     userThankYouTo: userEmail,
+    fromEnvRaw: process.env.CONTACT_FROM_EMAIL,
   });
 
   const errors: string[] = [];
@@ -90,22 +91,34 @@ export async function sendContactEmail(
   const userResult = await resend.emails.send({
     from,
     to: [userEmail],
-    subject: "Thanks — we received your message | GlamRepairs",
+    subject: "We received your message | GlamRepairs",
     html: `
-      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #2b2b2b;">
-        <h2 style="color: #662d91; margin-bottom: 8px;">Thank you, ${safeName}!</h2>
-        <p>Your message has been received.</p>
-        <p><strong>Bohat jald reply aayega.</strong> Our team will get back to you soon.</p>
-        <p style="margin-top: 20px; color: #4a4a4a;">— GlamRepairs</p>
+      <div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.65; color: #2b2b2b; max-width: 560px;">
+        <h2 style="color: #662d91; margin: 0 0 12px; font-size: 22px;">Hi ${safeName},</h2>
+        <p style="margin: 0 0 12px;">
+          Thank you for reaching out to <strong>GlamRepairs</strong>.
+          We have received your message and our team is reviewing it.
+        </p>
+        <p style="margin: 0 0 12px;">
+          You can expect a reply from us shortly. If your query is urgent,
+          feel free to follow up on WhatsApp as well.
+        </p>
+        <p style="margin: 24px 0 0; color: #4a4a4a;">
+          Warm regards,<br />
+          <strong style="color: #662d91;">The GlamRepairs Team</strong>
+        </p>
       </div>
     `,
     text: [
-      `Thank you, ${payload.firstName}!`,
+      `Hi ${payload.firstName},`,
       "",
-      "Your message has been received.",
-      "Bohat jald reply aayega. Our team will get back to you soon.",
+      "Thank you for reaching out to GlamRepairs.",
+      "We have received your message and our team is reviewing it.",
       "",
-      "— GlamRepairs",
+      "You can expect a reply from us shortly. If your query is urgent, feel free to follow up on WhatsApp as well.",
+      "",
+      "Warm regards,",
+      "The GlamRepairs Team",
     ].join("\n"),
   });
 

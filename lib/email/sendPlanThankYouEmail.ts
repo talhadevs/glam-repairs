@@ -35,38 +35,53 @@ export async function sendPlanThankYouEmail(
   const safeName = escapeHtml(name);
   const safePlan = escapeHtml(planName);
   const safePrice = planPrice ? escapeHtml(planPrice) : null;
+  const planLine = safePrice
+    ? `<strong>${safePlan}</strong> (${safePrice})`
+    : `<strong>${safePlan}</strong>`;
+  const planLineText = planPrice
+    ? `${planName} (${planPrice})`
+    : planName;
 
   const { resend, from } = config;
 
   const { error } = await resend.emails.send({
     from,
     to: [email],
-    subject: `Thank you for choosing ${planName} | GlamRepairs`,
+    subject: `Your ${planName} plan is confirmed | GlamRepairs`,
     html: `
-      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #2b2b2b;">
-        <h2 style="color: #662d91; margin-bottom: 8px;">Thank you, ${safeName}!</h2>
-        <p>You have completed your GlamRepairs skin assessment.</p>
-        <p>
-          <strong>Selected plan:</strong> ${safePlan}
-          ${safePrice ? ` (${safePrice})` : ""}
+      <div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.65; color: #2b2b2b; max-width: 560px;">
+        <h2 style="color: #662d91; margin: 0 0 12px; font-size: 22px;">Hi ${safeName},</h2>
+        <p style="margin: 0 0 12px;">
+          Thank you for completing your skin assessment with <strong>GlamRepairs</strong>.
         </p>
-        <p>
-          Our team will review your details and photos, then guide you on next steps.
-          Bohat jald aap se contact kiya jayega.
+        <p style="margin: 0 0 12px;">
+          Your selected plan: ${planLine}
         </p>
-        <p style="margin-top: 20px; color: #4a4a4a;">— GlamRepairs</p>
+        <p style="margin: 0 0 12px;">
+          Our experts will carefully review your answers and photos, then share
+          personalized guidance for your skin journey.
+        </p>
+        <p style="margin: 0 0 12px;">
+          We will be in touch with you soon with the next steps.
+        </p>
+        <p style="margin: 24px 0 0; color: #4a4a4a;">
+          Warm regards,<br />
+          <strong style="color: #662d91;">The GlamRepairs Team</strong>
+        </p>
       </div>
     `,
     text: [
-      `Thank you, ${name}!`,
+      `Hi ${name},`,
       "",
-      "You've completed your GlamRepairs skin assessment.",
-      `Selected plan: ${planName}${planPrice ? ` (${planPrice})` : ""}`,
+      "Thank you for completing your skin assessment with GlamRepairs.",
       "",
-      "Our team will review your details and photos, then guide you on next steps.",
-      "Bohat jald aap se contact kiya jayega.",
+      `Your selected plan: ${planLineText}`,
       "",
-      "— GlamRepairs",
+      "Our experts will carefully review your answers and photos, then share personalized guidance for your skin journey.",
+      "We will be in touch with you soon with the next steps.",
+      "",
+      "Warm regards,",
+      "The GlamRepairs Team",
     ].join("\n"),
   });
 
