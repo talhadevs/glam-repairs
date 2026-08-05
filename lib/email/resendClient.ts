@@ -41,9 +41,22 @@ export function normalizeEmailAddress(raw: string | undefined): string | null {
   return extracted?.[0] ?? null;
 }
 
+/** Build a From header that shows "GlamRepairs" instead of "hello". */
+export function formatFromAddress(raw: string | undefined): string | null {
+  const normalized = normalizeEmailAddress(raw);
+  if (!normalized) return null;
+
+  const named = normalized.match(/^(.+?)\s*<([^<>\s]+)>$/);
+  if (named) {
+    return `GlamRepairs <${named[2]}>`;
+  }
+
+  return `GlamRepairs <${normalized}>`;
+}
+
 export function getResendConfig() {
   const apiKey = process.env.RESEND_API_KEY?.trim();
-  const from = normalizeEmailAddress(process.env.CONTACT_FROM_EMAIL);
+  const from = formatFromAddress(process.env.CONTACT_FROM_EMAIL);
   const companyTo = normalizeEmailAddress(process.env.CONTACT_TO_EMAIL);
 
   if (!apiKey || !from) {
