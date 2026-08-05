@@ -3,9 +3,9 @@ import ProgramIntroHero from "@/components/onboarding/ProgramIntroHero";
 const programFeatures = [
   "Extensive product recommendation",
   "Dozens of facelifting techniques",
-  "The program include",
-  "The program include",
-  "The program include",
+  "Personalized AM + PM skincare routine",
+  "Expert photo review and skin assessment",
+  "Lifestyle and diet tips for your skin",
 ] as const;
 
 function ProgramFeatureItem({ label }: { label: string }) {
@@ -44,7 +44,7 @@ export default function ProgramIntroContent() {
         </h1>
 
         <p className="mt-5 text-sm font-semibold text-brand-ink sm:mt-6">
-          The program include
+          The program includes
         </p>
 
         <ul className="mt-3 space-y-3 sm:mt-4">

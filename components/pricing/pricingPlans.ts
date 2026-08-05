@@ -1,4 +1,8 @@
+import type { FunnelPlanId } from "@/lib/funnel/plans";
+
 export type PricingPlan = {
+  /** Matches onboarding store plan ids (free | clarity | transform). */
+  planId: FunnelPlanId;
   name: string;
   price: string;
   cta: string;
@@ -13,6 +17,7 @@ export type PricingPlan = {
 
 export const pricingPlans: PricingPlan[] = [
   {
+    planId: "free",
     name: "Skin Starter",
     price: "0.00",
     cta: "TRY IT FREE",
@@ -39,6 +44,7 @@ export const pricingPlans: PricingPlan[] = [
     exclusions: "No photo upload. No expert review",
   },
   {
+    planId: "clarity",
     name: "Skin Clarity",
     price: "1500",
     cta: "GET MY SKIN ASSESSMENT",
@@ -75,6 +81,7 @@ export const pricingPlans: PricingPlan[] = [
     ],
   },
   {
+    planId: "transform",
     name: "Skin Transform",
     price: "3000",
     badge: "Most Complete",

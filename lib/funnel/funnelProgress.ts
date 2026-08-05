@@ -1,8 +1,41 @@
 import {
   BOOKING_LAST_STEP,
 } from "@/components/booking/bookingConfig";
-import { ONBOARDING_FORM_STEPS } from "@/components/onboarding/onboardingConfig";
+import {
+  ONBOARDING_FORM,
+  ONBOARDING_FORM_STEPS,
+} from "@/components/onboarding/onboardingConfig";
 import type { FunnelFlow } from "@/lib/funnel/useFunnelStore";
+import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
+
+/** Plan was chosen on pricing — skip in-funnel plan selection (step 21). */
+export function shouldSkipPlanSelectionStep() {
+  const { planPreselected, selectedPlan } = useFunnelStore.getState();
+  return Boolean(planPreselected && selectedPlan);
+}
+
+/**
+ * When the plan is already chosen from pricing, jump over step 21
+ * (20 → 22, and 22 back → 20).
+ */
+export function adjustOnboardingHrefForPlanSkip(
+  href: string,
+  direction: "next" | "back",
+): string {
+  if (!shouldSkipPlanSelectionStep()) return href;
+
+  const match = href.match(/^\/onboarding\/step\/(\d+)/);
+  if (!match) return href;
+
+  const step = Number(match[1]);
+  if (direction === "next" && step === ONBOARDING_FORM.planSelection) {
+    return `/onboarding/step/${ONBOARDING_FORM.planSelection + 1}`;
+  }
+  if (direction === "back" && step === ONBOARDING_FORM.planSelection) {
+    return `/onboarding/step/${ONBOARDING_FORM.planSelection - 1}`;
+  }
+  return href;
+}
 
 /** Beyond last URL step — unlocks `/booking/report`. */
 export const BOOKING_REPORT_UNLOCK = BOOKING_LAST_STEP + 1;

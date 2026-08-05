@@ -65,19 +65,6 @@ export type WhatsAppOrderDetails = {
 };
 
 /**
- * Pricing page / home pricing CTA — simple subscribe intent on WhatsApp.
- */
-export function buildWhatsAppSubscribeLink(planName: string, price?: string) {
-  const priceLabel =
-    price && price !== "0.00" && price !== "0"
-      ? ` (Rs. ${price})`
-      : "";
-  return getWhatsAppChatLink(
-    `Hi GlamRepairs! I want to subscribe to the ${planName} plan${priceLabel}.`,
-  );
-}
-
-/**
  * Build a wa.me deep link with a prefilled message so the team can identify the
  * lead, open the selfie, and collect payment over WhatsApp.
  */

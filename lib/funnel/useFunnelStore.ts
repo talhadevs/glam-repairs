@@ -15,6 +15,11 @@ type FunnelState = {
   fullName: string;
   /** Plan the user selected (free | clarity | transform), saved on pick. */
   selectedPlan: string | null;
+  /**
+   * True when the plan was chosen on pricing before the funnel.
+   * Skips the in-funnel plan selection step.
+   */
+  planPreselected: boolean;
   /** Public selfie URL after upload (Supabase Storage); used in WhatsApp message. */
   selfieUrl: string | null;
   /**
@@ -41,6 +46,7 @@ type FunnelState = {
   setAnswer: (key: string, value: unknown) => void;
   setContact: (contact: { email?: string; fullName?: string }) => void;
   setSelectedPlan: (plan: string | null) => void;
+  setPlanPreselected: (preselected: boolean) => void;
   setSelfieUrl: (url: string | null) => void;
   unlockFlowStep: (flow: FunnelFlow, step: number) => void;
   setCurrentStepValid: (valid: boolean) => void;
@@ -64,6 +70,7 @@ export const useFunnelStore = create<FunnelState>()(
       email: "",
       fullName: "",
       selectedPlan: null,
+      planPreselected: false,
       selfieUrl: null,
       bookingUnlockedStep: 1,
       onboardingUnlockedStep: 1,
@@ -83,6 +90,7 @@ export const useFunnelStore = create<FunnelState>()(
           fullName: contact.fullName ?? state.fullName,
         })),
       setSelectedPlan: (plan) => set({ selectedPlan: plan }),
+      setPlanPreselected: (preselected) => set({ planPreselected: preselected }),
       setSelfieUrl: (url) => set({ selfieUrl: url }),
       unlockFlowStep: (flow, step) =>
         set((state) => {
@@ -107,6 +115,7 @@ export const useFunnelStore = create<FunnelState>()(
           email: "",
           fullName: "",
           selectedPlan: null,
+          planPreselected: false,
           selfieUrl: null,
           bookingUnlockedStep: 1,
           onboardingUnlockedStep: 1,
@@ -115,7 +124,7 @@ export const useFunnelStore = create<FunnelState>()(
     }),
     {
       name: "glam-funnel",
-      version: 2,
+      version: 3,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         sessionId: state.sessionId,
@@ -123,6 +132,7 @@ export const useFunnelStore = create<FunnelState>()(
         email: state.email,
         fullName: state.fullName,
         selectedPlan: state.selectedPlan,
+        planPreselected: state.planPreselected,
         selfieUrl: state.selfieUrl,
         bookingUnlockedStep: state.bookingUnlockedStep,
         onboardingUnlockedStep: state.onboardingUnlockedStep,
@@ -140,6 +150,7 @@ export const useFunnelStore = create<FunnelState>()(
           ...state,
           bookingUnlockedStep: bookingUnlocked,
           onboardingUnlockedStep: state.onboardingUnlockedStep ?? 1,
+          planPreselected: state.planPreselected ?? false,
         };
       },
     },

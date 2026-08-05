@@ -7,7 +7,10 @@ import {
   getBookingPrevStepNumber,
 } from "@/lib/funnel/bookingFlow";
 import { BOOKING_FORM_STEPS } from "@/components/booking/bookingConfig";
-import { resolveUnlockTarget } from "@/lib/funnel/funnelProgress";
+import {
+  adjustOnboardingHrefForPlanSkip,
+  resolveUnlockTarget,
+} from "@/lib/funnel/funnelProgress";
 
 type OnboardingIntroNavProps = {
   backHref: string;
@@ -40,6 +43,8 @@ export default function OnboardingIntroNav({
 }: OnboardingIntroNavProps) {
   const currentStepValid = useFunnelStore((state) => state.currentStepValid);
   const answers = useFunnelStore((state) => state.answers);
+  const planPreselected = useFunnelStore((state) => state.planPreselected);
+  const selectedPlan = useFunnelStore((state) => state.selectedPlan);
   const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
   const requestStepValidation = useFunnelStore(
     (state) => state.requestStepValidation,
@@ -62,6 +67,9 @@ export default function OnboardingIntroNav({
     } else if (bookingStep === 1) {
       resolvedBackHref = backHref;
     }
+  } else if (flow === "onboarding" && planPreselected && selectedPlan) {
+    resolvedNextHref = adjustOnboardingHrefForPlanSkip(resolvedNextHref, "next");
+    resolvedBackHref = adjustOnboardingHrefForPlanSkip(resolvedBackHref, "back");
   }
 
   const unlockNext = () => {

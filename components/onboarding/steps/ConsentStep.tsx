@@ -290,6 +290,7 @@ export default function ConsentStep({
     });
 
     unlockFlowStep("onboarding", ONBOARDING_COMPLETE_UNLOCK);
+    store.setPlanPreselected(false);
     openWhatsAppWithMessage(message);
     setIsSubmitting(false);
     router.push(nextHref);

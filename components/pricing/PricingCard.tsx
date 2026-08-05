@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BOOKING_START_HREF } from "@/components/booking/bookingConfig";
-import { buildWhatsAppSubscribeLink } from "@/lib/funnel/whatsapp";
+import type { FunnelPlanId } from "@/lib/funnel/plans";
+import { getOnboardingStartHref } from "@/lib/funnel/plans";
 
 type PricingFeature = {
   title: string;
@@ -9,6 +9,7 @@ type PricingFeature = {
 };
 
 type PricingCardProps = {
+  planId: FunnelPlanId;
   name: string;
   price: string;
   cta: string;
@@ -49,6 +50,7 @@ function formatFeatureText(feature: PricingFeature) {
 }
 
 export default function PricingCard({
+  planId,
   name,
   price,
   cta,
@@ -58,10 +60,7 @@ export default function PricingCard({
   badge,
 }: PricingCardProps) {
   const isFeatured = Boolean(badge);
-  const isFreePlan = price === "0.00" || price === "0";
-  const ctaHref = isFreePlan
-    ? BOOKING_START_HREF
-    : buildWhatsAppSubscribeLink(name, price);
+  const ctaHref = getOnboardingStartHref(planId);
   const ctaClassName =
     "subscribe-fill-btn flex w-full cursor-pointer items-center justify-center rounded-full bg-[#A88EC3] py-3.5 font-sans text-sm font-medium uppercase tracking-[0.04em] text-white sm:text-[15px]";
 
@@ -142,20 +141,9 @@ export default function PricingCard({
           </p>
         ) : null}
 
-        {isFreePlan ? (
-          <Link href={ctaHref} className={ctaClassName}>
-            {cta}
-          </Link>
-        ) : (
-          <a
-            href={ctaHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={ctaClassName}
-          >
-            {cta}
-          </a>
-        )}
+        <Link href={ctaHref} className={ctaClassName}>
+          {cta}
+        </Link>
       </div>
     </article>
   );

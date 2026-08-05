@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import OnboardingShell from "@/components/onboarding/OnboardingShell";
 import { ONBOARDING_PROGRESS } from "@/components/onboarding/onboardingConfig";
 import { StepHeader, StepRequiredError } from "@/components/steps";
@@ -168,10 +170,13 @@ export default function PlanSelectionStep({
   backHref = "/onboarding/step/20",
   nextHref = "/onboarding/step/22",
 }: PlanSelectionStepProps) {
+  const router = useRouter();
   const selectedPlan = useFunnelStore(
     (state) => state.selectedPlan,
   ) as PlanId | null;
+  const planPreselected = useFunnelStore((state) => state.planPreselected);
   const setSelectedPlan = useFunnelStore((state) => state.setSelectedPlan);
+  const unlockFlowStep = useFunnelStore((state) => state.unlockFlowStep);
   const clearStepValidationAttempt = useFunnelStore(
     (state) => state.clearStepValidationAttempt,
   );
@@ -179,6 +184,24 @@ export default function PlanSelectionStep({
     selectedPlan === null,
     "Please select a plan.",
   );
+
+  // Pricing already chose a plan — skip this step entirely.
+  useEffect(() => {
+    if (!planPreselected || !selectedPlan) return;
+    const target = resolveUnlockTarget("onboarding", nextHref);
+    if (target !== null) unlockFlowStep("onboarding", target);
+    router.replace(nextHref);
+  }, [
+    planPreselected,
+    selectedPlan,
+    nextHref,
+    router,
+    unlockFlowStep,
+  ]);
+
+  if (planPreselected && selectedPlan) {
+    return null;
+  }
 
   return (
     <OnboardingShell

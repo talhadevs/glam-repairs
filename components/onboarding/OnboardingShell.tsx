@@ -1,8 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, type ReactNode } from "react";
+import { Suspense, useEffect, type ReactNode } from "react";
 import FunnelStepGuard from "@/components/funnel/FunnelStepGuard";
+import ApplyPlanFromQuery from "@/components/onboarding/ApplyPlanFromQuery";
 import OnboardingNav from "@/components/onboarding/OnboardingNav";
 import OnboardingProgress from "@/components/onboarding/OnboardingProgress";
 import { ONBOARDING_TOTAL_STEPS } from "@/components/onboarding/onboardingConfig";
@@ -55,6 +56,9 @@ export default function OnboardingShell({
 
   return (
     <div className="flex min-h-[100dvh] items-center justify-center bg-gradient-to-b from-brand-purple-soft via-white to-brand-lavender/30 px-4 py-10 sm:px-6">
+      <Suspense fallback={null}>
+        <ApplyPlanFromQuery />
+      </Suspense>
       {funnelFlow && typeof guardStep === "number" && guardStep >= 1 ? (
         <FunnelStepGuard flow={funnelFlow} step={guardStep} />
       ) : null}
