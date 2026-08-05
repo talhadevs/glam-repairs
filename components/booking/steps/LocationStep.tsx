@@ -186,7 +186,11 @@ export default function LocationStep() {
       />
 
       <StepBody>
-        <div className="relative">
+        <div
+          className={`relative ${
+            results.length > 0 || searching ? "z-50 mb-48 sm:mb-52" : ""
+          }`}
+        >
           <label htmlFor="location" className="sr-only">
             City, Country
           </label>
@@ -202,7 +206,7 @@ export default function LocationStep() {
           />
 
           {(results.length > 0 || searching) && (
-            <ul className="absolute z-20 mt-1.5 max-h-60 w-full overflow-auto rounded-2xl border border-brand-border-light/70 bg-white py-1 shadow-lg">
+            <ul className="absolute left-0 right-0 top-full z-50 mt-1.5 max-h-60 w-full overflow-auto rounded-2xl border border-brand-border-light/70 bg-white py-1 shadow-lg">
               {searching && results.length === 0 ? (
                 <li className="px-4 py-2.5 text-sm text-brand-gray">Searching...</li>
               ) : (

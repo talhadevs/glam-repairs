@@ -69,12 +69,12 @@ export default function OnboardingShell({
           </div>
         )}
 
-        <div key={pathname} className="onboarding-step-enter">
+        <div key={pathname} className="onboarding-step-enter relative z-20">
           {children}
         </div>
 
         {showFooter && (
-          <div className="mt-8 sm:mt-9">
+          <div className="relative z-0 mt-8 sm:mt-9">
             {footer ??
               (backHref ? (
                 <OnboardingNav
