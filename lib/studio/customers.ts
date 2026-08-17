@@ -9,10 +9,13 @@ import type { StudioCustomer } from "@/lib/studio/customerTypes";
 import { listStudioMembers } from "@/lib/studio/member";
 
 export type { StudioCustomer } from "@/lib/studio/customerTypes";
-export { canSendCustomerReport } from "@/lib/studio/customerTypes";
+export {
+  canSendCustomerReport,
+  isAbandonedFunnel,
+} from "@/lib/studio/customerTypes";
 
 const CUSTOMER_COLUMNS =
-  "id, session_id, full_name, email, selected_plan, plan_name, plan_price, answers, image_urls, photo_paths, photos_expire_at, photos_deleted_at, status, notes, source, payment_status, assigned_to, report_sender_id, created_at, updated_at";
+  "id, session_id, full_name, email, selected_plan, plan_name, plan_price, answers, image_urls, photo_paths, photos_expire_at, photos_deleted_at, status, notes, source, payment_status, assigned_to, report_sender_id, funnel_complete, funnel_step, created_at, updated_at";
 
 function mapCustomer(
   row: {
@@ -34,6 +37,8 @@ function mapCustomer(
     payment_status: PaymentStatus;
     assigned_to: string | null;
     report_sender_id: string | null;
+    funnel_complete: boolean | null | undefined;
+    funnel_step: number | null | undefined;
     created_at: string;
     updated_at: string;
   },
@@ -64,6 +69,8 @@ function mapCustomer(
     reportSenderName: row.report_sender_id
       ? (memberNames.get(row.report_sender_id) ?? "Team member")
       : null,
+    funnelComplete: row.funnel_complete !== false,
+    funnelStep: row.funnel_step ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -83,6 +90,7 @@ export type CustomerListFilters = {
   plan?: string;
   payment?: string;
   assigned?: string;
+  funnel?: string;
 };
 
 function isPaymentStatus(value: string): value is PaymentStatus {
@@ -121,6 +129,13 @@ export async function listStudioCustomers(filters: CustomerListFilters = {}) {
     query = query.is("assigned_to", null);
   } else if (assigned) {
     query = query.eq("assigned_to", assigned);
+  }
+
+  const funnel = filters.funnel?.trim().toLowerCase();
+  if (funnel === "abandoned") {
+    query = query.eq("source", "funnel").or(
+      "funnel_complete.eq.false,selected_plan.is.null",
+    );
   }
 
   const [{ data, error }, memberNames] = await Promise.all([

@@ -24,7 +24,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-full bg-brand-primary px-5 py-2.5 text-sm text-white disabled:opacity-60"
+      className="rounded-xl bg-brand-primary px-5 py-2.5 text-sm text-white disabled:opacity-60"
     >
       {pending ? "Saving…" : "Update password"}
     </button>

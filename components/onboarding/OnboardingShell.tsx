@@ -8,6 +8,7 @@ import OnboardingNav from "@/components/onboarding/OnboardingNav";
 import OnboardingProgress from "@/components/onboarding/OnboardingProgress";
 import { ONBOARDING_TOTAL_STEPS } from "@/components/onboarding/onboardingConfig";
 import { useFunnelStore } from "@/lib/funnel/useFunnelStore";
+import { useFunnelProgressSave } from "@/lib/funnel/useFunnelProgressSave";
 
 type OnboardingShellProps = {
   children: ReactNode;
@@ -37,6 +38,7 @@ export default function OnboardingShell({
 }: OnboardingShellProps) {
   const pathname = usePathname();
   const ensureSessionId = useFunnelStore((state) => state.ensureSessionId);
+  useFunnelProgressSave();
   const showProgressBar = showProgress && typeof currentStep === "number";
   const showFooter = Boolean(
     footer || (typeof currentStep === "number" && backHref),

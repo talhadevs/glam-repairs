@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
 export const STUDIO_NAV_LINKS = [
   { href: "/studio", label: "Home", exact: true },
   { href: "/studio/customers", label: "Customers" },
+  { href: "/studio/broadcast", label: "Broadcast" },
   { href: "/studio/chat", label: "Chat" },
   { href: "/studio/team", label: "Team" },
 ] as const;

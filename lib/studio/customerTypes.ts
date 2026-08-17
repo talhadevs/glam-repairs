@@ -25,6 +25,8 @@ export type StudioCustomer = {
   assignedToName: string | null;
   reportSenderId: string | null;
   reportSenderName: string | null;
+  funnelComplete: boolean;
+  funnelStep: number | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -33,6 +35,15 @@ export function photosAreExpired(
   customer: Pick<StudioCustomer, "photosDeletedAt">,
 ) {
   return Boolean(customer.photosDeletedAt);
+}
+
+export function isAbandonedFunnel(
+  customer: Pick<StudioCustomer, "source" | "funnelComplete" | "selectedPlan">,
+) {
+  return (
+    customer.source === "funnel" &&
+    (!customer.funnelComplete || !customer.selectedPlan)
+  );
 }
 
 export function canSendCustomerReport(

@@ -12,7 +12,9 @@ import { PLAN_OPTIONS, REVIEW_DECISIONS } from "@/lib/studio/constants";
 import {
   canSendCustomerReport,
   getStudioCustomer,
+  isAbandonedFunnel,
   isCustomerStatus,
+  listStudioCustomers,
 } from "@/lib/studio/customers";
 import {
   bootstrapOwnerIfNeeded,
@@ -564,6 +566,49 @@ export async function assignCustomerAction(formData: FormData) {
   redirect(`/studio/customers/${id}?assigned=1`);
 }
 
+export async function assignCustomersBulkAction(formData: FormData) {
+  const { member } = await requireStudioMember();
+  if (!member || member.role !== "owner") {
+    redirect("/studio/customers?error=forbidden");
+  }
+
+  const ids = formData
+    .getAll("ids")
+    .filter((value): value is string => typeof value === "string" && value.length > 0);
+  const assignedTo = asString(formData, "assignedTo");
+
+  if (ids.length === 0) {
+    redirect("/studio/customers");
+  }
+
+  let nextAssignedTo: string | null = null;
+  if (assignedTo) {
+    const members = await listStudioMembers();
+    const exists = members.some((item) => item.userId === assignedTo);
+    if (!exists) {
+      redirect("/studio/customers?error=assign");
+    }
+    nextAssignedTo = assignedTo;
+  }
+
+  const supabase = await createServerSupabaseClient();
+  const { error } = await supabase
+    .from("leads")
+    .update({
+      assigned_to: nextAssignedTo,
+      updated_at: new Date().toISOString(),
+    })
+    .in("id", ids);
+
+  if (error) {
+    console.error("[assignCustomersBulkAction]", error.message);
+    redirect("/studio/customers?error=assign");
+  }
+
+  revalidatePath("/studio/customers");
+  redirect("/studio/customers?bulk=1");
+}
+
 export async function sendCustomerReportAction(formData: FormData) {
   const { user, member } = await requireStudioMember();
   if (!user || !member) {
@@ -767,4 +812,76 @@ export async function allowReportSenderAction(formData: FormData) {
 
   revalidatePath(`/studio/customers/${id}`);
   redirect(`/studio/customers/${id}?sender=1`);
+}
+
+export async function sendBroadcastAction(formData: FormData) {
+  const { user, member } = await requireStudioMember();
+  if (!user || !member) {
+    redirect("/studio/login");
+  }
+
+  const audiences = formData
+    .getAll("audience")
+    .filter((value): value is string => typeof value === "string");
+  const subject = asString(formData, "subject");
+  const body = asString(formData, "body");
+
+  if (audiences.length === 0 || !subject || !body) {
+    redirect(
+      `/studio/broadcast?error=missing&message=${encodeURIComponent("Pick an audience and write the email.")}`,
+    );
+  }
+
+  const customers = await listStudioCustomers();
+  const targets = customers.filter((customer) => {
+    const abandoned = isAbandonedFunnel(customer);
+    return audiences.some((audience) => {
+      if (audience === "paid") return customer.paymentStatus === "verified";
+      if (audience === "pending") {
+        return customer.paymentStatus === "pending" && !abandoned;
+      }
+      if (audience === "abandoned") return abandoned;
+      return false;
+    });
+  });
+
+  const withEmail = targets.filter((customer) => customer.email?.includes("@"));
+  if (withEmail.length === 0) {
+    redirect(
+      `/studio/broadcast?error=empty&message=${encodeURIComponent("No matching customers have an email address.")}`,
+    );
+  }
+
+  const supabase = await createServerSupabaseClient();
+  let sent = 0;
+  let failed = 0;
+
+  for (const customer of withEmail.slice(0, 80)) {
+    const result = await sendStudioCustomerEmail({
+      toEmail: customer.email ?? "",
+      customerName: customer.fullName,
+      subject,
+      body,
+    });
+
+    if (!result.ok) {
+      failed += 1;
+      continue;
+    }
+
+    sent += 1;
+    await supabase.from("studio_emails").insert({
+      lead_id: customer.id,
+      sent_by: user.id,
+      to_email: customer.email ?? "",
+      subject,
+      body,
+      resend_id: result.resendId,
+    });
+  }
+
+  revalidatePath("/studio/broadcast");
+  redirect(
+    `/studio/broadcast?sent=${sent}${failed ? `&failed=${failed}` : ""}`,
+  );
 }

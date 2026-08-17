@@ -282,7 +282,7 @@ export default function ChatPane({
           <button
             type="submit"
             disabled={sending || !body.trim()}
-            className="rounded-full bg-brand-primary px-4 py-2 text-sm text-white disabled:opacity-60"
+            className="rounded-xl bg-brand-primary px-4 py-2 text-sm text-white disabled:opacity-60"
           >
             Send
           </button>

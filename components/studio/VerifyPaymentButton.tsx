@@ -17,7 +17,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-full bg-brand-primary px-5 py-2.5 text-sm text-white disabled:opacity-60"
+      className="w-full rounded-xl bg-brand-primary px-5 py-2.5 text-sm text-white disabled:opacity-60"
     >
       {pending ? "Saving…" : "Verify payment"}
     </button>

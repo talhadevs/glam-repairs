@@ -19,7 +19,7 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
     <button
       type="submit"
       disabled={disabled || pending}
-      className="rounded-full bg-brand-primary px-5 py-2.5 text-sm text-white disabled:opacity-60"
+      className="rounded-xl bg-brand-primary px-5 py-2.5 text-sm text-white disabled:opacity-60"
     >
       {pending ? "Sending…" : "Send email"}
     </button>

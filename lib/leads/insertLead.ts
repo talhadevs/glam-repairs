@@ -13,15 +13,120 @@ export type InsertLeadResult = {
   photosExpireAt: string | null;
 };
 
+export type FunnelProgressInput = {
+  sessionId: string;
+  fullName?: string | null;
+  email?: string | null;
+  selectedPlan?: string | null;
+  planName?: string | null;
+  planPrice?: string | null;
+  answers?: Record<string, unknown>;
+  funnelStep?: number | null;
+};
+
+function restConfig() {
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!base || !key) return null;
+  return { base, key };
+}
+
+function restHeaders(key: string, prefer?: string) {
+  return {
+    Authorization: `Bearer ${key}`,
+    apikey: key,
+    "Content-Type": "application/json",
+    ...(prefer ? { Prefer: prefer } : {}),
+  };
+}
+
+async function findLeadBySession(sessionId: string) {
+  const config = restConfig();
+  if (!config) return null;
+
+  const response = await fetch(
+    `${config.base}/rest/v1/leads?session_id=eq.${encodeURIComponent(sessionId)}&select=id,photos_expire_at,funnel_complete&limit=1`,
+    { headers: restHeaders(config.key) },
+  );
+
+  if (!response.ok) return null;
+  const rows = (await response.json()) as Array<{
+    id: string;
+    photos_expire_at: string | null;
+    funnel_complete?: boolean;
+  }>;
+  return rows[0] ?? null;
+}
+
+export async function saveFunnelProgress(input: FunnelProgressInput) {
+  const config = restConfig();
+  if (!config) return null;
+
+  const existing = await findLeadBySession(input.sessionId);
+  if (existing?.funnel_complete) {
+    return existing.id;
+  }
+
+  const row = {
+    session_id: input.sessionId,
+    full_name: input.fullName?.trim() || null,
+    email: input.email?.trim() || null,
+    selected_plan: input.selectedPlan ?? null,
+    plan_name: input.planName ?? null,
+    plan_price: input.planPrice ?? null,
+    answers: sanitizeLeadAnswers(input.answers),
+    status: "new",
+    source: "funnel",
+    payment_status: "pending",
+    funnel_complete: false,
+    funnel_step: input.funnelStep ?? null,
+    updated_at: new Date().toISOString(),
+  };
+
+  if (existing) {
+    const response = await fetch(
+      `${config.base}/rest/v1/leads?id=eq.${existing.id}`,
+      {
+        method: "PATCH",
+        headers: restHeaders(config.key),
+        body: JSON.stringify(row),
+      },
+    );
+    if (!response.ok) {
+      console.error("[saveFunnelProgress] update", response.status);
+      return null;
+    }
+    return existing.id;
+  }
+
+  const response = await fetch(`${config.base}/rest/v1/leads?select=id`, {
+    method: "POST",
+    headers: restHeaders(config.key, "return=representation"),
+    body: JSON.stringify({
+      ...row,
+      image_urls: [],
+      photo_paths: [],
+    }),
+  });
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    console.error("[saveFunnelProgress] insert", response.status, detail);
+    return null;
+  }
+
+  const rows = (await response.json()) as Array<{ id: string }>;
+  return rows[0]?.id ?? null;
+}
+
 /**
- * Insert a durable lead row. Photo files expire later; this row stays.
+ * Insert or update a durable lead row. Photo files expire later; this row stays.
  */
 export async function insertLead(
   input: InsertLeadInput,
 ): Promise<InsertLeadResult | null> {
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!base || !key) return null;
+  const config = restConfig();
+  if (!config) return null;
 
   const photosExpireAt =
     input.photoPaths.length > 0
@@ -41,20 +146,44 @@ export async function insertLead(
     photos_expire_at: photosExpireAt,
     photos_deleted_at: null,
     status: "new",
-    source: "funnel",
-    payment_status: "pending",
+    source: "funnel" as const,
+    payment_status: "pending" as const,
+    funnel_complete: true,
+    updated_at: new Date().toISOString(),
   };
 
-  const response = await fetch(`${base}/rest/v1/leads?select=id,photos_expire_at`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      apikey: key,
-      "Content-Type": "application/json",
-      Prefer: "return=representation",
+  const existing = await findLeadBySession(input.sessionId);
+  if (existing) {
+    const response = await fetch(
+      `${config.base}/rest/v1/leads?id=eq.${existing.id}&select=id,photos_expire_at`,
+      {
+        method: "PATCH",
+        headers: restHeaders(config.key, "return=representation"),
+        body: JSON.stringify(row),
+      },
+    );
+    if (!response.ok) {
+      const detail = await response.text().catch(() => "");
+      console.error("[insertLead] update", response.status, detail);
+      return null;
+    }
+    const rows = (await response.json()) as Array<{
+      id: string;
+      photos_expire_at: string | null;
+    }>;
+    const lead = rows[0];
+    if (!lead) return { leadId: existing.id, photosExpireAt };
+    return { leadId: lead.id, photosExpireAt: lead.photos_expire_at };
+  }
+
+  const response = await fetch(
+    `${config.base}/rest/v1/leads?select=id,photos_expire_at`,
+    {
+      method: "POST",
+      headers: restHeaders(config.key, "return=representation"),
+      body: JSON.stringify(row),
     },
-    body: JSON.stringify(row),
-  });
+  );
 
   if (!response.ok) {
     const detail = await response.text().catch(() => "");

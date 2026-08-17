@@ -151,6 +151,8 @@ export type Database = {
           notes: string | null;
           source: CustomerSource;
           payment_status: PaymentStatus;
+          funnel_complete: boolean;
+          funnel_step: number | null;
           assigned_to: string | null;
           report_sender_id: string | null;
           created_at: string;
@@ -173,6 +175,8 @@ export type Database = {
           notes?: string | null;
           source?: CustomerSource;
           payment_status?: PaymentStatus;
+          funnel_complete?: boolean;
+          funnel_step?: number | null;
           assigned_to?: string | null;
           report_sender_id?: string | null;
           created_at?: string;
@@ -195,6 +199,8 @@ export type Database = {
           notes?: string | null;
           source?: CustomerSource;
           payment_status?: PaymentStatus;
+          funnel_complete?: boolean;
+          funnel_step?: number | null;
           assigned_to?: string | null;
           report_sender_id?: string | null;
           created_at?: string;

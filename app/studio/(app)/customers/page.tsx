@@ -1,7 +1,7 @@
 import Link from "next/link";
 
+import CustomerList from "@/components/studio/CustomerList";
 import CustomerSearch from "@/components/studio/CustomerSearch";
-import CustomerTable from "@/components/studio/CustomerTable";
 import { listStudioCustomers } from "@/lib/studio/customers";
 import { listStudioMembers, requireStudioMember } from "@/lib/studio/member";
 
@@ -11,7 +11,10 @@ type CustomersPageProps = {
     plan?: string;
     payment?: string;
     assigned?: string;
+    funnel?: string;
     added?: string;
+    bulk?: string;
+    error?: string;
   }>;
 };
 
@@ -27,6 +30,7 @@ export default async function StudioCustomersPage({
       plan: params.plan,
       payment: params.payment,
       assigned: isOwner ? params.assigned : undefined,
+      funnel: params.funnel,
     }),
     isOwner ? listStudioMembers() : Promise.resolve([]),
   ]);
@@ -38,7 +42,7 @@ export default async function StudioCustomersPage({
           <h1 className="font-serif text-3xl text-brand-primary">Customers</h1>
           <p className="mt-1 text-sm text-brand-gray">
             {isOwner
-              ? "Assign funnel leads and customers to a team member."
+              ? "Select customers and assign them to a team member."
               : "Customers assigned to you by the owner."}
           </p>
         </div>
@@ -54,20 +58,33 @@ export default async function StudioCustomersPage({
           Customer saved. The owner will assign it to a team member.
         </p>
       ) : null}
+      {params.bulk ? (
+        <p className="mt-6 rounded-xl bg-brand-success/15 px-4 py-3 text-sm text-brand-success-strong">
+          Assignment saved for the selected customers.
+        </p>
+      ) : null}
+      {params.error === "assign" ? (
+        <p className="mt-6 rounded-xl bg-brand-error/10 px-4 py-3 text-sm text-brand-error-strong">
+          Could not assign the selected customers.
+        </p>
+      ) : null}
       <div className="mt-6">
         <CustomerSearch
           initialQuery={params.q}
           initialPlan={params.plan}
           initialPayment={params.payment}
           initialAssigned={params.assigned}
+          initialFunnel={params.funnel}
           members={members}
           showAssignmentFilter={isOwner}
         />
       </div>
       <div className="mt-6">
-        <CustomerTable
+        <CustomerList
           customers={customers}
           showAssignment={isOwner}
+          canAssign={isOwner}
+          members={members}
           emptyMessage={
             isOwner
               ? "No customers match this search yet."

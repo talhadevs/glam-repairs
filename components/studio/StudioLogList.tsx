@@ -38,7 +38,7 @@ export default function StudioLogList({ logs, showAllHref }: StudioLogListProps)
         <div className="mt-4 flex justify-end">
           <Link
             href={showAllHref}
-            className="rounded-full bg-brand-primary px-5 py-2.5 text-sm text-white"
+            className="rounded-xl bg-brand-primary px-5 py-2.5 text-sm text-white"
           >
             Show all
           </Link>

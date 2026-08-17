@@ -18,6 +18,7 @@ type CustomerSearchProps = {
   initialPlan?: string;
   initialPayment?: string;
   initialAssigned?: string;
+  initialFunnel?: string;
   members?: TeamOption[];
   showAssignmentFilter?: boolean;
 };
@@ -29,6 +30,7 @@ export default function CustomerSearch({
   initialPlan = "",
   initialPayment = "",
   initialAssigned = "",
+  initialFunnel = "",
   members = [],
   showAssignmentFilter = false,
 }: CustomerSearchProps) {
@@ -37,18 +39,21 @@ export default function CustomerSearch({
   const [plan, setPlan] = useState(initialPlan);
   const [payment, setPayment] = useState(initialPayment);
   const [assigned, setAssigned] = useState(initialAssigned);
+  const [funnel, setFunnel] = useState(initialFunnel);
 
   function applyFilters(
     nextQuery: string,
     nextPlan: string,
     nextPayment: string,
     nextAssigned: string,
+    nextFunnel: string,
   ) {
     const params = new URLSearchParams();
     if (nextQuery.trim()) params.set("q", nextQuery.trim());
     if (nextPlan) params.set("plan", nextPlan);
     if (nextPayment) params.set("payment", nextPayment);
     if (nextAssigned) params.set("assigned", nextAssigned);
+    if (nextFunnel) params.set("funnel", nextFunnel);
     router.push(
       params.size > 0
         ? `/studio/customers?${params.toString()}`
@@ -63,7 +68,7 @@ export default function CustomerSearch({
       className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center"
       onSubmit={(event) => {
         event.preventDefault();
-        applyFilters(query, plan, payment, assigned);
+        applyFilters(query, plan, payment, assigned, funnel);
       }}
     >
       <TextInput
@@ -81,7 +86,7 @@ export default function CustomerSearch({
         onChange={(event) => {
           const nextPlan = event.target.value;
           setPlan(nextPlan);
-          applyFilters(query, nextPlan, payment, assigned);
+          applyFilters(query, nextPlan, payment, assigned, funnel);
         }}
       >
         <option value="">All plans</option>
@@ -99,7 +104,7 @@ export default function CustomerSearch({
         onChange={(event) => {
           const nextPayment = event.target.value;
           setPayment(nextPayment);
-          applyFilters(query, plan, nextPayment, assigned);
+          applyFilters(query, plan, nextPayment, assigned, funnel);
         }}
       >
         <option value="">All payments</option>
@@ -115,7 +120,7 @@ export default function CustomerSearch({
           onChange={(event) => {
             const nextAssigned = event.target.value;
             setAssigned(nextAssigned);
-            applyFilters(query, plan, payment, nextAssigned);
+            applyFilters(query, plan, payment, nextAssigned, funnel);
           }}
         >
           <option value="">All assignments</option>
@@ -127,9 +132,23 @@ export default function CustomerSearch({
           ))}
         </select>
       ) : null}
+      <select
+        name="funnel"
+        value={funnel}
+        aria-label="Filter by funnel"
+        className={selectClassName}
+        onChange={(event) => {
+          const nextFunnel = event.target.value;
+          setFunnel(nextFunnel);
+          applyFilters(query, plan, payment, assigned, nextFunnel);
+        }}
+      >
+        <option value="">All funnels</option>
+        <option value="abandoned">Left funnel</option>
+      </select>
       <button
         type="submit"
-        className="rounded-full bg-brand-primary px-4 py-2 text-sm text-white"
+        className="rounded-xl bg-brand-primary px-4 py-2 text-sm text-white"
       >
         Filter
       </button>
