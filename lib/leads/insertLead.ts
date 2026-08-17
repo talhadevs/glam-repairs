@@ -40,6 +40,9 @@ export async function insertLead(
     photo_paths: input.photoPaths,
     photos_expire_at: photosExpireAt,
     photos_deleted_at: null,
+    status: "new",
+    source: "funnel",
+    payment_status: "pending",
   };
 
   const response = await fetch(`${base}/rest/v1/leads?select=id,photos_expire_at`, {

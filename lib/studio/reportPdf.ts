@@ -1,0 +1,334 @@
+import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from "pdf-lib";
+
+import type { SkinReportPdfInput } from "@/lib/studio/report";
+
+const PAGE_WIDTH = 595.28;
+const PAGE_HEIGHT = 841.89;
+const MARGIN = 48;
+const PURPLE = rgb(0.4, 0.176, 0.569);
+const INK = rgb(0.169, 0.169, 0.169);
+const GRAY = rgb(0.29, 0.29, 0.29);
+const LINE = rgb(0.839, 0.804, 0.918);
+const SOFT = rgb(0.965, 0.929, 1);
+
+type DrawState = {
+  doc: PDFDocument;
+  page: PDFPage;
+  font: PDFFont;
+  bold: PDFFont;
+  y: number;
+};
+
+function toWinAnsi(value: string) {
+  return value
+    .replaceAll("\u2013", "-")
+    .replaceAll("\u2014", "-")
+    .replaceAll("\u2018", "'")
+    .replaceAll("\u2019", "'")
+    .replaceAll("\u201C", '"')
+    .replaceAll("\u201D", '"')
+    .replaceAll("\u2022", "-")
+    .replaceAll("\u00B7", "-")
+    .replaceAll("\u2026", "...")
+    .replace(/[^\t\n\r\x20-\x7E\xA0-\xFF]/g, "");
+}
+
+function drawSafeText(
+  page: PDFPage,
+  text: string,
+  options: {
+    x: number;
+    y: number;
+    size: number;
+    font: PDFFont;
+    color: ReturnType<typeof rgb>;
+  },
+) {
+  const safe = toWinAnsi(text);
+  if (!safe) return;
+  page.drawText(safe, options);
+}
+
+function wrapText(text: string, font: PDFFont, size: number, maxWidth: number) {
+  const paragraphs = toWinAnsi(text).replaceAll("\r\n", "\n").split("\n");
+  const lines: string[] = [];
+
+  for (const paragraph of paragraphs) {
+    if (!paragraph.trim()) {
+      lines.push("");
+      continue;
+    }
+    const words = paragraph.split(/\s+/);
+    let current = "";
+    for (const word of words) {
+      if (font.widthOfTextAtSize(word, size) > maxWidth) {
+        if (current) {
+          lines.push(current);
+          current = "";
+        }
+        let chunk = "";
+        for (const char of word) {
+          const next = chunk + char;
+          if (chunk && font.widthOfTextAtSize(next, size) > maxWidth) {
+            lines.push(chunk);
+            chunk = char;
+          } else {
+            chunk = next;
+          }
+        }
+        current = chunk;
+        continue;
+      }
+      const next = current ? `${current} ${word}` : word;
+      if (font.widthOfTextAtSize(next, size) <= maxWidth) {
+        current = next;
+      } else {
+        if (current) lines.push(current);
+        current = word;
+      }
+    }
+    if (current) lines.push(current);
+  }
+
+  return lines;
+}
+
+function ensureSpace(state: DrawState, needed: number) {
+  if (state.y - needed >= MARGIN) return;
+  state.page = state.doc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+  state.y = PAGE_HEIGHT - MARGIN;
+}
+
+function drawHeader(state: DrawState) {
+  const { page } = state;
+  page.drawRectangle({
+    x: 0,
+    y: PAGE_HEIGHT - 72,
+    width: PAGE_WIDTH,
+    height: 72,
+    color: PURPLE,
+  });
+  drawSafeText(page, "GLAM REPAIRS", {
+    x: MARGIN,
+    y: PAGE_HEIGHT - 34,
+    size: 11,
+    font: state.bold,
+    color: rgb(1, 1, 1),
+  });
+  drawSafeText(page, "Skin Guidance Report", {
+    x: MARGIN,
+    y: PAGE_HEIGHT - 56,
+    size: 18,
+    font: state.bold,
+    color: rgb(1, 1, 1),
+  });
+  state.y = PAGE_HEIGHT - 96;
+}
+
+function fieldBlockHeight(value: string, font: PDFFont, width: number) {
+  const lines = Math.max(wrapText(value, font, 11, width).length, 1);
+  return 10 + 4 + lines * 14;
+}
+
+function drawField(
+  state: DrawState,
+  label: string,
+  value: string,
+  x: number,
+  y: number,
+  width: number,
+) {
+  drawSafeText(state.page, label.toUpperCase(), {
+    x,
+    y,
+    size: 8,
+    font: state.bold,
+    color: GRAY,
+  });
+  const lines = wrapText(value, state.font, 11, width);
+  let lineY = y - 14;
+  for (const line of lines) {
+    if (line) {
+      drawSafeText(state.page, line, {
+        x,
+        y: lineY,
+        size: 11,
+        font: state.font,
+        color: INK,
+      });
+    }
+    lineY -= 14;
+  }
+}
+
+function drawPatientCard(state: DrawState, patient: SkinReportPdfInput["patient"]) {
+  const paddingX = 16;
+  const paddingTop = 18;
+  const paddingBottom = 16;
+  const colGap = 20;
+  const innerWidth = PAGE_WIDTH - MARGIN * 2 - paddingX * 2;
+  const colWidth = (innerWidth - colGap) / 2;
+  const leftX = MARGIN + paddingX;
+  const rightX = leftX + colWidth + colGap;
+
+  const rows: Array<[string, string, string, string]> = [
+    ["Client name", patient.clientName, "Gender", patient.gender],
+    ["Concern", patient.concern, "Age", patient.age],
+    ["Plan", patient.plan, "Location", patient.location],
+  ];
+
+  const rowHeights = rows.map(([, leftValue, , rightValue]) =>
+    Math.max(
+      fieldBlockHeight(leftValue, state.font, colWidth),
+      fieldBlockHeight(rightValue, state.font, colWidth),
+    ),
+  );
+  const contentHeight = rowHeights.reduce((sum, height) => sum + height, 0) + 12;
+  const boxHeight = paddingTop + contentHeight + paddingBottom;
+  const boxBottom = state.y - boxHeight;
+
+  state.page.drawRectangle({
+    x: MARGIN - 4,
+    y: boxBottom,
+    width: PAGE_WIDTH - MARGIN * 2 + 8,
+    height: boxHeight,
+    color: SOFT,
+  });
+
+  let rowY = state.y - paddingTop;
+  for (const [index, [leftLabel, leftValue, rightLabel, rightValue]] of rows.entries()) {
+    drawField(state, leftLabel, leftValue, leftX, rowY, colWidth);
+    drawField(state, rightLabel, rightValue, rightX, rowY, colWidth);
+    rowY -= rowHeights[index] + 6;
+  }
+
+  state.y = boxBottom - 18;
+}
+
+function drawSectionTitle(state: DrawState, title: string) {
+  ensureSpace(state, 36);
+  drawSafeText(state.page, title, {
+    x: MARGIN,
+    y: state.y,
+    size: 13,
+    font: state.bold,
+    color: PURPLE,
+  });
+  state.y -= 8;
+  state.page.drawLine({
+    start: { x: MARGIN, y: state.y },
+    end: { x: PAGE_WIDTH - MARGIN, y: state.y },
+    thickness: 1,
+    color: LINE,
+  });
+  state.y -= 16;
+}
+
+function drawParagraph(state: DrawState, text: string) {
+  const maxWidth = PAGE_WIDTH - MARGIN * 2;
+  const lines = wrapText(text, state.font, 11, maxWidth);
+  for (const line of lines) {
+    ensureSpace(state, 16);
+    if (line) {
+      drawSafeText(state.page, line, {
+        x: MARGIN,
+        y: state.y,
+        size: 11,
+        font: state.font,
+        color: INK,
+      });
+    }
+    state.y -= 16;
+  }
+  state.y -= 8;
+}
+
+function drawBulletList(state: DrawState, items: string[]) {
+  const maxWidth = PAGE_WIDTH - MARGIN * 2 - 14;
+  for (const item of items) {
+    const lines = wrapText(item, state.font, 11, maxWidth);
+    ensureSpace(state, 16 * Math.max(lines.length, 1) + 4);
+    drawSafeText(state.page, "-", {
+      x: MARGIN,
+      y: state.y,
+      size: 11,
+      font: state.bold,
+      color: PURPLE,
+    });
+    for (const [index, line] of lines.entries()) {
+      if (index > 0) {
+        ensureSpace(state, 16);
+        state.y -= 16;
+      }
+      if (line) {
+        drawSafeText(state.page, line, {
+          x: MARGIN + 14,
+          y: state.y,
+          size: 11,
+          font: state.font,
+          color: INK,
+        });
+      }
+    }
+    state.y -= 18;
+  }
+  state.y -= 4;
+}
+
+export async function buildSkinReportPdf(input: SkinReportPdfInput) {
+  const doc = await PDFDocument.create();
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  const bold = await doc.embedFont(StandardFonts.HelveticaBold);
+  const page = doc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
+  const state: DrawState = {
+    doc,
+    page,
+    font,
+    bold,
+    y: PAGE_HEIGHT - MARGIN,
+  };
+
+  drawHeader(state);
+  drawPatientCard(state, input.patient);
+
+  drawSafeText(state.page, `Report date: ${input.patient.reportDate}`, {
+    x: MARGIN,
+    y: state.y,
+    size: 9,
+    font,
+    color: GRAY,
+  });
+  state.y -= 28;
+
+  drawSectionTitle(state, "What we noticed");
+  drawParagraph(state, input.noticed);
+
+  drawSectionTitle(state, "Morning routine");
+  drawParagraph(state, input.morningRoutine);
+
+  drawSectionTitle(state, "Night routine");
+  drawParagraph(state, input.nightRoutine);
+
+  drawSectionTitle(state, "What to avoid");
+  const avoid = input.avoidItems
+    .split("\n")
+    .map((item) => item.replace(/^[-•]\s*/, "").trim())
+    .filter(Boolean);
+  drawBulletList(state, avoid);
+
+  if (input.extraNotes.trim()) {
+    drawSectionTitle(state, "Extra notes");
+    drawParagraph(state, input.extraNotes);
+  }
+
+  ensureSpace(state, 40);
+  drawSafeText(state.page, `Prepared by ${input.authorName} | Glam Repairs`, {
+    x: MARGIN,
+    y: MARGIN - 8,
+    size: 8,
+    font,
+    color: GRAY,
+  });
+
+  return Buffer.from(await doc.save());
+}
