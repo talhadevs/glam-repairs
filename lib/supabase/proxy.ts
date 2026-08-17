@@ -44,7 +44,10 @@ export async function updateStudioSession(request: NextRequest) {
   if (!user && pathname.startsWith("/studio") && !isPublicStudioPath) {
     const url = request.nextUrl.clone();
     url.pathname = "/studio/login";
-    url.searchParams.set("next", pathname);
+    url.search = "";
+    if (pathname !== "/studio") {
+      url.searchParams.set("next", pathname);
+    }
     return copySessionCookies(NextResponse.redirect(url), supabaseResponse);
   }
 
