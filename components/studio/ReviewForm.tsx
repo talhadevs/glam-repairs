@@ -12,10 +12,9 @@ import {
 
 type ReviewFormProps = {
   leadId: string;
-  isOwner?: boolean;
 };
 
-function SubmitButton({ isOwner }: { isOwner?: boolean }) {
+function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <button
@@ -23,23 +22,17 @@ function SubmitButton({ isOwner }: { isOwner?: boolean }) {
       disabled={pending}
       className="rounded-xl bg-brand-primary px-5 py-2.5 text-sm text-white disabled:opacity-60"
     >
-      {pending
-        ? "Saving review…"
-        : isOwner
-          ? "Save review"
-          : "Send review to owner"}
+      {pending ? "Saving review…" : "Send review to owner"}
     </button>
   );
 }
 
-export default function ReviewForm({ leadId, isOwner }: ReviewFormProps) {
+export default function ReviewForm({ leadId }: ReviewFormProps) {
   return (
     <form action={submitCustomerReviewAction} className="space-y-4">
       <input type="hidden" name="leadId" value={leadId} />
       <p className="text-sm text-brand-gray">
-        {isOwner
-          ? "Add your own photo decision, or use the team reviews on the right when writing the PDF."
-          : "Review the customer photos, then send your decision to the owner."}
+        Review the customer photos, then send your decision to the owner.
       </p>
       <FormField id="decision" label="Decision" required>
         <select
@@ -108,7 +101,7 @@ export default function ReviewForm({ leadId, isOwner }: ReviewFormProps) {
           className={formInputClassName}
         />
       </FormField>
-      <SubmitButton isOwner={isOwner} />
+      <SubmitButton />
     </form>
   );
 }

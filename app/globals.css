@@ -85,6 +85,12 @@ html {
   scrollbar-gutter: stable;
 }
 
+html:has([data-studio-shell]),
+html:has([data-studio-shell]) body {
+  overflow: hidden;
+  scrollbar-gutter: auto;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

@@ -1,4 +1,5 @@
 import ChatPane from "@/components/studio/ChatPane";
+import MarkChatNotificationsRead from "@/components/studio/MarkChatNotificationsRead";
 import { listStudioMessages } from "@/lib/studio/chat";
 import { listStudioMembers, requireStudioMember } from "@/lib/studio/member";
 
@@ -18,6 +19,7 @@ export default async function StudioChatPage() {
         Shared room for the Studio team. Type @ to mention a teammate.
       </p>
       <div className="mt-6">
+        <MarkChatNotificationsRead />
         <ChatPane
           initialMessages={messages}
           member={member}

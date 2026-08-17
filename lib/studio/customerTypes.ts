@@ -46,9 +46,12 @@ export function isAbandonedFunnel(
   );
 }
 
-export function canSendCustomerReport(
-  member: { userId: string; role: string },
-  customer: Pick<StudioCustomer, "reportSenderId">,
-) {
-  return member.role === "owner" || customer.reportSenderId === member.userId;
+export function canSendCustomerReport(member: { canSendReport: boolean }) {
+  return member.canSendReport;
+}
+
+export function canVerifyCustomerPayment(member: {
+  canVerifyPayment: boolean;
+}) {
+  return member.canVerifyPayment;
 }

@@ -8,6 +8,8 @@ export type StudioMember = {
   userId: string;
   role: StudioRole;
   displayName: string;
+  canVerifyPayment: boolean;
+  canSendReport: boolean;
   createdAt: string;
 };
 
@@ -51,6 +53,8 @@ export async function bootstrapOwnerIfNeeded(user: User) {
     user_id: user.id,
     role: "owner",
     display_name: displayName,
+    can_verify_payment: true,
+    can_send_report: true,
   });
 
   if (error) {
@@ -62,7 +66,7 @@ export async function getStudioMember(userId: string) {
   const supabase = await createServerSupabaseClient();
   const { data, error } = await supabase
     .from("studio_members")
-    .select("user_id, role, display_name, created_at")
+    .select("user_id, role, display_name, can_verify_payment, can_send_report, created_at")
     .eq("user_id", userId)
     .maybeSingle();
 
@@ -77,6 +81,8 @@ export async function getStudioMember(userId: string) {
     userId: data.user_id,
     role: data.role,
     displayName: data.display_name,
+    canVerifyPayment: data.role === "owner" || Boolean(data.can_verify_payment),
+    canSendReport: data.role === "owner" || Boolean(data.can_send_report),
     createdAt: data.created_at,
   } satisfies StudioMember;
 }
@@ -94,7 +100,7 @@ export async function listStudioMembers() {
   const supabase = await createServerSupabaseClient();
   const { data, error } = await supabase
     .from("studio_members")
-    .select("user_id, role, display_name, created_at")
+    .select("user_id, role, display_name, can_verify_payment, can_send_report, created_at")
     .order("created_at", { ascending: true });
 
   if (error) {
@@ -108,6 +114,8 @@ export async function listStudioMembers() {
         userId: row.user_id,
         role: row.role,
         displayName: row.display_name,
+        canVerifyPayment: row.role === "owner" || Boolean(row.can_verify_payment),
+        canSendReport: row.role === "owner" || Boolean(row.can_send_report),
         createdAt: row.created_at,
       }) satisfies StudioMember,
   );

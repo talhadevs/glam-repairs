@@ -9,6 +9,7 @@ import type { PaymentStatus } from "@/lib/supabase/database.types";
 type VerifyPaymentButtonProps = {
   customerId: string;
   paymentStatus: PaymentStatus;
+  canVerify: boolean;
 };
 
 function SubmitButton() {
@@ -27,11 +28,21 @@ function SubmitButton() {
 export default function VerifyPaymentButton({
   customerId,
   paymentStatus,
+  canVerify,
 }: VerifyPaymentButtonProps) {
   if (paymentStatus === "verified") {
     return (
       <p className="rounded-full bg-brand-success/15 px-3 py-2 text-center text-sm font-medium text-brand-success-strong">
         {PAYMENT_STATUS_LABELS.verified}
+      </p>
+    );
+  }
+
+  if (!canVerify) {
+    return (
+      <p className="text-sm text-brand-gray">
+        {PAYMENT_STATUS_LABELS.pending}. You do not have permission to verify
+        payments.
       </p>
     );
   }

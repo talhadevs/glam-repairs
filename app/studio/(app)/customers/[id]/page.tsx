@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 
-import AllowReportSenderForm from "@/components/studio/AllowReportSenderForm";
 import AssignCustomerForm from "@/components/studio/AssignCustomerForm";
 import AnswerList from "@/components/studio/AnswerList";
 import ComposeEmailForm from "@/components/studio/ComposeEmailForm";
@@ -15,10 +14,7 @@ import VerifyPaymentButton from "@/components/studio/VerifyPaymentButton";
 import { formatBookingWhatsAppMessage } from "@/lib/funnel/formatBookingSummary";
 import { formatCustomerAnswers } from "@/lib/studio/answers";
 import { CUSTOMER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/studio/constants";
-import {
-  canSendCustomerReport,
-  getStudioCustomer,
-} from "@/lib/studio/customers";
+import { getStudioCustomer } from "@/lib/studio/customers";
 import { listCustomerEmails } from "@/lib/studio/emails";
 import { formatStudioDateTime } from "@/lib/studio/formatDate";
 import { listStudioMembers, requireStudioMember } from "@/lib/studio/member";
@@ -59,7 +55,7 @@ export default async function CustomerDetailPage({
   }
 
   const isOwner = member.role === "owner";
-  const canSendReport = canSendCustomerReport(member, customer);
+  const canSendReport = member.canSendReport;
   const [answers, emails, reports, reviews, members] = await Promise.all([
     Promise.resolve(formatCustomerAnswers(customer.answers)),
     listCustomerEmails(customer.id),
@@ -94,9 +90,6 @@ export default async function CustomerDetailPage({
           {CUSTOMER_STATUS_LABELS[customer.status]} ·{" "}
           {PAYMENT_STATUS_LABELS[customer.paymentStatus]}
           {customer.assignedToName ? ` · Assigned to ${customer.assignedToName}` : " · Unassigned"}
-          {customer.reportSenderName
-            ? ` · Report send: ${customer.reportSenderName}`
-            : " · Report send: owner only"}
           {" · Added "}
           {formatStudioDateTime(customer.createdAt)}
         </p>
@@ -127,11 +120,6 @@ export default async function CustomerDetailPage({
           Photo review sent to the owner.
         </p>
       ) : null}
-      {query.sender ? (
-        <p className="rounded-xl bg-brand-success/15 px-4 py-3 text-sm text-brand-success-strong">
-          Report send permission saved.
-        </p>
-      ) : null}
       {query.emailed ? (
         <p className="rounded-xl bg-brand-success/15 px-4 py-3 text-sm text-brand-success-strong">
           Email sent.
@@ -155,11 +143,6 @@ export default async function CustomerDetailPage({
       {query.error === "review" ? (
         <p className="rounded-xl bg-brand-error/10 px-4 py-3 text-sm text-brand-error-strong">
           {query.message || "Could not save the photo review."}
-        </p>
-      ) : null}
-      {query.error === "sender" ? (
-        <p className="rounded-xl bg-brand-error/10 px-4 py-3 text-sm text-brand-error-strong">
-          Could not update who may send the report.
         </p>
       ) : null}
       {query.error === "save" ? (
@@ -189,6 +172,7 @@ export default async function CustomerDetailPage({
             <VerifyPaymentButton
               customerId={customer.id}
               paymentStatus={customer.paymentStatus}
+              canVerify={member.canVerifyPayment}
             />
           </div>
           <div className="rounded-2xl border border-brand-lavender/70 bg-white p-5">
@@ -211,35 +195,32 @@ export default async function CustomerDetailPage({
               />
             </div>
           ) : null}
-          {isOwner ? (
-            <div className="rounded-2xl border border-brand-lavender/70 bg-white p-5">
-              <h2 className="mb-4 font-serif text-xl text-brand-primary">
-                Allow report send
-              </h2>
-              <AllowReportSenderForm
-                customerId={customer.id}
-                reportSenderId={customer.reportSenderId}
-                members={members}
-              />
-            </div>
-          ) : null}
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-brand-lavender/70 bg-white p-5">
-          <h2 className="mb-4 font-serif text-xl text-brand-primary">
-            Photo review for owner
-          </h2>
-          <ReviewForm leadId={customer.id} isOwner={isOwner} />
-        </div>
-        <div>
+      {isOwner ? (
+        <section>
           <h2 className="mb-4 font-serif text-xl text-brand-primary">
             Team reviews
           </h2>
           <ReviewList reviews={reviews} />
-        </div>
-      </section>
+        </section>
+      ) : (
+        <section className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-2xl border border-brand-lavender/70 bg-white p-5">
+            <h2 className="mb-4 font-serif text-xl text-brand-primary">
+              Photo review for owner
+            </h2>
+            <ReviewForm leadId={customer.id} />
+          </div>
+          <div>
+            <h2 className="mb-4 font-serif text-xl text-brand-primary">
+              Your reviews
+            </h2>
+            <ReviewList reviews={reviews} />
+          </div>
+        </section>
+      )}
 
       <section className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border border-brand-lavender/70 bg-white p-5">
@@ -255,8 +236,8 @@ export default async function CustomerDetailPage({
             />
           ) : (
             <p className="text-sm text-brand-gray">
-              Send a photo review to the owner. The owner writes the PDF, or can
-              allow you to send it to the customer.
+              You do not have permission to send reports. Ask the owner to
+              enable it in Team.
             </p>
           )}
         </div>

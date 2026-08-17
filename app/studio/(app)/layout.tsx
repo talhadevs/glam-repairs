@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import StudioShell from "@/components/studio/StudioShell";
 import { requireStudioMember } from "@/lib/studio/member";
+import { listStudioNotifications } from "@/lib/studio/notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -20,5 +21,11 @@ export default async function StudioAppLayout({
     redirect("/studio/no-access");
   }
 
-  return <StudioShell member={member}>{children}</StudioShell>;
+  const initialNotifications = await listStudioNotifications();
+
+  return (
+    <StudioShell member={member} initialNotifications={initialNotifications}>
+      {children}
+    </StudioShell>
+  );
 }

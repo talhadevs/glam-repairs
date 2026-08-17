@@ -7,6 +7,7 @@ type TeamPageProps = {
     error?: string;
     invited?: string;
     removed?: string;
+    permissions?: string;
   }>;
 };
 
@@ -24,8 +25,8 @@ export default async function StudioTeamPage({ searchParams }: TeamPageProps) {
         <h1 className="font-serif text-3xl text-brand-primary">Team</h1>
         <p className="mt-1 text-sm text-brand-gray">
           {isOwner
-            ? "Invite staff by email. Only you can add or remove teammates."
-            : "Studio teammates. Only the owner can invite or remove people."}
+            ? "Invite staff, then set who can verify payments or send reports."
+            : "Studio teammates. Only the owner can invite, remove, or change permissions."}
         </p>
       </div>
 
@@ -37,6 +38,16 @@ export default async function StudioTeamPage({ searchParams }: TeamPageProps) {
       {params.removed ? (
         <p className="rounded-xl bg-brand-success/15 px-4 py-3 text-sm text-brand-success-strong">
           Teammate removed.
+        </p>
+      ) : null}
+      {params.permissions ? (
+        <p className="rounded-xl bg-brand-success/15 px-4 py-3 text-sm text-brand-success-strong">
+          Team permissions saved.
+        </p>
+      ) : null}
+      {params.error === "permissions" ? (
+        <p className="rounded-xl bg-brand-error/10 px-4 py-3 text-sm text-brand-error-strong">
+          Could not save permissions.
         </p>
       ) : null}
 

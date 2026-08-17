@@ -11,6 +11,7 @@ import { listStudioMembers } from "@/lib/studio/member";
 export type { StudioCustomer } from "@/lib/studio/customerTypes";
 export {
   canSendCustomerReport,
+  canVerifyCustomerPayment,
   isAbandonedFunnel,
 } from "@/lib/studio/customerTypes";
 

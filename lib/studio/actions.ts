@@ -10,7 +10,6 @@ import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { PLAN_OPTIONS, REVIEW_DECISIONS } from "@/lib/studio/constants";
 import {
-  canSendCustomerReport,
   getStudioCustomer,
   isAbandonedFunnel,
   isCustomerStatus,
@@ -353,6 +352,37 @@ export async function removeTeamMemberAction(formData: FormData) {
   redirect("/studio/team?removed=1");
 }
 
+export async function updateMemberPermissionsAction(formData: FormData) {
+  const { member } = await requireStudioMember();
+  if (!member || member.role !== "owner") {
+    redirect("/studio/team?error=forbidden");
+  }
+
+  const userId = asString(formData, "userId");
+  if (!userId || userId === member.userId) {
+    redirect("/studio/team?error=invalid");
+  }
+
+  const admin = createAdminSupabaseClient();
+  const { error } = await admin
+    .from("studio_members")
+    .update({
+      can_verify_payment: formData.get("canVerifyPayment") === "1",
+      can_send_report: formData.get("canSendReport") === "1",
+    })
+    .eq("user_id", userId)
+    .eq("role", "staff");
+
+  if (error) {
+    console.error("[updateMemberPermissionsAction]", error.message);
+    redirect("/studio/team?error=permissions");
+  }
+
+  revalidatePath("/studio/team");
+  revalidatePath("/studio/customers");
+  redirect("/studio/team?permissions=1");
+}
+
 export async function createCustomerAction(formData: FormData) {
   const { member } = await requireStudioMember();
   if (!member) {
@@ -440,6 +470,10 @@ export async function verifyCustomerPaymentAction(formData: FormData) {
   const { member } = await requireStudioMember();
   if (!member) {
     redirect("/studio/login");
+  }
+
+  if (!member.canVerifyPayment) {
+    redirect("/studio/customers?error=forbidden");
   }
 
   const id = asString(formData, "id");
@@ -625,9 +659,9 @@ export async function sendCustomerReportAction(formData: FormData) {
     redirect("/studio/customers");
   }
 
-  if (!canSendCustomerReport(member, customer)) {
+  if (!member.canSendReport) {
     redirect(
-      `/studio/customers/${leadId}?error=report&message=${encodeURIComponent("Only the owner or an allowed team member can send this report.")}`,
+      `/studio/customers/${leadId}?error=report&message=${encodeURIComponent("You do not have permission to send reports. Ask the owner in Team.")}`,
     );
   }
 
@@ -727,6 +761,12 @@ export async function submitCustomerReviewAction(formData: FormData) {
     redirect("/studio/customers");
   }
 
+  if (member.role === "owner") {
+    redirect(
+      `/studio/customers/${leadId}?error=review&message=${encodeURIComponent("Photo reviews are for assigned team members.")}`,
+    );
+  }
+
   const decision = asString(formData, "decision");
   const findings = asString(formData, "findings");
   if (
@@ -770,48 +810,6 @@ export async function submitCustomerReviewAction(formData: FormData) {
 
   revalidatePath(`/studio/customers/${leadId}`);
   redirect(`/studio/customers/${leadId}?reviewed=1`);
-}
-
-export async function allowReportSenderAction(formData: FormData) {
-  const { member } = await requireStudioMember();
-  if (!member || member.role !== "owner") {
-    redirect("/studio/customers?error=forbidden");
-  }
-
-  const id = asString(formData, "id");
-  const reportSenderId = asString(formData, "reportSenderId");
-  if (!id) {
-    redirect("/studio/customers");
-  }
-
-  let nextSender: string | null = null;
-  if (reportSenderId) {
-    const members = await listStudioMembers();
-    const exists = members.some(
-      (item) => item.userId === reportSenderId && item.role === "staff",
-    );
-    if (!exists) {
-      redirect(`/studio/customers/${id}?error=sender`);
-    }
-    nextSender = reportSenderId;
-  }
-
-  const supabase = await createServerSupabaseClient();
-  const { error } = await supabase
-    .from("leads")
-    .update({
-      report_sender_id: nextSender,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", id);
-
-  if (error) {
-    console.error("[allowReportSenderAction]", error.message);
-    redirect(`/studio/customers/${id}?error=sender`);
-  }
-
-  revalidatePath(`/studio/customers/${id}`);
-  redirect(`/studio/customers/${id}?sender=1`);
 }
 
 export async function sendBroadcastAction(formData: FormData) {

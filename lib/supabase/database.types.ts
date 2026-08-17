@@ -6,6 +6,11 @@ export type ReviewDecision =
   | "ready_for_report"
   | "need_more_photos"
   | "not_suitable";
+export type StudioNotificationType =
+  | "chat_message"
+  | "review_submitted"
+  | "payment_verified"
+  | "customer_assigned";
 
 export type Database = {
   public: {
@@ -15,18 +20,24 @@ export type Database = {
           user_id: string;
           role: StudioRole;
           display_name: string;
+          can_verify_payment: boolean;
+          can_send_report: boolean;
           created_at: string;
         };
         Insert: {
           user_id: string;
           role: StudioRole;
           display_name: string;
+          can_verify_payment?: boolean;
+          can_send_report?: boolean;
           created_at?: string;
         };
         Update: {
           user_id?: string;
           role?: StudioRole;
           display_name?: string;
+          can_verify_payment?: boolean;
+          can_send_report?: boolean;
           created_at?: string;
         };
         Relationships: [];
@@ -205,6 +216,45 @@ export type Database = {
           report_sender_id?: string | null;
           created_at?: string;
           updated_at?: string;
+        };
+        Relationships: [];
+      };
+      studio_notifications: {
+        Row: {
+          id: string;
+          recipient_id: string;
+          actor_id: string | null;
+          type: StudioNotificationType;
+          title: string;
+          body: string;
+          href: string;
+          lead_id: string | null;
+          read_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          recipient_id: string;
+          actor_id?: string | null;
+          type: StudioNotificationType;
+          title: string;
+          body: string;
+          href: string;
+          lead_id?: string | null;
+          read_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          recipient_id?: string;
+          actor_id?: string | null;
+          type?: StudioNotificationType;
+          title?: string;
+          body?: string;
+          href?: string;
+          lead_id?: string | null;
+          read_at?: string | null;
+          created_at?: string;
         };
         Relationships: [];
       };
